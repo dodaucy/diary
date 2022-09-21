@@ -1,3 +1,14 @@
+######################################
+#                                    #
+#               diary                #
+#                                    #
+#                MIT                 #
+#     Copyright (C) 2022 dodaucy     #
+#  https://github.com/dodaucy/diary  #
+#                                    #
+######################################
+
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
