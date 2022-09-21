@@ -15,3 +15,6 @@ input[type="submit"]:hover {
     background-color: #EF00CB;
     color: #1C1C1C;
 }
+a {
+    color: #dd3bc5;
+}
