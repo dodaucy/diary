@@ -7,11 +7,3 @@ database: "mysql://user:password@localhost:3306/database"  # mysql on localhost
 # >>> import bcrypt
 # >>> bcrypt.hashpw("YOUR_PASSWORD".encode(), bcrypt.gensalt()).decode()
 password_hash: "$2b$12$FVC/DAHJyViVd62cfcpfguVUD3nN4AH6G7tu44gL8pPZOyDM04b5u"  # 1234
-
-style:
-  # https://developer.mozilla.org/en-US/docs/Web/CSS/color
-  font_color: "#ff0000"  # yellow
-  # https://developer.mozilla.org/en-US/docs/Web/CSS/background-color
-  background_color: "#1c1c1c"  # grey
-  # https://developer.mozilla.org/en-US/docs/Web/CSS/font-family
-  font_family: "sans-serif"  # normal font

@@ -21,6 +21,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import utils
 from config import config
 from globals import db
+from settings import Settings
 
 
 app = FastAPI(openapi_url=None)
@@ -28,6 +29,8 @@ app = FastAPI(openapi_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
+
+s = Settings()
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -38,7 +41,7 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
             "request": request,
             "status_code": exc.status_code,
             "detail": exc.detail,
-            "style": utils.get_style()
+            "settings": s.settings
         },
         exc.status_code
     )
@@ -47,6 +50,7 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
 @app.on_event("startup")
 async def startup():
     await db.connect()
+    await s.load()
 
 
 @app.get("/")
@@ -56,7 +60,7 @@ async def index(request: Request, token: str = Cookie("")):
         "login.html",
         {
             "request": request,
-            "style": utils.get_style()
+            "settings": s.settings
         }
     )
     if token:
@@ -73,7 +77,7 @@ async def index(request: Request, token: str = Cookie("")):
                 "index.html",
                 {
                     "request": request,
-                    "style": utils.get_style()
+                    "settings": s.settings
                 }
             )
         # If the token is invalid, delete it
@@ -143,6 +147,6 @@ async def settings(request: Request, token: str = Cookie("")):
         "settings.html",
         {
             "request": request,
-            "style": utils.get_style()
+            "settings": s.settings
         }
     )
