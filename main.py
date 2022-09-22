@@ -48,15 +48,22 @@ async def startup():
 
 
 @app.get("/")
-async def index(request: Request, token: str = Cookie(None)):
-    if token is not None:
+async def index(request: Request, token: str = Cookie("")):
+    login_response = templates.TemplateResponse(
+        "login.html",
+        {
+            "request": request,
+            "style": utils.get_style()
+        }
+    )
+    if token:
         fetched_token = await db.fetch_one(
             "SELECT * FROM sessions WHERE token = :token",
             {
                 "token": token
             }
         )
-        if fetched_token is not None:
+        if fetched_token:
             return templates.TemplateResponse(
                 "index.html",
                 {
@@ -64,13 +71,11 @@ async def index(request: Request, token: str = Cookie(None)):
                     "style": utils.get_style()
                 }
             )
-    return templates.TemplateResponse(
-        "login.html",
-        {
-            "request": request,
-            "style": utils.get_style()
-        }
-    )
+        login_response.delete_cookie(
+            key="token",
+            httponly=True
+        )
+    return login_response
 
 
 @app.post("/")
