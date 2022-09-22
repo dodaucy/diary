@@ -80,7 +80,7 @@ async def index(request: Request, token: str = Cookie("")):
     return login_response
 
 
-@app.post("/")
+@app.post("/login")
 async def login(request: Request, password: str = Form(...)):
     # Check if the password is correct
     if not bcrypt.checkpw(password.strip().encode(), config.password_hash.encode()):
@@ -96,13 +96,10 @@ async def login(request: Request, password: str = Form(...)):
             "token": token
         }
     )
-    # Return the session token and login
-    response = templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "style": utils.get_style()
-        }
+    # Redirect to the index page
+    response = RedirectResponse(
+        url="/",
+        status_code=status.HTTP_303_SEE_OTHER
     )
     response.set_cookie(
         key="token",
