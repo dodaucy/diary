@@ -134,3 +134,15 @@ async def logout(token: str = Cookie("")):
         httponly=True
     )
     return response
+
+
+@app.get("/settings")
+async def settings(request: Request, token: str = Cookie("")):
+    await utils.login_check(token)
+    return templates.TemplateResponse(
+        "settings.html",
+        {
+            "request": request,
+            "style": utils.get_style()
+        }
+    )
