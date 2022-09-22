@@ -1,0 +1,6 @@
+bcrypt
+databases
+fastapi
+munch
+pyyaml
+uvicorn[standard]
