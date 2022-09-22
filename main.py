@@ -13,6 +13,7 @@ import os
 
 import bcrypt
 from fastapi import Cookie, FastAPI, Form, HTTPException, Request, status
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -106,6 +107,26 @@ async def login(request: Request, password: str = Form(...)):
     response.set_cookie(
         key="token",
         value=token,
+        httponly=True
+    )
+    return response
+
+
+@app.post("/logout")
+async def logout(token: str = Cookie("")):
+    if token:
+        await db.execute(
+            "DELETE FROM sessions WHERE token = :token",
+            {
+                "token": token
+            }
+        )
+    response = RedirectResponse(
+        url="/",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
+    response.delete_cookie(
+        key="token",
         httponly=True
     )
     return response
