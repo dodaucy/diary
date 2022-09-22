@@ -51,6 +51,7 @@ async def startup():
 
 @app.get("/")
 async def index(request: Request, token: str = Cookie("")):
+    # Create login page response
     login_response = templates.TemplateResponse(
         "login.html",
         {
@@ -59,6 +60,7 @@ async def index(request: Request, token: str = Cookie("")):
         }
     )
     if token:
+        # Check if token is valid
         fetched_token = await db.fetch_one(
             "SELECT * FROM sessions WHERE token = :token",
             {
@@ -66,6 +68,7 @@ async def index(request: Request, token: str = Cookie("")):
             }
         )
         if fetched_token:
+            # Return diary page
             return templates.TemplateResponse(
                 "index.html",
                 {
@@ -73,10 +76,12 @@ async def index(request: Request, token: str = Cookie("")):
                     "style": utils.get_style()
                 }
             )
+        # If the token is invalid, delete it
         login_response.delete_cookie(
             key="token",
             httponly=True
         )
+    # Return the login page
     return login_response
 
 
@@ -111,6 +116,7 @@ async def login(request: Request, password: str = Form(...)):
 
 @app.post("/logout")
 async def logout(token: str = Cookie("")):
+    # Delete the session
     if token:
         await db.execute(
             "DELETE FROM sessions WHERE token = :token",
@@ -118,6 +124,7 @@ async def logout(token: str = Cookie("")):
                 "token": token
             }
         )
+    # Redirect to the login page
     response = RedirectResponse(
         url="/",
         status_code=status.HTTP_303_SEE_OTHER
