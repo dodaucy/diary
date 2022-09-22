@@ -150,3 +150,38 @@ async def settings(request: Request, token: str = Cookie("")):
             "settings": s.settings
         }
     )
+
+
+@app.post("/set_settings")
+async def set_settings(token: str = Cookie(""), font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
+    await utils.login_check(token)
+    # Check data
+    for color in [font_color, background_color]:
+        if color.startswith("#"):
+            color = color[1:]
+        if 3 > len(color) > 6:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid color"
+            )
+        for char in color:
+            if char not in "0123456789abcdefABCDEF":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid color"
+                )
+    if len(font_family) > 32:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Font family too long"
+        )
+    # Set settings
+    await s.update(
+        font_color=f"{font_color}",
+        background_color=f"{background_color}",
+        font_family=font_family
+    )
+    return RedirectResponse(
+        url="/settings",
+        status_code=status.HTTP_303_SEE_OTHER
+    )

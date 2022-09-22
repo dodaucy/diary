@@ -23,3 +23,9 @@ input[type="submit"]:hover {
 a {
     color: var(--font-color);
 }
+.box {
+    text-align: left;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid var(--font-color);
+}

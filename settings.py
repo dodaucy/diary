@@ -39,7 +39,7 @@ class Settings:
                 self.settings
             )
 
-    async def update(self, font_color: str, background_color: str, font_family: str) -> None:
+    async def update(self, *, font_color: str, background_color: str, font_family: str) -> None:
         """Update settings in database"""
         self.settings = {
             "font_color": font_color,

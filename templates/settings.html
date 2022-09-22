@@ -17,6 +17,15 @@
     </head>
     <body>
         <h1>Settings</h1>
+        <form action="/set_settings" method="POST" class="box">
+            <label for="font-color">Font Color</label>
+            <input type="color" name="font_color" id="font-color" value="{{ settings.font_color }}"><br>
+            <label for="background-color">Background Color</label>
+            <input type="color" name="background_color" id="background-color" value="{{ settings.background_color }}"><br>
+            <label for="font-family">Font Family</label>
+            <input type="text" name="font_family" id="font-family" value="{{ settings.font_family }}"><br>
+            <input type="submit" value="Save">
+        </form>
         <form action="/" method="GET">
             <input type="submit" value="Back">
         </form>
