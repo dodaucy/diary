@@ -157,14 +157,17 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
     await utils.login_check(token)
     # Check data
     for color in [font_color, background_color]:
-        if color.startswith("#"):
-            color = color[1:]
-        if 3 > len(color) > 6:
+        if not color.startswith("#"):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid color"
             )
-        for char in color:
+        if 4 > len(color) > 7:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid color"
+            )
+        for char in color[1:]:
             if char not in "0123456789abcdefABCDEF":
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -177,8 +180,8 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
         )
     # Set settings
     await s.update(
-        font_color=f"#{font_color}",
-        background_color=f"#{background_color}",
+        font_color=font_color,
+        background_color=background_color,
         font_family=font_family
     )
     return RedirectResponse(
