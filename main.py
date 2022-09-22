@@ -177,8 +177,8 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
         )
     # Set settings
     await s.update(
-        font_color=f"{font_color}",
-        background_color=f"{background_color}",
+        font_color=f"#{font_color}",
+        background_color=f"#{background_color}",
         font_family=font_family
     )
     return RedirectResponse(
