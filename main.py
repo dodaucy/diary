@@ -90,7 +90,7 @@ async def index(request: Request, token: str = Cookie("")):
 
 
 @app.post("/login")
-async def login(request: Request, password: str = Form(...)):
+async def login(password: str = Form(...)):
     # Check if the password is correct
     if not bcrypt.checkpw(password.strip().encode(), config.password_hash.encode()):
         raise HTTPException(
