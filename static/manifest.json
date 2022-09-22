@@ -3,7 +3,5 @@
     "short_name": "Diary",
     "description": "A simple diary.",
     "start_url": "/",
-    "display": "standalone",
-    "theme_color": "#EF00CB",
-    "background_color": "#1C1C1C"
+    "display": "standalone"
 }

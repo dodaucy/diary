@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+import utils
 from config import config
 from globals import db
 
@@ -34,7 +35,8 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
         {
             "request": request,
             "status_code": exc.status_code,
-            "detail": exc.detail
+            "detail": exc.detail,
+            "style": utils.get_style()
         },
         exc.status_code
     )
@@ -58,13 +60,15 @@ async def index(request: Request, token: str = Cookie(None)):
             return templates.TemplateResponse(
                 "index.html",
                 {
-                    "request": request
+                    "request": request,
+                    "style": utils.get_style()
                 }
             )
     return templates.TemplateResponse(
         "login.html",
         {
-            "request": request
+            "request": request,
+            "style": utils.get_style()
         }
     )
 
@@ -89,7 +93,8 @@ async def login(request: Request, password: str = Form(...)):
     response = templates.TemplateResponse(
         "index.html",
         {
-            "request": request
+            "request": request,
+            "style": utils.get_style()
         }
     )
     response.set_cookie(

@@ -5,6 +5,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="manifest" href="/static/manifest.json">
+        <style>
+            :root {
+                --font-color: {{ style.font_color }};
+                --background-color: {{ style.background_color }};
+                --font-family: {{ style.font_family }};
+            }
+        </style>
         <link rel="stylesheet" href="/static/style.css">
         <title>{{ status_code }} - {{ detail }}</title>
     </head>
