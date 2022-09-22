@@ -11,6 +11,7 @@
 
 import os
 
+import bcrypt
 from fastapi import Cookie, FastAPI, Form, HTTPException, Request, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -81,7 +82,7 @@ async def index(request: Request, token: str = Cookie("")):
 @app.post("/")
 async def login(request: Request, password: str = Form(...)):
     # Check if the password is correct
-    if password.strip() != config.password:
+    if not bcrypt.checkpw(password.strip().encode(), config.password_hash.encode()):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password"
