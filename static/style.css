@@ -16,9 +16,13 @@ input {
     padding: 5px;
     margin: 5px;
 }
+input[type="submit"] {
+    transition-duration: 0.5s;
+}
 input[type="submit"]:hover {
     background-color: var(--font-color);
     color: var(--background-color);
+    cursor: pointer;
 }
 a {
     color: var(--font-color);
