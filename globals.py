@@ -9,9 +9,9 @@
 ######################################
 
 
+import os
+
 from databases import Database
 
-from config import config
 
-
-db = Database(config.database)
+db = Database(os.getenv("DATABASE"))

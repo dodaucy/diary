@@ -8,6 +8,9 @@
 #                                    #
 ######################################
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv("config.env")
 
 import os
 
@@ -19,7 +22,6 @@ from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import utils
-from config import config
 from globals import db
 from settings import Settings
 
@@ -92,7 +94,7 @@ async def index(request: Request, token: str = Cookie("")):
 @app.post("/login")
 async def login(password: str = Form(...)):
     # Check if the password is correct
-    if not bcrypt.checkpw(password.strip().encode(), config.password_hash.encode()):
+    if not bcrypt.checkpw(password.strip().encode(), os.getenv("PASSWORD_HASH").encode()):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password"

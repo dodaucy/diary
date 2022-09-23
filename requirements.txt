@@ -1,6 +1,5 @@
 bcrypt
 databases
 fastapi
-munch
-pyyaml
+python-dotenv
 uvicorn[standard]
