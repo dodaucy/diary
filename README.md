@@ -19,3 +19,9 @@ A simple diary.
 ## Setup with Docker
 
 ...
+
+## License
+
+**GNU AGPLv3**
+
+Copyright (C) 2022 dodaucy
