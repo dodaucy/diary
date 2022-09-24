@@ -238,12 +238,15 @@ async def update_questions(request: Request, token: str = Cookie("")):
                 }
             )
     # Disable questions
-    await db.execute(
-        "UPDATE questions SET enabled = 0 WHERE id NOT IN :ids",
-        {
-            "ids": set(question_ids)
-        }
-    )
+    if question_ids:
+        await db.execute(
+            "UPDATE questions SET enabled = 0 WHERE id NOT IN :ids",
+            {
+                "ids": set(question_ids)
+            }
+        )
+    else:
+        await db.execute("UPDATE questions SET enabled = 0")
     # Add new questions
     for question in new_questions:
         await db.execute(
