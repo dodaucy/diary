@@ -154,7 +154,7 @@ async def settings(request: Request, token: str = Cookie("")):
     )
 
 
-@app.post("/set_settings")
+@app.post("/update_settings")
 async def set_settings(token: str = Cookie(""), font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
     await utils.login_check(token)
     # Check data
