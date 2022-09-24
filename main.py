@@ -190,3 +190,70 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
         url="/settings",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
+
+@app.get("/questions")
+async def questions(request: Request, token: str = Cookie("")):
+    await utils.login_check(token)
+    return templates.TemplateResponse(
+        "questions.html",
+        {
+            "request": request,
+            "settings": s.settings,
+            "questions": await db.fetch_all("SELECT * FROM questions WHERE enabled = 1")
+        }
+    )
+
+
+@app.post("/update_questions")
+async def update_questions(request: Request, token: str = Cookie("")):
+    await utils.login_check(token)
+    # Verify data
+    form_data = (await request.form()).multi_items()
+    for question in form_data:
+        if question[0] != "new" and not question[0].isdigit():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid question ID"
+            )
+        if len(question[1]) > 255:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Question too long"
+            )
+    # Update questions
+    question_ids = []
+    new_questions = []
+    for question in form_data:
+        if question[0] == "new":
+            new_questions.append(question[1])
+        else:
+            # Update question
+            question_ids.append(int(question[0]))
+            await db.execute(
+                "UPDATE questions SET name = :name WHERE id = :id",
+                {
+                    "name": question[1],
+                    "id": int(question[0])
+                }
+            )
+    # Disable questions
+    await db.execute(
+        "UPDATE questions SET enabled = 0 WHERE id NOT IN :ids",
+        {
+            "ids": set(question_ids)
+        }
+    )
+    # Add new questions
+    for question in new_questions:
+        await db.execute(
+            "INSERT INTO questions (name, enabled) VALUES (:name, 1)",
+            {
+                "name": question
+            }
+        )
+    # Redirect to the questions page
+    return RedirectResponse(
+        url="/questions",
+        status_code=status.HTTP_303_SEE_OTHER
+    )
