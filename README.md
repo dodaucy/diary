@@ -6,13 +6,15 @@ A simple diary.
 
 1. `sudo apt update`
 
-2. `sudo apt install git python3 python3-pip`
+2. `sudo apt install git python3 python3-pip -y`
 
 3. `git clone https://github.com/dodaucy/diary.git`
 
-4. `python3 -m pip install -r requirements.txt`
+4. `cd diary`
 
-5. Start: `python3 main.py`
+5. `python3 -m pip install -r requirements.txt`
+
+6. Start: `python3 main.py`
 
 ## Setup with Docker
 
