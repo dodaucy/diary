@@ -1,5 +1,7 @@
 # Diary
 
+![Icon](/static/icons/64x64.png "Icon")
+
 A simple diary.
 
 ## Setup without Docker
