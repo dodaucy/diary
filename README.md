@@ -14,7 +14,7 @@ A simple diary.
 
 5. `python3 -m pip install -r requirements.txt`
 
-6. Start: `python3 main.py`
+6. Start: `python3 -m uvicorn main:app`
 
 ## Setup with Docker
 
