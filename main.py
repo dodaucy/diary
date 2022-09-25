@@ -205,7 +205,7 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Invalid color"
                 )
-    if len(font_family) > 32:
+    if len(font_family.strip()) > 32:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Font family too long"
@@ -214,7 +214,7 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
     await s.update(
         font_color=font_color,
         background_color=background_color,
-        font_family=font_family
+        font_family=font_family.strip()
     )
     return RedirectResponse(
         url="/settings",
@@ -263,7 +263,7 @@ async def update_questions(request: Request, token: str = Cookie("")):
             await db.execute(
                 "UPDATE questions SET name = :name WHERE id = :id",
                 {
-                    "name": question[1],
+                    "name": question[1].strip(),
                     "id": int(question[0])
                 }
             )
@@ -282,7 +282,7 @@ async def update_questions(request: Request, token: str = Cookie("")):
         await db.execute(
             "INSERT INTO questions (name, enabled) VALUES (:name, 1)",
             {
-                "name": question
+                "name": question.strip()
             }
         )
     # Redirect to the questions page
