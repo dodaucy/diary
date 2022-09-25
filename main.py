@@ -52,10 +52,10 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
 
 @app.on_event("startup")
 async def startup():
-    await db.connect()
-    await s.load()
     mimetypes.init()
     mimetypes.add_type("image/webp", ".webp")
+    await db.connect()
+    await s.load()
 
 
 @app.get("/")
