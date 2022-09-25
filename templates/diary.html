@@ -43,12 +43,8 @@
                 </div>
             </form>
         </div>
-        <form action="/questions" method="GET">
-            <input type="submit" value="Questions">
-        </form>
-        <form action="/settings" method="GET">
-            <input type="submit" value="Settings">
-        </form>
+        <button type="button" onclick="window.location.replace('/questions')">Questions</button>
+        <button type="button" onclick="window.location.replace('/settings')">Settings</button>
         <form action="/logout" method="POST">
             <input type="submit" value="Logout">
         </form>
