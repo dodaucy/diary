@@ -1,3 +1,16 @@
+/*
+######################################
+#                                    #
+#               diary                #
+#                                    #
+#                MIT                 #
+#     Copyright (C) 2022 dodaucy     #
+#  https://github.com/dodaucy/diary  #
+#                                    #
+######################################
+*/
+
+
 function removeQuestion(element) {
     var questions = document.getElementById("questions");
     questions.removeChild(element);
