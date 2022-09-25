@@ -8,7 +8,7 @@
 #                                    #
 ######################################
 
-# Load environment variables from .env file
+# Load environment variables from config.env file
 from dotenv import load_dotenv
 load_dotenv("config.env")
 
