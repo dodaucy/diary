@@ -326,3 +326,10 @@ async def update_questions(request: Request):
         url="/questions",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    return RedirectResponse(
+        url="/static/icons/32x32.png"
+    )
