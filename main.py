@@ -15,7 +15,8 @@ load_dotenv("config.env")
 import os
 
 import bcrypt
-from fastapi import Cookie, FastAPI, Form, HTTPException, Request, status
+from fastapi import (Cookie, Depends, FastAPI, Form, HTTPException, Request,
+                     status)
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -66,14 +67,7 @@ async def index(request: Request, token: str = Cookie("")):
         }
     )
     if token:
-        # Check if token is valid
-        fetched_token = await db.fetch_one(
-            "SELECT token FROM sessions WHERE token = :token",
-            {
-                "token": token
-            }
-        )
-        if fetched_token:
+        if await utils.is_logged_in(token):
             # Return diary page
             return templates.TemplateResponse(
                 "diary.html",
@@ -83,7 +77,7 @@ async def index(request: Request, token: str = Cookie("")):
                     "questions": await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1")
                 }
             )
-        # If the token is invalid, delete it
+        # Delete session cookie
         login_response.delete_cookie(
             key="token",
             httponly=True
@@ -92,9 +86,8 @@ async def index(request: Request, token: str = Cookie("")):
     return login_response
 
 
-@app.get("/diary")
-async def get_diary(date: str, token: str = Cookie("")):
-    await utils.login_check(token)
+@app.get("/diary", dependencies=[Depends(utils.login_check)])
+async def get_diary(date: str):
     days = utils.get_days(date)
     # Fetch notes
     notes = await db.fetch_val(
@@ -172,9 +165,8 @@ async def logout(token: str = Cookie("")):
     return response
 
 
-@app.get("/settings")
-async def settings(request: Request, token: str = Cookie("")):
-    await utils.login_check(token)
+@app.get("/settings", dependencies=[Depends(utils.login_check)])
+async def settings(request: Request):
     return templates.TemplateResponse(
         "settings.html",
         {
@@ -184,9 +176,8 @@ async def settings(request: Request, token: str = Cookie("")):
     )
 
 
-@app.post("/update_settings")
-async def set_settings(token: str = Cookie(""), font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
-    await utils.login_check(token)
+@app.post("/update_settings", dependencies=[Depends(utils.login_check)])
+async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
     # Verify data
     for color in [font_color, background_color]:
         if not color.startswith("#"):
@@ -222,9 +213,8 @@ async def set_settings(token: str = Cookie(""), font_color: str = Form(...), bac
     )
 
 
-@app.get("/questions")
-async def questions(request: Request, token: str = Cookie("")):
-    await utils.login_check(token)
+@app.get("/questions", dependencies=[Depends(utils.login_check)])
+async def questions(request: Request):
     return templates.TemplateResponse(
         "questions.html",
         {
@@ -235,9 +225,8 @@ async def questions(request: Request, token: str = Cookie("")):
     )
 
 
-@app.post("/update_questions")
-async def update_questions(request: Request, token: str = Cookie("")):
-    await utils.login_check(token)
+@app.post("/update_questions", dependencies=[Depends(utils.login_check)])
+async def update_questions(request: Request):
     # Verify data
     form_data = (await request.form()).multi_items()
     for question in form_data:

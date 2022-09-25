@@ -11,12 +11,12 @@
 
 import datetime
 
-from fastapi import HTTPException, status
+from fastapi import Cookie, HTTPException, status
 
 from globals import db
 
 
-async def login_check(token: str) -> None:
+async def is_logged_in(token: str) -> bool:
     """Check if the user is logged in"""
     if token:
         fetched_token = await db.fetch_one(
@@ -26,11 +26,17 @@ async def login_check(token: str) -> None:
             }
         )
         if fetched_token:
-            return
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Not logged in"
-    )
+            return True
+    return False
+
+
+async def login_check(token: str = Cookie("")) -> None:
+    """Raise an exception if the user is not logged in"""
+    if not await is_logged_in(token):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not logged in"
+        )
 
 
 def get_days(date: str) -> int:
