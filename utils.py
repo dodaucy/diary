@@ -20,7 +20,7 @@ async def login_check(token: str) -> None:
     """Check if the user is logged in"""
     if token:
         fetched_token = await db.fetch_one(
-            "SELECT * FROM sessions WHERE token = :token",
+            "SELECT token FROM sessions WHERE token = :token",
             {
                 "token": token
             }

@@ -68,7 +68,7 @@ async def index(request: Request, token: str = Cookie("")):
     if token:
         # Check if token is valid
         fetched_token = await db.fetch_one(
-            "SELECT * FROM sessions WHERE token = :token",
+            "SELECT token FROM sessions WHERE token = :token",
             {
                 "token": token
             }
@@ -80,7 +80,7 @@ async def index(request: Request, token: str = Cookie("")):
                 {
                     "request": request,
                     "settings": s.settings,
-                    "questions": await db.fetch_all("SELECT * FROM questions WHERE enabled = 1")
+                    "questions": await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1")
                 }
             )
         # If the token is invalid, delete it
@@ -230,7 +230,7 @@ async def questions(request: Request, token: str = Cookie("")):
         {
             "request": request,
             "settings": s.settings,
-            "questions": await db.fetch_all("SELECT * FROM questions WHERE enabled = 1")
+            "questions": await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1")
         }
     )
 
