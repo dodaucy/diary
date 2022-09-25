@@ -129,7 +129,7 @@ async def post_diary(request: Request, date: str = Form(...), notes: str = Form(
     for key, value in form_data.items():
         if key in ("date", "notes"):
             continue
-        if not key.isdigit() or not value.isdigit() or 1 > int(value) > 5:
+        if not key.isdigit() or not value.isdigit() or 1 > int(value) > 5 or int(key) > 4294967295:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Invalid data"
