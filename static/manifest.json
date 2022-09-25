@@ -1,7 +1,7 @@
 {
     "name": "Diary",
     "short_name": "Diary",
-    "description": "A simple diary.",
+    "description": "A simple diary. Check it out on https://github.com/dodaucy/diary",
     "start_url": "/",
     "display": "standalone"
 }
