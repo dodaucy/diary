@@ -123,7 +123,7 @@ async def get_diary(date: str, token: str = Cookie("")):
 
 @app.post("/login")
 async def login(password: str = Form(...)):
-    # Check if the password is correct
+    # Verify password
     if not bcrypt.checkpw(password.strip().encode(), os.getenv("PASSWORD_HASH").encode()):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -187,7 +187,7 @@ async def settings(request: Request, token: str = Cookie("")):
 @app.post("/update_settings")
 async def set_settings(token: str = Cookie(""), font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
     await utils.login_check(token)
-    # Check data
+    # Verify data
     for color in [font_color, background_color]:
         if not color.startswith("#"):
             raise HTTPException(
