@@ -12,11 +12,40 @@
                 --font-family: {{ settings.font_family }};
             }
         </style>
+        <script src="/static/diary.js"></script>
         <link rel="stylesheet" href="/static/style.css">
         <title>Diary</title>
     </head>
     <body>
         <h1>Diary</h1>
+        <div class="box">
+            <form action="/diary" method="POST">
+                <input type="date" name="date" id="date" onchange="loadDiary();">
+                <div id="questions">
+                    {% for question in questions %}
+                    <div class="flex">
+                        <div style="margin: 5px;">
+                            {{ question.name }}
+                        </div>
+                        <select name="{{ question.id }}" id="answer-{{ question.id }}" class="can-be-disabled" disabled>
+                            <option value="0" selected="selected">Not rateable</option>
+                            <option value="1">Bad</option>
+                            <option value="2">Okay</option>
+                            <option value="3">Good</option>
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+                <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
+                <div class="flex">
+                    <input type="submit" value="Save" class="can-be-disabled" disabled>
+                    <input type="button" value="Cancel" onclick="window.location.reload(true);" class="can-be-disabled" disabled>
+                </div>
+            </form>
+        </div>
+        <form action="/questions" method="GET">
+            <input type="submit" value="Questions">
+        </form>
         <form action="/settings" method="GET">
             <input type="submit" value="Settings">
         </form>

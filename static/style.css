@@ -43,4 +43,11 @@ a {
 }
 .flex {
     display: flex;
+    align-items: center;
+}
+:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    color: var(--font-color) !important;
+    background-color: var(--background-color) !important;
 }

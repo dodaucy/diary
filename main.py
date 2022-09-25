@@ -79,7 +79,8 @@ async def index(request: Request, token: str = Cookie("")):
                 "index.html",
                 {
                     "request": request,
-                    "settings": s.settings
+                    "settings": s.settings,
+                    "questions": await db.fetch_all("SELECT * FROM questions WHERE enabled = 1")
                 }
             )
         # If the token is invalid, delete it
@@ -89,6 +90,35 @@ async def index(request: Request, token: str = Cookie("")):
         )
     # Return the login page
     return login_response
+
+
+@app.get("/diary")
+async def get_diary(date: str, token: str = Cookie("")):
+    await utils.login_check(token)
+    days = utils.get_days(date)
+    # Fetch notes
+    notes = await db.fetch_val(
+        "SELECT notes FROM notes WHERE days = :days",
+        {
+            "days": days
+        }
+    )
+    # Fetch answers
+    fetched_answers = await db.fetch_all(
+        "SELECT question_id, value FROM answers WHERE days = :days",
+        {
+            "days": days
+        }
+    )
+    # Format answers
+    answers = {}
+    for answer in fetched_answers:
+        answers[str(answer["question_id"])] = str(answer["value"])
+    # Return diary data
+    return {
+        "notes": notes or "",
+        "answers": answers
+    }
 
 
 @app.post("/login")
