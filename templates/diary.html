@@ -23,7 +23,7 @@
                 <input type="date" name="date" id="date" onchange="loadDiary();">
                 <div id="questions">
                     {% for question in questions %}
-                    <div class="flex">
+                    <div class="one-line">
                         <div style="margin: 5px;">
                             {{ question.name }}
                         </div>
@@ -37,7 +37,7 @@
                     {% endfor %}
                 </div>
                 <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
-                <div class="flex">
+                <div class="one-line">
                     <input type="submit" value="Save" class="can-be-disabled" disabled>
                     <input type="button" value="Cancel" onclick="window.location.reload(true);" class="can-be-disabled" disabled>
                 </div>

@@ -1,53 +1,65 @@
-html {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
+body {
+    /* custom style */
     color: var(--font-color);
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    /* center horizontally and vertically */
     text-align: center;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 button,
 input,
 select,
 textarea {
-    background-color: var(--background-color);
+    /* custom style */
     color: var(--font-color);
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    /* border */
     border: 1px solid var(--font-color);
-    border-radius: 5px;
+    /* spacing */
     padding: 5px;
     margin: 5px;
+    /* rounded corners */
+    border-radius: 5px;
 }
+
 button,
-input[type="submit"],
-input[type="button"] {
+input[type="submit"] {
     transition-duration: 0.5s;
 }
+
 button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover {
+input[type="submit"]:hover {
     background-color: var(--font-color);
     color: var(--background-color);
     cursor: pointer;
 }
+
 a {
     color: var(--font-color);
     opacity: 0.3;
 }
+
 .box {
     text-align: left;
     padding: 10px;
     margin: 10px;
     border: 1px solid var(--font-color);
 }
-.flex {
+
+.one-line {
     display: flex;
     align-items: center;
 }
+
 :disabled {
-    opacity: 0.5;
-    cursor: not-allowed !important;
     color: var(--font-color) !important;
     background-color: var(--background-color) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5;
 }

@@ -21,14 +21,14 @@
         <form action="/update_questions" method="POST" class="box">
             <div id="questions">
                 {% for question in questions %}
-                <div class="flex">
+                <div class="one-line">
                     <input type="text" name="{{ question.id }}"  value="{{ question.name }}" placeholder="Question" required>
                     <button type="button" onclick="removeQuestion(this.parentElement);">Delete</button>
                 </div>
                 {% endfor %}
             </div>
             <button type="button" onclick="addQuestions();">Add Question</button>
-            <div class="flex">
+            <div class="one-line">
                 <input type="submit" value="Save">
                 <button type="button" onclick="window.location.reload(true);">Cancel</button>
             </div>

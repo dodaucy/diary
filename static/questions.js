@@ -7,7 +7,7 @@ function addQuestions() {
     var questions = document.getElementById("questions");
 
     var question = document.createElement("div");
-    question.className = "flex";
+    question.className = "one-line";
 
     var input_field = document.createElement("input");
     input_field.type = "text";
