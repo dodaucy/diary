@@ -14,7 +14,11 @@ A simple diary.
 
 5. `python3 -m pip install -r requirements.txt`
 
-6. Start: `python3 -m uvicorn main:app`
+6. `cp example_config.env config.env`
+
+7. `nano config.env`
+
+8. Start: `python3 -m uvicorn main:app`
 
 ## Setup with Docker
 
