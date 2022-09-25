@@ -2,7 +2,7 @@
 
 ![Icon](/static/icons/64x64.png "Icon")
 
-A simple diary.
+A simple diary for the web.
 
 ## Setup without Docker
 
