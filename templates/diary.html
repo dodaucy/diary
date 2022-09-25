@@ -43,10 +43,12 @@
                 <button type="button" onclick="window.location.reload(true);" class="can-be-disabled" disabled>Cancel</button>
             </div>
         </form>
-        <button type="button" onclick="window.location.replace('/questions')">Questions</button>
-        <button type="button" onclick="window.location.replace('/settings')">Settings</button>
-        <form action="/logout" method="POST">
-            <input type="submit" value="Logout">
-        </form>
+        <div class="bottom-bar">
+            <button type="button" onclick="window.location.replace('/questions')">Questions</button>
+            <button type="button" onclick="window.location.replace('/settings')">Settings</button>
+            <form action="/logout" method="POST">
+                <input type="submit" value="Logout">
+            </form>
+        </div>
     </body>
 </html>

@@ -83,6 +83,16 @@ a {
     flex: 1;
 }
 
+.bottom-bar {
+    display: flex;
+    justify-content: center
+}
+
+button,
+input[type="submit"] {
+    width: 90px;
+}
+
 :disabled {
     color: var(--font-color) !important;
     background-color: var(--background-color) !important;
