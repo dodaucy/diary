@@ -116,7 +116,7 @@ async def get_diary(date: str):
     }
 
 
-@app.post("/diary", dependencies=[Depends(utils.login_check)])
+@app.post("/update_diary", dependencies=[Depends(utils.login_check)])
 async def post_diary(request: Request, date: str = Form(...), notes: str = Form(...)):
     form_data = await request.form()
     days = utils.get_days(date)
