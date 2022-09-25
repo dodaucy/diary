@@ -33,6 +33,7 @@ input[type="button"]:hover {
 }
 a {
     color: var(--font-color);
+    opacity: 0.3;
 }
 .box {
     text-align: left;
