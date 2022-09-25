@@ -53,6 +53,10 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
+label {
+    margin: 5px;
+}
+
 a {
     color: var(--font-color);
     opacity: 0.3;
