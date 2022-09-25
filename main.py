@@ -76,7 +76,7 @@ async def index(request: Request, token: str = Cookie("")):
         if fetched_token:
             # Return diary page
             return templates.TemplateResponse(
-                "index.html",
+                "diary.html",
                 {
                     "request": request,
                     "settings": s.settings,
