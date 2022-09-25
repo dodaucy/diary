@@ -18,31 +18,29 @@
     </head>
     <body>
         <h1>Diary</h1>
-        <div class="box">
-            <form action="/diary" method="POST">
-                <input type="date" name="date" id="date" onchange="loadDiary();">
-                <div id="questions">
-                    {% for question in questions %}
-                    <div class="one-line">
-                        <div style="margin: 5px;">
-                            {{ question.name }}
-                        </div>
-                        <select name="{{ question.id }}" id="answer-{{ question.id }}" class="can-be-disabled" disabled>
-                            <option value="0" selected="selected">Not rateable</option>
-                            <option value="1">Bad</option>
-                            <option value="2">Okay</option>
-                            <option value="3">Good</option>
-                        </select>
-                    </div>
-                    {% endfor %}
-                </div>
-                <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
+        <form action="/diary" method="POST" class="box">
+            <input type="date" name="date" id="date" onchange="loadDiary();">
+            <div id="questions">
+                {% for question in questions %}
                 <div class="one-line">
-                    <input type="submit" value="Save" class="can-be-disabled" disabled>
-                    <input type="button" value="Cancel" onclick="window.location.reload(true);" class="can-be-disabled" disabled>
+                    <label for="select-{{ question.id }}">
+                        {{ question.name }}
+                    </label>
+                    <select name="{{ question.id }}" id="select-{{ question.id }}" class="can-be-disabled" disabled>
+                        <option value="0" selected="selected">Not rateable</option>
+                        <option value="1">Bad</option>
+                        <option value="2">Okay</option>
+                        <option value="3">Good</option>
+                    </select>
                 </div>
-            </form>
-        </div>
+                {% endfor %}
+            </div>
+            <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
+            <div class="one-line">
+                <input type="submit" value="Save" class="can-be-disabled" disabled>
+                <button type="button" onclick="window.location.reload(true);" class="can-be-disabled" disabled>Cancel</button>
+            </div>
+        </form>
         <button type="button" onclick="window.location.replace('/questions')">Questions</button>
         <button type="button" onclick="window.location.replace('/settings')">Settings</button>
         <form action="/logout" method="POST">
