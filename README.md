@@ -22,6 +22,6 @@ A simple diary.
 
 ## License
 
-**GNU AGPLv3**
+**MIT**
 
 Copyright (C) 2022 dodaucy
