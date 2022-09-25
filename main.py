@@ -12,6 +12,7 @@
 from dotenv import load_dotenv
 load_dotenv("config.env")
 
+import mimetypes
 import os
 
 import bcrypt
@@ -25,7 +26,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import utils
 from globals import db
 from settings import Settings
-
 
 app = FastAPI(openapi_url=None)
 
@@ -54,6 +54,8 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
 async def startup():
     await db.connect()
     await s.load()
+    mimetypes.init()
+    mimetypes.add_type("image/webp", ".webp")
 
 
 @app.get("/")
