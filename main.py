@@ -120,9 +120,9 @@ async def get_diary(date: str):
 async def login(password: str = Form(...)):
     # Verify password
     if not bcrypt.checkpw(password.strip().encode(), os.getenv("PASSWORD_HASH").encode()):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect password"
+        return RedirectResponse(
+            url="/",
+            status_code=status.HTTP_303_SEE_OTHER
         )
     # Create a session
     token = os.urandom(32).hex()
