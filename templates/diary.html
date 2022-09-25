@@ -19,7 +19,9 @@
     <body>
         <h1>Diary</h1>
         <form action="/diary" method="POST" class="box">
-            <input type="date" name="date" id="date" onchange="loadDiary();">
+            <div class="one-line">
+                <input type="date" name="date" id="date" onchange="loadDiary();">
+            </div>
             <div id="questions">
                 {% for question in questions %}
                 <div class="one-line">

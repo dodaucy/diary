@@ -57,6 +57,11 @@ label {
     margin: 5px;
 }
 
+textarea {
+    resize: none;
+    height: 100px;
+}
+
 a {
     color: var(--font-color);
     opacity: 0.3;
@@ -72,6 +77,10 @@ a {
 .one-line {
     display: flex;
     align-items: center;
+}
+
+.one-line > * {
+    flex: 1;
 }
 
 :disabled {
