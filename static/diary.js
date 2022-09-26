@@ -42,6 +42,12 @@ function loadDiary() {
     last_load = Date.now();
     last_date = date
 
+    // Verify date
+    var year = date.split("-")[0];
+    if (1970 > year || year > 6000) {
+        return;
+    }
+
     // Load diary
     if (date) {
         var xhr = new XMLHttpRequest();
