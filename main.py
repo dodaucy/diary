@@ -25,7 +25,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import utils
 from globals import db
+from rate_limit import RateLimitHandler
 from settings import Settings
+
 
 app = FastAPI(openapi_url=None)
 
@@ -34,6 +36,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 s = Settings()
+
+rate_limit_handler = RateLimitHandler(60, 60 * 5)
+login_rate_limit_handler = RateLimitHandler(30, 60 * 60)
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -58,7 +63,7 @@ async def startup():
     await s.load()
 
 
-@app.get("/")
+@app.get("/", dependencies=[Depends(rate_limit_handler.trigger)])
 async def index(request: Request, token: str = Cookie("")):
     # Create login page response
     login_response = templates.TemplateResponse(
@@ -88,7 +93,7 @@ async def index(request: Request, token: str = Cookie("")):
     return login_response
 
 
-@app.get("/diary", dependencies=[Depends(utils.login_check)])
+@app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def get_diary(date: str):
     days = utils.get_days(date)
     # Fetch notes
@@ -116,7 +121,7 @@ async def get_diary(date: str):
     }
 
 
-@app.post("/update_diary", dependencies=[Depends(utils.login_check)])
+@app.post("/update_diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def post_diary(request: Request, date: str = Form(...), notes: str = Form(...)):
     form_data = await request.form()
     days = utils.get_days(date)
@@ -161,7 +166,7 @@ async def post_diary(request: Request, date: str = Form(...), notes: str = Form(
     )
 
 
-@app.post("/login")
+@app.post("/login", dependencies=[Depends(login_rate_limit_handler.trigger)])
 async def login(password: str = Form(...)):
     # Verify password
     if not bcrypt.checkpw(password.strip().encode(), os.getenv("PASSWORD_HASH").encode()):
@@ -190,7 +195,7 @@ async def login(password: str = Form(...)):
     return response
 
 
-@app.post("/logout")
+@app.post("/logout", dependencies=[Depends(rate_limit_handler.trigger)])
 async def logout(token: str = Cookie("")):
     # Delete the session
     if token:
@@ -212,7 +217,7 @@ async def logout(token: str = Cookie("")):
     return response
 
 
-@app.get("/settings", dependencies=[Depends(utils.login_check)])
+@app.get("/settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def settings(request: Request):
     return templates.TemplateResponse(
         "settings.html",
@@ -223,7 +228,7 @@ async def settings(request: Request):
     )
 
 
-@app.post("/update_settings", dependencies=[Depends(utils.login_check)])
+@app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
     # Verify data
     for color in [font_color, background_color]:
@@ -260,7 +265,7 @@ async def set_settings(font_color: str = Form(...), background_color: str = Form
     )
 
 
-@app.get("/questions", dependencies=[Depends(utils.login_check)])
+@app.get("/questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def questions(request: Request):
     return templates.TemplateResponse(
         "questions.html",
@@ -272,7 +277,7 @@ async def questions(request: Request):
     )
 
 
-@app.post("/update_questions", dependencies=[Depends(utils.login_check)])
+@app.post("/update_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def update_questions(request: Request):
     # Verify data
     form_data = (await request.form()).multi_items()
