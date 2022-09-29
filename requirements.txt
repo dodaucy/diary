@@ -1,5 +1,6 @@
 bcrypt
 databases
 fastapi
+humanfriendly
 python-dotenv
 uvicorn[standard]
