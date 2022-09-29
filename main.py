@@ -8,9 +8,6 @@
 #                                    #
 ######################################
 
-# Load environment variables from config.env file
-from dotenv import load_dotenv
-load_dotenv("config.env")
 
 import mimetypes
 import os
@@ -23,6 +20,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+import config
 import utils
 from globals import db
 from rate_limit import RateLimitHandler
@@ -169,7 +167,7 @@ async def post_diary(request: Request, date: str = Form(...), notes: str = Form(
 @app.post("/login", dependencies=[Depends(login_rate_limit_handler.trigger)])
 async def login(password: str = Form(...)):
     # Verify password
-    if not bcrypt.checkpw(password.strip().encode(), os.getenv("PASSWORD_HASH").encode()):
+    if not bcrypt.checkpw(password.strip().encode(), config.PASSWORD_HASH.encode()):
         return RedirectResponse(
             url="/",
             status_code=status.HTTP_303_SEE_OTHER

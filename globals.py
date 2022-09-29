@@ -13,5 +13,7 @@ import os
 
 from databases import Database
 
+import config
 
-db = Database(os.getenv("DATABASE"))
+
+db = Database(config.DATABASE)
