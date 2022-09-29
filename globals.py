@@ -9,8 +9,6 @@
 ######################################
 
 
-import os
-
 from databases import Database
 
 import config
