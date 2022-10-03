@@ -36,8 +36,8 @@ templates = Jinja2Templates(directory="templates")
 
 s = Settings()
 
-rate_limit_handler = RateLimitHandler(60, 60 * 5)
-login_rate_limit_handler = RateLimitHandler(30, 60 * 60)
+rate_limit_handler = RateLimitHandler(config.rate_limit.RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.RATE_LIMIT_TIME_WINDOW)
+login_rate_limit_handler = RateLimitHandler(config.rate_limit.LOGIN_RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.LOGIN_RATE_LIMIT_TIME_WINDOW)
 
 
 @app.exception_handler(StarletteHTTPException)

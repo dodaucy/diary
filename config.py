@@ -53,3 +53,11 @@ auth = Config(
     TOKEN_EXPIRATION_WITHOUT_REQUESTS=Time("3 weeks"),
     EXTRA_TOKEN_CHECK=True
 )
+
+
+rate_limit = Config(
+    RATE_LIMIT_ALLOW_REQUESTS=60,
+    RATE_LIMIT_TIME_WINDOW=Time("5 minutes"),
+    LOGIN_RATE_LIMIT_ALLOW_REQUESTS=30,
+    LOGIN_RATE_LIMIT_TIME_WINDOW=Time("1 hour")
+)
