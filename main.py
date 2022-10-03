@@ -54,7 +54,7 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
     )
 
 
-@repeat_every(seconds=60 * 5)  # every 5 minutes
+@repeat_every(seconds=config.auth.CHECK_FOR_EXPIRED_TOKENS_EVERY)
 async def delete_expired_tokens():
     await db.execute(
         """

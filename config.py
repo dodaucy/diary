@@ -51,9 +51,9 @@ auth = Config(
     EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE=Time("7 days"),
     EXTEND_TOKEN_EXPIRATION_BUFFER=Time("6 hours"),
     TOKEN_EXPIRATION_WITHOUT_REQUESTS=Time("3 weeks"),
-    EXTRA_TOKEN_CHECK=True
+    EXTRA_TOKEN_CHECK=True,
+    CHECK_FOR_EXPIRED_TOKENS_EVERY=Time("15 minutes"),
 )
-
 
 rate_limit = Config(
     RATE_LIMIT_ALLOW_REQUESTS=60,
