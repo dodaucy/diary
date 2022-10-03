@@ -11,7 +11,9 @@
 
 import time
 
-from fastapi import HTTPException, Request, status
+from fastapi import Cookie, HTTPException, Request, status
+
+from globals import db
 
 
 class RateLimitHandler:
@@ -20,7 +22,7 @@ class RateLimitHandler:
         self.capacity = allow_requests
         self.rate = in_time / allow_requests
 
-    def trigger(self, request: Request) -> None:
+    async def trigger(self, request: Request, token: str = Cookie("")) -> None:
         """Rate limit by ip address"""
 
         # Get time
@@ -53,3 +55,12 @@ class RateLimitHandler:
             )
 
         self.rate_limit[request.client.host]['tokens'] -= 1
+
+        # Update last request
+        if token:
+            await db.execute(
+                "UPDATE sessions SET last_request = UNIX_TIMESTAMP() WHERE token = :token",
+                {
+                    "token": token
+                }
+            )

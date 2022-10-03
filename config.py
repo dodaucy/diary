@@ -44,3 +44,12 @@ class Config:
                 else:
                     # Other
                     self.__setattr__(key, type(value)(os.environ[key]))
+
+
+auth = Config(
+    TOKEN_EXPIRATION=Time("16 weeks"),
+    EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE=Time("7 days"),
+    EXTEND_TOKEN_EXPIRATION_BUFFER=Time("6 hours"),
+    TOKEN_EXPIRATION_WITHOUT_REQUESTS=Time("3 weeks"),
+    EXTRA_TOKEN_CHECK=True
+)

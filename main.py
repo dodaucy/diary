@@ -18,6 +18,7 @@ from fastapi import (Cookie, Depends, FastAPI, Form, HTTPException, Request,
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi_utils.tasks import repeat_every
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import config
@@ -53,12 +54,30 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
     )
 
 
+@repeat_every(seconds=60 * 5)  # every 5 minutes
+async def delete_expired_tokens():
+    await db.execute(
+        """
+        DELETE FROM
+            sessions
+        WHERE
+            :created_at <= UNIX_TIMESTAMP() - :token_expiration - :extend_token_expiration_max_when_active
+            OR (
+                :created_at <= UNIX_TIMESTAMP() - :token_expiration
+                AND :last_request <= UNIX_TIMESTAMP() - :extend_token_expiration_buffer
+            )
+            OR :last_request <= UNIX_TIMESTAMP() - :token_expiration_without_requests
+        """
+    )
+
+
 @app.on_event("startup")
 async def startup():
     mimetypes.init()
     mimetypes.add_type("image/webp", ".webp")
     await db.connect()
     await s.load()
+    await delete_expired_tokens()
 
 
 @app.get("/", dependencies=[Depends(rate_limit_handler.trigger)])
@@ -175,7 +194,7 @@ async def login(password: str = Form(...)):
     # Create a session
     token = os.urandom(32).hex()
     await db.execute(
-        "INSERT INTO sessions (token) VALUES (:token)",
+        "INSERT INTO sessions (token, last_request, created_at) VALUES (:token, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())",
         {
             "token": token
         }
