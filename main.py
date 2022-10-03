@@ -61,13 +61,19 @@ async def delete_expired_tokens():
         DELETE FROM
             sessions
         WHERE
-            :created_at <= UNIX_TIMESTAMP() - :token_expiration - :extend_token_expiration_max_when_active
+            created_at <= UNIX_TIMESTAMP() - :token_expiration - :extend_token_expiration_max_when_active
             OR (
-                :created_at <= UNIX_TIMESTAMP() - :token_expiration
-                AND :last_request <= UNIX_TIMESTAMP() - :extend_token_expiration_buffer
+                created_at <= UNIX_TIMESTAMP() - :token_expiration
+                AND last_request <= UNIX_TIMESTAMP() - :extend_token_expiration_buffer
             )
-            OR :last_request <= UNIX_TIMESTAMP() - :token_expiration_without_requests
-        """
+            OR last_request <= UNIX_TIMESTAMP() - :token_expiration_without_requests
+        """,
+        {
+            "token_expiration": config.auth.TOKEN_EXPIRATION,
+            "extend_token_expiration_max_when_active": config.auth.EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE,
+            "extend_token_expiration_buffer": config.auth.EXTEND_TOKEN_EXPIRATION_BUFFER,
+            "token_expiration_without_requests": config.auth.TOKEN_EXPIRATION_WITHOUT_REQUESTS
+        }
     )
 
 
