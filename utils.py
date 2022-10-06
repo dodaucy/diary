@@ -61,7 +61,11 @@ async def login_check(token: str = Cookie("")) -> None:
 
 
 def get_days(date: str) -> int:
-    """Count the number of days since 1st January 1970"""
+    """
+    Count the number of days since 1st January 1970
+
+    Format: `YYYY-MM-DD`
+    """
     date_split = date.split("-")
     if len(date_split) == 3:
         for split in date_split:
