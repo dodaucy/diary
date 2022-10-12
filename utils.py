@@ -84,3 +84,12 @@ def get_days(date: str) -> int:
         status_code=status.HTTP_400_BAD_REQUEST,
         detail="Invalid date"
     )
+
+
+def get_date(days: int) -> str:
+    """
+    Get the date from the number of days since 1st January 1970
+
+    Format: `YYYY-MM-DD`
+    """
+    return (datetime.date(1970, 1, 1) + datetime.timedelta(days=days)).strftime("%Y-%m-%d")
