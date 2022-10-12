@@ -9,6 +9,8 @@
 ######################################
 
 
+import calendar
+import datetime
 import mimetypes
 import os
 
@@ -354,6 +356,57 @@ async def update_questions(request: Request):
         url="/questions",
         status_code=status.HTTP_303_SEE_OTHER
     )
+
+
+@app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def stats(request: Request):
+    return templates.TemplateResponse(
+        "stats.html",
+        {
+            "request": request,
+            "settings": s.settings
+        }
+    )
+
+
+@app.get("/get_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def get_questions(request: Request):
+    final_questions = {}
+    for question in await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1"):
+        final_questions[question["id"]] = question["name"]
+    return final_questions
+
+
+@app.get("/get_stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def get_stats(year: int):
+    # Verify data
+    if year < 1970 or year > 6000:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid year"
+        )
+    # Fetch data
+    answers = await db.fetch_all(
+        "SELECT days, question_id, value FROM answers WHERE days >= :year AND days < :next_year ORDER BY days ASC",
+        {
+            "year": (datetime.date(year, 1, 1) - datetime.date(1970, 1, 1)).days,
+            "next_year": (datetime.date(year + 1, 1, 1) - datetime.date(1970, 1, 1)).days
+        }
+    )
+    # Format data
+    final_answers = []
+    for month in range(12):
+        month += 1
+        day_list = []
+        for day in range(calendar.monthrange(year, month)[1]):
+            day += 1
+            day_dict = {}
+            for answer in answers:
+                if datetime.date(year, month, day) == datetime.date(1970, 1, 1) + datetime.timedelta(days=answer["days"]):
+                    day_dict[answer["question_id"]] = answer["value"]
+            day_list.append(day_dict)
+        final_answers.append(day_list)
+    return final_answers
 
 
 @app.get("/favicon.ico")
