@@ -403,7 +403,8 @@ async def get_stats(year: int):
             day_dict = {}
             for answer in answers:
                 if datetime.date(year, month, day) == datetime.date(1970, 1, 1) + datetime.timedelta(days=answer["days"]):
-                    day_dict[answer["question_id"]] = answer["value"]
+                    if answer['value']:
+                        day_dict[answer["question_id"]] = answer["value"]
             day_list.append(day_dict)
         final_answers.append(day_list)
     return final_answers
