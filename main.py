@@ -149,7 +149,7 @@ async def get_diary(date: str):
 
 
 @app.post("/update_diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def post_diary(request: Request, date: str = Form(...), notes: str = Form(...)):
+async def post_diary(request: Request, date: str = Form(...), notes: str = Form("")):
     form_data = await request.form()
     days = utils.get_days(date)
     # Verify data
