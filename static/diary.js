@@ -50,29 +50,18 @@ function loadDiary() {
 
     // Load diary
     if (date) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/diary?date=" + date, true);
-        xhr.onerror = function() {
-            alert("Network error");
-        }
-        xhr.onload = function() {
-            if (xhr.status == 200) {
-                var diary = JSON.parse(xhr.responseText);
-                document.getElementById("notes").value = diary.notes;
-                var children = document.getElementById("questions").children;
-                for (var i = 0; i < children.length; i++) {
-                    var select = children[i].getElementsByTagName("select")[0];
-                    if (select.name in diary.answers) {
-                        select.value = diary.answers[select.name];
-                    } else {
-                        select.value = "0";
-                    }
+        get("/diary?date=" + date, function(diary) {
+            document.getElementById("notes").value = diary.notes;
+            var children = document.getElementById("questions").children;
+            for (var i = 0; i < children.length; i++) {
+                var select = children[i].getElementsByTagName("select")[0];
+                if (select.name in diary.answers) {
+                    select.value = diary.answers[select.name];
+                } else {
+                    select.value = "0";
                 }
-                disable(false);
-            } else {
-                alert("Error: " + xhr.status);
             }
-        }
-        xhr.send();
+            disable(false);
+        });
     }
 }
