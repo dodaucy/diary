@@ -90,7 +90,7 @@ a {
 
 button,
 input[type="submit"] {
-    width: 90px;
+    width: 120px;
 }
 
 :disabled {
