@@ -13,15 +13,19 @@
     </head>
     <body>
         <h1>Diary</h1>
+        {% if show_logo %}
         <p>
             <img src="/static/icons/128x128.webp" onerror="this.onerror=null; this.src='/static/icons/128x128.png';">
         </p>
+        {% endif %}
         <form action="/login" method="POST">
             <input type="password" name="password" placeholder="Password" autofocus required>
             <input type="submit" value="Login">
         </form>
+        {% if show_github %}
         <p>
             <a href="https://github.com/dodaucy/diary" target="_blank">GitHub</a>
         </p>
+        {% endif %}
     </body>
 </html>

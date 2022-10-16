@@ -95,7 +95,9 @@ async def index(request: Request, token: str = Cookie("")):
         "login.html",
         {
             "request": request,
-            "settings": s.settings
+            "settings": s.settings,
+            "show_logo": config.style.SHOW_LOGO_ON_LOGIN,
+            "show_github": config.style.SHOW_GITHUB_LINK_ON_LOGIN,
         }
     )
     if token:

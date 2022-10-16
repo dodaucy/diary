@@ -46,12 +46,17 @@ class Config:
                     self.__setattr__(key, type(value)(os.environ[key]))
 
 
+style = Config(
+    SHOW_LOGO_ON_LOGIN=True,
+    SHOW_GITHUB_LINK_ON_LOGIN=True
+)
+
 auth = Config(
     TOKEN_EXPIRATION=Time("16 weeks"),
     EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE=Time("7 days"),
     EXTEND_TOKEN_EXPIRATION_BUFFER=Time("6 hours"),
     TOKEN_EXPIRATION_WITHOUT_REQUESTS=Time("3 weeks"),
-    CHECK_FOR_EXPIRED_TOKENS_EVERY=Time("15 minutes"),
+    CHECK_FOR_EXPIRED_TOKENS_EVERY=Time("15 minutes")
 )
 
 rate_limit = Config(
