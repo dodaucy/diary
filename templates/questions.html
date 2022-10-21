@@ -18,7 +18,8 @@
             <div id="questions">
                 {% for question in questions %}
                 <div class="one-line">
-                    <input type="text" name="{{ question.id }}"  value="{{ question.name }}" placeholder="Question" required>
+                    <input type="text" name="{{ question.id }}_name"  value="{{ question.name }}" placeholder="Question" required>
+                    <input type="color" name="{{ question.id }}_color" value="{{ question.color }}" required>
                     <button type="button" onclick="removeQuestion(this.parentElement);">Delete</button>
                 </div>
                 {% endfor %}

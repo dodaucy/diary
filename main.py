@@ -108,7 +108,7 @@ async def index(request: Request, token: str = Cookie("")):
                 {
                     "request": request,
                     "settings": s.settings,
-                    "questions": await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1")
+                    "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
                 }
             )
         # Delete session cookie
@@ -299,61 +299,83 @@ async def questions(request: Request):
         {
             "request": request,
             "settings": s.settings,
-            "questions": await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1")
+            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
         }
     )
 
 
 @app.post("/update_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def update_questions(request: Request):
-    # Verify data
-    form_data = (await request.form()).multi_items()
+    new_questions = {}
+    existing_questions = {}
+    form_data = (await request.form()).items()
     for question in form_data:
-        if question[0] != "new" and not question[0].isdigit():
+        # Verify data
+        key_splited = question[0].split("_")
+        if not any((
+            len(key_splited) == 2 and key_splited[0].isdigit() and key_splited[1] in ("name", "color"),  # Update existing question
+            len(key_splited) == 3 and key_splited[0] == "new" and key_splited[1] in ("name", "color")  # Create new question
+        )):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid question ID"
+                detail="Invalid key"
             )
         if len(question[1]) > 255:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Question too long"
             )
-    # Update questions
-    question_ids = []
-    new_questions = []
-    for question in form_data:
-        if question[0] == "new":
-            new_questions.append(question[1])
+        # Sort data
+        if key_splited[0] == "new":
+            if key_splited[2] not in new_questions:
+                new_questions[key_splited[2]] = {}
+            new_questions[key_splited[2]][key_splited[1]] = question[1]
         else:
-            # Update question
-            question_ids.append(int(question[0]))
-            await db.execute(
-                "UPDATE questions SET name = :name WHERE id = :id",
-                {
-                    "name": question[1].strip(),
-                    "id": int(question[0])
-                }
+            if key_splited[0] not in existing_questions:
+                existing_questions[key_splited[0]] = {}
+            existing_questions[key_splited[0]][key_splited[1]] = question[1]
+    # Verify data
+    for question in new_questions.values():
+        if "name" not in question or "color" not in question:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid question"
             )
+    for question in existing_questions.values():
+        if "name" not in question or "color" not in question:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid question"
+            )
+    # Update questions
+    for question_id, question in existing_questions.items():
+        await db.execute(
+            "UPDATE questions SET name = :name, color = :color WHERE id = :id",
+            {
+                "name": question["name"],
+                "color": question["color"],
+                "id": question_id
+            }
+        )
     # Disable questions
-    if question_ids:
+    if existing_questions:
         await db.execute(
             "UPDATE questions SET enabled = 0 WHERE id NOT IN :ids",
             {
-                "ids": set(question_ids)
+                "ids": set(existing_questions.keys())
             }
         )
     else:
         await db.execute("UPDATE questions SET enabled = 0")
-    # Add new questions
-    for question in new_questions:
+    # Create questions
+    for question in new_questions.values():
         await db.execute(
-            "INSERT INTO questions (name, enabled) VALUES (:name, 1)",
+            "INSERT INTO questions (name, color, enabled) VALUES (:name, :color, 1)",
             {
-                "name": question.strip()
+                "name": question["name"],
+                "color": question["color"]
             }
         )
-    # Redirect to the questions page
     return RedirectResponse(
         url="/questions",
         status_code=status.HTTP_303_SEE_OTHER
