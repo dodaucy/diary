@@ -22,7 +22,7 @@
             <div id="questions">
                 {% for question in questions %}
                 <div class="one-line">
-                    <label for="select-{{ question.id }}">
+                    <label for="select-{{ question.id }}" style="color: {{ question.color }};">
                         {{ question.name }}
                     </label>
                     <select name="{{ question.id }}" id="select-{{ question.id }}" class="can-be-disabled" disabled>
