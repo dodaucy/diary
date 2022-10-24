@@ -396,8 +396,11 @@ async def stats(request: Request):
 @app.get("/get_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def get_questions(request: Request):
     final_questions = {}
-    for question in await db.fetch_all("SELECT id, name FROM questions WHERE enabled = 1"):
-        final_questions[question["id"]] = question["name"]
+    for question in await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"):
+        final_questions[question["id"]] = {
+            "name": question["name"],
+            "color": question["color"]
+        }
     return final_questions
 
 
