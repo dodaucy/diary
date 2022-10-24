@@ -11,6 +11,7 @@
 
 import calendar
 import datetime
+import json
 import mimetypes
 import os
 
@@ -384,24 +385,20 @@ async def update_questions(request: Request):
 
 @app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def stats(request: Request):
-    return templates.TemplateResponse(
-        "stats.html",
-        {
-            "request": request,
-            "settings": s.settings
-        }
-    )
-
-
-@app.get("/get_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def get_questions(request: Request):
     final_questions = {}
     for question in await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"):
         final_questions[question["id"]] = {
             "name": question["name"],
             "color": question["color"]
         }
-    return final_questions
+    return templates.TemplateResponse(
+        "stats.html",
+        {
+            "request": request,
+            "settings": s.settings,
+            "questions": json.dumps(final_questions)
+        }
+    )
 
 
 @app.get("/get_stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
