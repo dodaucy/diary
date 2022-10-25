@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            :root {
+                --font-color: {{ settings.font_color }};
+                --background-color: {{ settings.background_color }};
+                --font-family: {{ settings.font_family }};
+            }
+        </style>
+        <script src="/static/requests.js"></script>
+        <script src="/static/stats.js"></script>
+        <title>Stats - Diary</title>
+        {% include "head.html" %}
+    </head>
+    <body onload="init();">
+        <h1>Stats</h1>
+        <div class="box" id="display-box">
+            {% for question in questions %}
+            <div>
+                <input type="checkbox" id="{{ question.id }}-checkbox" onchange="renderStats();" checked>
+                <label for="{{ question.id }}-checkbox" id="{{ question.id }}-label" style="color: {{ question.color }}">{{ question.name }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <canvas id="stats"></canvas>
+        <div class="bottom-bar">
+            <button type="button" onclick="window.location.replace('/')">Back</button>
+        </div>
+    </body>
+</html>
