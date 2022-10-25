@@ -23,6 +23,12 @@
             </div>
             {% endfor %}
         </div>
+        <button type="button" onclick="update_month(true);"><</button>
+        <span id="month-span">September</span>
+        <button type="button" onclick="update_month(false);">></button>
+        <button type="button" onclick="update_year(true);"><</button>
+        <span id="year-span">2022</span>
+        <button type="button" onclick="update_year(false);">></button>
         <canvas id="stats"></canvas>
         <div class="bottom-bar">
             <button type="button" onclick="window.location.replace('/')">Back</button>

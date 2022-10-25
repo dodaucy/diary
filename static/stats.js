@@ -2,6 +2,7 @@ var font_color;
 var last_resize;
 var last_data;
 var cache = {};
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
 function init() {
@@ -13,8 +14,8 @@ function init() {
 
 
 function renderStats() {
-    var year = 2022;
-    var month = 9;
+    var year = parseInt(document.getElementById("year-span").innerText);
+    var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
     console.log(`Render stats for ${year}-${month}`);
 
     // Use cached data if available or get data from server
@@ -121,3 +122,40 @@ function resize() {
 window.addEventListener("resize", function(event) {
     resize();
 }, true);
+
+
+function update_year(left) {
+    // Get year
+    var year = parseInt(document.getElementById("year-span").innerText);
+    // Update year
+    if (left) {
+        year--;
+    } else {
+        year++;
+    }
+    document.getElementById("year-span").innerText = year;
+    // Render stats
+    renderStats();
+}
+
+
+function update_month(left) {
+    // Get month
+    var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
+    // Update month
+    if (left) {
+        month--;
+    } else {
+        month++;
+    }
+    if (month < 1) {
+        month = 12;
+        update_year(true);
+    } else if (month > 12) {
+        month = 1;
+        update_year(false);
+    }
+    document.getElementById("month-span").innerText = months[month - 1];
+    // Render stats
+    renderStats();
+}
