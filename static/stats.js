@@ -125,7 +125,7 @@ function resize() {
 }
 
 
-function update_year(left) {
+function updateYear(left) {
     // Get year
     var year = parseInt(document.getElementById("year-span").innerText);
     // Update year
@@ -140,7 +140,7 @@ function update_year(left) {
 }
 
 
-function update_month(left) {
+function updateMonth(left) {
     // Get month
     var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
     // Update month
@@ -151,10 +151,10 @@ function update_month(left) {
     }
     if (month < 1) {
         month = 12;
-        update_year(true);
+        updateYear(true);
     } else if (month > 12) {
         month = 1;
-        update_year(false);
+        updateYear(false);
     }
     document.getElementById("month-span").innerText = months[month - 1];
     // Render stats
