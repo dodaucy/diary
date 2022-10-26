@@ -164,51 +164,15 @@ async def logout(token: str = Cookie("")):
     return response
 
 
-@app.get("/settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def settings(request: Request):
+@app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def stats(request: Request):
     return templates.TemplateResponse(
-        "settings.html",
+        "stats.html",
         {
             "request": request,
-            "selected_navbar_item": "settings"
+            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"),
+            "selected_navbar_item": "stats"
         }
-    )
-
-
-@app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
-    # Verify data
-    for color in [font_color, background_color]:
-        if not color.startswith("#"):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid color"
-            )
-        if 4 > len(color) > 7:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid color"
-            )
-        for char in color[1:]:
-            if char not in "0123456789abcdefABCDEF":
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid color"
-                )
-    if len(font_family.strip()) > 32:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Font family too long"
-        )
-    # Set settings
-    await global_settings.update(
-        font_color=font_color,
-        background_color=background_color,
-        font_family=font_family.strip()
-    )
-    return RedirectResponse(
-        url="/settings",
-        status_code=status.HTTP_303_SEE_OTHER
     )
 
 
@@ -302,15 +266,51 @@ async def update_questions(request: Request):
     )
 
 
-@app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def stats(request: Request):
+@app.get("/settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def settings(request: Request):
     return templates.TemplateResponse(
-        "stats.html",
+        "settings.html",
         {
             "request": request,
-            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"),
-            "selected_navbar_item": "stats"
+            "selected_navbar_item": "settings"
         }
+    )
+
+
+@app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
+    # Verify data
+    for color in [font_color, background_color]:
+        if not color.startswith("#"):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid color"
+            )
+        if 4 > len(color) > 7:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid color"
+            )
+        for char in color[1:]:
+            if char not in "0123456789abcdefABCDEF":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid color"
+                )
+    if len(font_family.strip()) > 32:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Font family too long"
+        )
+    # Set settings
+    await global_settings.update(
+        font_color=font_color,
+        background_color=background_color,
+        font_family=font_family.strip()
+    )
+    return RedirectResponse(
+        url="/settings",
+        status_code=status.HTTP_303_SEE_OTHER
     )
 
 
