@@ -100,7 +100,8 @@ async def index(request: Request, token: str = Cookie("")):
                 "diary.html",
                 {
                     "request": request,
-                    "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
+                    "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"),
+                    "selected_navbar_item": "diary"
                 }
             )
         # Delete session cookie
@@ -213,7 +214,8 @@ async def settings(request: Request):
     return templates.TemplateResponse(
         "settings.html",
         {
-            "request": request
+            "request": request,
+            "selected_navbar_item": "settings"
         }
     )
 
@@ -261,7 +263,8 @@ async def questions(request: Request):
         "questions.html",
         {
             "request": request,
-            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
+            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"),
+            "selected_navbar_item": "questions"
         }
     )
 
@@ -350,7 +353,8 @@ async def stats(request: Request):
         "stats.html",
         {
             "request": request,
-            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
+            "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1"),
+            "selected_navbar_item": "stats"
         }
     )
 

@@ -7,40 +7,33 @@
         {% include "head.html" %}
     </head>
     <body>
-        <h1>Diary</h1>
-        <form action="/update_diary" method="POST" class="box">
-            <div class="one-line">
-                <input type="date" name="date" id="date" onchange="loadDiary();">
-            </div>
-            <div id="questions">
-                {% for question in questions %}
+        {% include "navbar.html" %}
+        <div id="content">
+            <h1>Diary</h1>
+            <form action="/update_diary" method="POST" class="box">
                 <div class="one-line">
-                    <label for="select-{{ question.id }}" style="color: {{ question.color }};">
-                        {{ question.name }}
-                    </label>
-                    <select name="{{ question.id }}" id="select-{{ question.id }}" class="can-be-disabled" disabled>
-                        <option value="0" selected="selected">Not rateable</option>
-                        <option value="1">Bad</option>
-                        <option value="2">Okay</option>
-                        <option value="3">Good</option>
-                    </select>
+                    <input type="date" name="date" id="date" onchange="loadDiary();">
                 </div>
-                {% endfor %}
-            </div>
-            <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
-            <div class="one-line">
-                <input type="submit" value="Save" class="can-be-disabled" disabled>
-                <button type="button" onclick="window.location.reload(true);" class="can-be-disabled" disabled>Cancel</button>
-            </div>
-        </form>
-        <div class="bottom-bar">
-            <button type="button" onclick="window.location.replace('/stats')">Stats</button>
-            <button type="button" onclick="window.location.replace('/questions')">Questions</button>
-        </div>
-        <div class="bottom-bar">
-            <button type="button" onclick="window.location.replace('/settings')">Settings</button>
-            <form action="/logout" method="POST">
-                <input type="submit" value="Logout">
+                <div id="questions">
+                    {% for question in questions %}
+                    <div class="one-line">
+                        <label for="select-{{ question.id }}" style="color: {{ question.color }};">
+                            {{ question.name }}
+                        </label>
+                        <select name="{{ question.id }}" id="select-{{ question.id }}" class="can-be-disabled" disabled>
+                            <option value="0" selected="selected">Not rateable</option>
+                            <option value="1">Bad</option>
+                            <option value="2">Okay</option>
+                            <option value="3">Good</option>
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+                <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
+                <div class="one-line">
+                    <input type="submit" value="Save" class="can-be-disabled" disabled>
+                    <button type="button" onclick="window.location.reload(true);" class="can-be-disabled" disabled>Cancel</button>
+                </div>
             </form>
         </div>
     </body>

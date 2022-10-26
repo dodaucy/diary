@@ -6,27 +6,27 @@
         {% include "head.html" %}
     </head>
     <body>
-        <h1>Questions</h1>
-        <form action="/update_questions" method="POST" class="box">
-            <div id="questions">
-                {% for question in questions %}
-                <div class="one-line">
-                    <input type="text" name="{{ question.id }}_name"  value="{{ question.name }}" placeholder="Question" required>
-                    <input type="color" name="{{ question.id }}_color" value="{{ question.color }}" required>
-                    <button type="button" onclick="removeQuestion(this.parentElement);">Delete</button>
+        {% include "navbar.html" %}
+        <div id="content">
+            <h1>Questions</h1>
+            <form action="/update_questions" method="POST" class="box">
+                <div id="questions">
+                    {% for question in questions %}
+                    <div class="one-line">
+                        <input type="text" name="{{ question.id }}_name"  value="{{ question.name }}" placeholder="Question" required>
+                        <input type="color" name="{{ question.id }}_color" value="{{ question.color }}" required>
+                        <button type="button" onclick="removeQuestion(this.parentElement);">Delete</button>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            <div class="one-line">
-                <button type="button" onclick="addQuestions();">Add Question</button>
-            </div>
-            <div class="one-line">
-                <input type="submit" value="Save">
-                <button type="button" onclick="window.location.reload(true);">Cancel</button>
-            </div>
-        </form>
-        <div class="bottom-bar">
-            <button type="button" onclick="window.location.replace('/')">Back</button>
+                <div class="one-line">
+                    <button type="button" onclick="addQuestions();">Add Question</button>
+                </div>
+                <div class="one-line">
+                    <input type="submit" value="Save">
+                    <button type="button" onclick="window.location.reload(true);">Cancel</button>
+                </div>
+            </form>
         </div>
     </body>
 </html>

@@ -5,26 +5,26 @@
         {% include "head.html" %}
     </head>
     <body>
-        <h1>Settings</h1>
-        <form action="/update_settings" method="POST" class="box">
-            <div class="one-line">
-                <label for="font-color">Font Color</label>
-                <input type="color" name="font_color" id="font-color" value="{{ settings('font_color') }}" required>
-            </div>
-            <div class="one-line">
-                <label for="background-color">Background Color</label>
-                <input type="color" name="background_color" id="background-color" value="{{ settings('background_color') }}" required>
-            </div>
-            <div class="one-line">
-                <label for="font-family">Font Family</label>
-                <input type="text" name="font_family" id="font-family" value="{{ settings('font_family') }}" required>
-            </div>
-            <div class="one-line">
-                <input type="submit" value="Save">
-            </div>
-        </form>
-        <div class="bottom-bar">
-            <button type="button" onclick="window.location.replace('/')">Back</button>
+        {% include "navbar.html" %}
+        <div id="content">
+            <h1>Settings</h1>
+            <form action="/update_settings" method="POST" class="box">
+                <div class="one-line">
+                    <label for="font-color">Font Color</label>
+                    <input type="color" name="font_color" id="font-color" value="{{ settings('font_color') }}" required>
+                </div>
+                <div class="one-line">
+                    <label for="background-color">Background Color</label>
+                    <input type="color" name="background_color" id="background-color" value="{{ settings('background_color') }}" required>
+                </div>
+                <div class="one-line">
+                    <label for="font-family">Font Family</label>
+                    <input type="text" name="font_family" id="font-family" value="{{ settings('font_family') }}" required>
+                </div>
+                <div class="one-line">
+                    <input type="submit" value="Save">
+                </div>
+            </form>
         </div>
     </body>
 </html>
