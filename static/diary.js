@@ -15,14 +15,6 @@ var last_load;
 var last_date;
 
 
-function disable(disable_elements) {
-    var elements = document.getElementsByClassName("can-be-disabled");
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].disabled = disable_elements;
-    }
-}
-
-
 function loadDiary() {
     var date = document.getElementById("date").value;
 
