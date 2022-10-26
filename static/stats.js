@@ -25,7 +25,7 @@ function renderStats() {
     // Use cached data if available or get data from server
     if (!(year in cache)) {
         console.log(`Get data from server for ${year}...`);
-        get(`/get_stats?year=${year}`, function(stats) {
+        request("GET", `/get_stats?year=${year}`, function(stats) {
             cache[year] = stats;
             renderStats();
         });

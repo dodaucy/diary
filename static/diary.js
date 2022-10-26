@@ -42,7 +42,7 @@ function loadDiary() {
 
     // Load diary
     if (date) {
-        get("/diary?date=" + date, function(diary) {
+        request("GET", "/diary?date=" + date, function(diary) {
             document.getElementById("notes").value = diary.notes;
             var children = document.getElementById("questions").children;
             for (var i = 0; i < children.length; i++) {
