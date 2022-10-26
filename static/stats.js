@@ -125,11 +125,6 @@ function resize() {
 }
 
 
-window.addEventListener("resize", function(event) {
-    resize();
-}, true);
-
-
 function update_year(left) {
     // Get year
     var year = parseInt(document.getElementById("year-span").innerText);
@@ -164,4 +159,18 @@ function update_month(left) {
     document.getElementById("month-span").innerText = months[month - 1];
     // Render stats
     renderStats();
+}
+
+
+function init() {
+    // Set month and year
+    var date = new Date();
+    document.getElementById("month-span").innerText = months[date.getMonth()];
+    document.getElementById("year-span").innerText = date.getFullYear();
+    // Render stats
+    renderStats();
+    // Add event listener
+    window.addEventListener("resize", function(event) {
+        resize();
+    }, true);
 }
