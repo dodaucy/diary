@@ -11,13 +11,13 @@
 
 import time
 
+from databases import Database
 from fastapi import Cookie, HTTPException, Request, status
-
-from globals import db
 
 
 class RateLimitHandler:
-    def __init__(self, allow_requests: int, in_time: int) -> None:
+    def __init__(self, database: Database, allow_requests: int, in_time: int) -> None:
+        self.db = database
         self.rate_limit = {}
         self.capacity = allow_requests
         self.rate = in_time / allow_requests
@@ -58,7 +58,7 @@ class RateLimitHandler:
 
         # Update last request
         if token:
-            await db.execute(
+            await self.db.execute(
                 "UPDATE sessions SET last_request = UNIX_TIMESTAMP() WHERE token = :token",
                 {
                     "token": token

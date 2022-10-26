@@ -9,8 +9,6 @@
 ######################################
 
 
-import calendar
-import datetime
 import mimetypes
 import os
 
@@ -23,25 +21,20 @@ from fastapi.templating import Jinja2Templates
 from fastapi_utils.tasks import repeat_every
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+import api
 import config
 import utils
-from globals import db
-from rate_limit import RateLimitHandler
-from settings import Settings
+from globals import db, login_rate_limit_handler, rate_limit_handler
+from globals import settings as global_settings
 
 
 app = FastAPI(openapi_url=None)
-
+app.mount("/api", api.app)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-s = Settings()
 
 templates = Jinja2Templates(directory="templates")
 templates.env.globals["len"] = len
-templates.env.globals["settings"] = s.get
-
-rate_limit_handler = RateLimitHandler(config.rate_limit.RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.RATE_LIMIT_TIME_WINDOW)
-login_rate_limit_handler = RateLimitHandler(config.rate_limit.LOGIN_RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.LOGIN_RATE_LIMIT_TIME_WINDOW)
+templates.env.globals["settings"] = global_settings.get
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -85,7 +78,7 @@ async def startup():
     mimetypes.init()
     mimetypes.add_type("image/webp", ".webp")
     await db.connect()
-    await s.load()
+    await global_settings.load()
     await delete_expired_tokens()
 
 
@@ -117,34 +110,6 @@ async def index(request: Request, token: str = Cookie("")):
         )
     # Return the login page
     return login_response
-
-
-@app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def get_diary(date: str):
-    days = utils.get_days(date)
-    # Fetch notes
-    notes = await db.fetch_val(
-        "SELECT notes FROM notes WHERE days = :days",
-        {
-            "days": days
-        }
-    )
-    # Fetch answers
-    fetched_answers = await db.fetch_all(
-        "SELECT question_id, value FROM answers WHERE days = :days",
-        {
-            "days": days
-        }
-    )
-    # Format answers
-    answers = {}
-    for answer in fetched_answers:
-        answers[str(answer["question_id"])] = str(answer["value"])
-    # Return diary data
-    return {
-        "notes": notes or "",
-        "answers": answers
-    }
 
 
 @app.post("/update_diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
@@ -279,7 +244,7 @@ async def set_settings(font_color: str = Form(...), background_color: str = Form
             detail="Font family too long"
         )
     # Set settings
-    await s.update(
+    await global_settings.update(
         font_color=font_color,
         background_color=background_color,
         font_family=font_family.strip()
@@ -388,39 +353,6 @@ async def stats(request: Request):
             "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
         }
     )
-
-
-@app.get("/get_stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def get_stats(year: int):
-    # Verify data
-    if year < 1970 or year > 6000:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid year"
-        )
-    # Fetch data
-    answers = await db.fetch_all(
-        "SELECT days, question_id, value FROM answers WHERE days >= :year AND days < :next_year ORDER BY days ASC",
-        {
-            "year": (datetime.date(year, 1, 1) - datetime.date(1970, 1, 1)).days,
-            "next_year": (datetime.date(year + 1, 1, 1) - datetime.date(1970, 1, 1)).days
-        }
-    )
-    # Format data
-    final_answers = []
-    for month in range(12):
-        month += 1
-        day_list = []
-        for day in range(calendar.monthrange(year, month)[1]):
-            day += 1
-            day_dict = {}
-            for answer in answers:
-                if datetime.date(year, month, day) == datetime.date(1970, 1, 1) + datetime.timedelta(days=answer["days"]):
-                    if answer['value']:
-                        day_dict[answer["question_id"]] = answer["value"]
-            day_list.append(day_dict)
-        final_answers.append(day_list)
-    return final_answers
 
 
 @app.get("/favicon.ico")

@@ -9,17 +9,19 @@
 ######################################
 
 
+from databases import Database
+
 import constants
-from globals import db
 
 
 class Settings:
-    def __init__(self):
+    def __init__(self, database: Database):
+        self.db = database
         self._data = {}
 
     async def load(self) -> None:
         """Load settings from database"""
-        fetched_settings = await db.fetch_one("SELECT * FROM settings")
+        fetched_settings = await self.db.fetch_one("SELECT * FROM settings")
         if fetched_settings:
             # Load settings from database
             self._data = {
@@ -46,7 +48,7 @@ class Settings:
             "background_color": background_color,
             "font_family": font_family
         }
-        await db.execute(
+        await self.db.execute(
             "UPDATE settings SET font_color = :font_color, background_color = :background_color, font_family = :font_family",
             self._data
         )

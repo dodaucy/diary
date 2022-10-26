@@ -13,7 +13,7 @@
 
 function request(method, url, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
+    xhr.open(method, `/api/${url}`, true);
     xhr.onerror = function() {
         alert("Network error");
     }
