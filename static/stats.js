@@ -11,19 +11,10 @@
 */
 
 
-var font_color;
 var last_resize;
 var last_data;
 var cache = {};
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-
-function init() {
-    // Get font color from CSS
-    font_color = getComputedStyle(document.body).getPropertyValue('--font-color');
-    // Render stats
-    renderStats();
-}
 
 
 function renderStats() {

@@ -35,10 +35,11 @@ app = FastAPI(openapi_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+s = Settings()
+
 templates = Jinja2Templates(directory="templates")
 templates.env.globals["len"] = len
-
-s = Settings()
+templates.env.globals["settings"] = s.get
 
 rate_limit_handler = RateLimitHandler(config.rate_limit.RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.RATE_LIMIT_TIME_WINDOW)
 login_rate_limit_handler = RateLimitHandler(config.rate_limit.LOGIN_RATE_LIMIT_ALLOW_REQUESTS, config.rate_limit.LOGIN_RATE_LIMIT_TIME_WINDOW)
@@ -51,8 +52,7 @@ async def starlette_http_exception(request: Request, exc: StarletteHTTPException
         {
             "request": request,
             "status_code": exc.status_code,
-            "detail": exc.detail,
-            "settings": s.settings
+            "detail": exc.detail
         },
         exc.status_code
     )
@@ -97,7 +97,6 @@ async def index(request: Request, token: str = Cookie("")):
         "login.html",
         {
             "request": request,
-            "settings": s.settings,
             "show_logo": config.style.SHOW_LOGO_ON_LOGIN,
             "show_github": config.style.SHOW_GITHUB_LINK_ON_LOGIN,
         }
@@ -109,7 +108,6 @@ async def index(request: Request, token: str = Cookie("")):
                 "diary.html",
                 {
                     "request": request,
-                    "settings": s.settings,
                     "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
                 }
             )
@@ -251,8 +249,7 @@ async def settings(request: Request):
     return templates.TemplateResponse(
         "settings.html",
         {
-            "request": request,
-            "settings": s.settings
+            "request": request
         }
     )
 
@@ -300,7 +297,6 @@ async def questions(request: Request):
         "questions.html",
         {
             "request": request,
-            "settings": s.settings,
             "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
         }
     )
@@ -390,7 +386,6 @@ async def stats(request: Request):
         "stats.html",
         {
             "request": request,
-            "settings": s.settings,
             "questions": await db.fetch_all("SELECT id, name, color FROM questions WHERE enabled = 1")
         }
     )

@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            :root {
-                --font-color: {{ settings.font_color }};
-                --background-color: {{ settings.background_color }};
-                --font-family: {{ settings.font_family }};
-            }
-        </style>
         <title>Settings - Diary</title>
         {% include "head.html" %}
     </head>
@@ -16,15 +9,15 @@
         <form action="/update_settings" method="POST" class="box">
             <div class="one-line">
                 <label for="font-color">Font Color</label>
-                <input type="color" name="font_color" id="font-color" value="{{ settings.font_color }}" required>
+                <input type="color" name="font_color" id="font-color" value="{{ settings('font_color') }}" required>
             </div>
             <div class="one-line">
                 <label for="background-color">Background Color</label>
-                <input type="color" name="background_color" id="background-color" value="{{ settings.background_color }}" required>
+                <input type="color" name="background_color" id="background-color" value="{{ settings('background_color') }}" required>
             </div>
             <div class="one-line">
                 <label for="font-family">Font Family</label>
-                <input type="text" name="font_family" id="font-family" value="{{ settings.font_family }}" required>
+                <input type="text" name="font_family" id="font-family" value="{{ settings('font_family') }}" required>
             </div>
             <div class="one-line">
                 <input type="submit" value="Save">
