@@ -11,7 +11,7 @@ app = FastAPI(openapi_url=None)
 
 
 @app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def get_diary(date: str):
+async def diary(date: str):
     days = utils.get_days(date)
     # Fetch notes
     notes = await db.fetch_val(
@@ -38,8 +38,8 @@ async def get_diary(date: str):
     }
 
 
-@app.get("/get_stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def get_stats(year: int):
+@app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def stats(year: int):
     # Verify data
     if year < 1970 or year > 6000:
         raise HTTPException(

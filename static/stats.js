@@ -26,7 +26,7 @@ function renderStats() {
     if (!(year in cache)) {
         console.log(`Get data from server for ${year}...`);
         disable(true);
-        request("GET", `get_stats?year=${year}`, function(stats) {
+        request("GET", `stats?year=${year}`, function(stats) {
             cache[year] = stats;
             disable(false);
             renderStats();
