@@ -1,3 +1,16 @@
+/*
+######################################
+#                                    #
+#               diary                #
+#                                    #
+#                MIT                 #
+#     Copyright (C) 2022 dodaucy     #
+#  https://github.com/dodaucy/diary  #
+#                                    #
+######################################
+*/
+
+
 function get(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);

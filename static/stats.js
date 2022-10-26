@@ -1,3 +1,16 @@
+/*
+######################################
+#                                    #
+#               diary                #
+#                                    #
+#                MIT                 #
+#     Copyright (C) 2022 dodaucy     #
+#  https://github.com/dodaucy/diary  #
+#                                    #
+######################################
+*/
+
+
 var font_color;
 var last_resize;
 var last_data;
