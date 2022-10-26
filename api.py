@@ -1,8 +1,9 @@
 import calendar
 import datetime
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 
+import models
 import utils
 from globals import db, rate_limit_handler
 
@@ -36,6 +37,50 @@ async def diary(date: str):
         "notes": notes or "",
         "answers": answers
     }
+
+
+@app.post("/update_diary_entry", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def update_diary_entry(diary_entry: models.DiaryEntry):
+    days = utils.get_days(diary_entry.date)
+    # Verify data
+    if len(diary_entry.notes) > 65535:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Notes must be less than 65535 characters"
+        )
+    for key, value in diary_entry.answers.items():
+        if key < 0 or key > 4294967295:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid key"
+            )
+        if value < 0 or value > 3:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid answer value"
+            )
+    # Update notes
+    await db.execute(
+        "INSERT INTO notes (days, notes) VALUES (:days, :notes) ON DUPLICATE KEY UPDATE notes = :notes",
+        {
+            "days": days,
+            "notes": diary_entry.notes
+        }
+    )
+    # Update answers
+    for key, value in diary_entry.answers.items():
+        await db.execute(
+            "INSERT INTO answers (days, question_id, value) VALUES (:days, :question_id, :value) ON DUPLICATE KEY UPDATE value = :value",
+            {
+                "days": days,
+                "question_id": key,
+                "value": value
+            }
+        )
+    # Return 204
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
 
 
 @app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])

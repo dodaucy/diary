@@ -113,51 +113,6 @@ async def index(request: Request, token: str = Cookie("")):
     return login_response
 
 
-@app.post("/update_diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def post_diary(request: Request, date: str = Form(...), notes: str = Form("")):
-    form_data = await request.form()
-    days = utils.get_days(date)
-    # Verify data
-    if len(notes) > 65535:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Notes must be less than 65535 characters"
-        )
-    for key, value in form_data.items():
-        if key in ("date", "notes"):
-            continue
-        if not key.isdigit() or not value.isdigit() or 1 > int(value) > 5 or int(key) > 4294967295:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid data"
-            )
-    # Update notes
-    await db.execute(
-        "INSERT INTO notes (days, notes) VALUES (:days, :notes) ON DUPLICATE KEY UPDATE notes = :notes",
-        {
-            "days": days,
-            "notes": notes
-        }
-    )
-    # Update answers
-    for key, value in form_data.items():
-        if key in ("date", "notes"):
-            continue
-        await db.execute(
-            "INSERT INTO answers (days, question_id, value) VALUES (:days, :question_id, :value) ON DUPLICATE KEY UPDATE value = :value",
-            {
-                "days": days,
-                "question_id": int(key),
-                "value": int(value)
-            }
-        )
-    # Rredirect to diary
-    return RedirectResponse(
-        url="/",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-
-
 @app.post("/login", dependencies=[Depends(login_rate_limit_handler.trigger)])
 async def login(password: str = Form(...)):
     # Verify password
