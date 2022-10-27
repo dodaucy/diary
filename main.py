@@ -199,28 +199,6 @@ async def settings(request: Request):
     )
 
 
-@app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
-    # Verify data
-    for color in [font_color, background_color]:
-        utils.verify_color(color)
-    if len(font_family.strip()) > 32:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Font family too long"
-        )
-    # Set settings
-    await global_settings.update(
-        font_color=font_color,
-        background_color=background_color,
-        font_family=font_family.strip()
-    )
-    return RedirectResponse(
-        url="/settings",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-
-
 @app.get("/favicon.ico")
 async def favicon():
     return RedirectResponse(

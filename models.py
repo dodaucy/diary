@@ -35,3 +35,9 @@ class UpdateQuestion(BaseModel):
 
 class DeleteQuestion(BaseModel):
     question_id: int
+
+
+class Settings(BaseModel):
+    font_color: str
+    background_color: str
+    font_family: str

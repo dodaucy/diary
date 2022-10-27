@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, HTTPException, Response, status
 import models
 import utils
 from globals import db, rate_limit_handler
+from globals import settings as global_settings
 
 
 app = FastAPI(openapi_url=None)
@@ -191,6 +192,28 @@ async def delete_question(question: models.DeleteQuestion):
         {
             "question_id": question.question_id
         }
+    )
+    # Return 204
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
+
+
+@app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def update_settings(settings: models.Settings):
+    # Verify data
+    for color in (settings.font_color, settings.background_color):
+        utils.verify_color(color)
+    if len(settings.font) > 32:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Font name must be less or equal to 32 characters"
+        )
+    # Update settings
+    await global_settings.update(
+        font_color=settings.font_color,
+        background_color=settings.background_color,
+        font_family=settings.font_family
     )
     # Return 204
     return Response(
