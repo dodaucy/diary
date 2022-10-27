@@ -16,8 +16,13 @@
     --navbar-selected-item: #0099ff;
     --primary-background-color: #1C1C1C;
     --secondary-background-color: #0e0d0d;
+    --light-green: #2d8047;
+    --dark-green: #1d5830;
+    --light-red: #da3737;
+    --dark-red: #852020;
 }
 
+/* body */
 body {
     color: var(--font-color);
     background-color: var(--primary-background-color);
@@ -26,29 +31,70 @@ body {
     margin: 0;
 }
 
+/* navbar */
 #navbar {
     background-color: var(--secondary-background-color);
     display: flex;
     justify-content: center;
 }
-
 .navbar-item {
     width: 100px;
     padding: 20px;
     text-decoration: none;
     color: var(--font-color);
 }
-
 .navbar-item:hover {
     color: var(--navbar-selected-item);
     transition: color 0.5s;
 }
-
 #selected-navbar-item {
     color: var(--navbar-selected-item);
     border-bottom: 2px solid var(--navbar-selected-item);
 }
 
+/* save popup */
+#save-popup {
+    width: 500px;
+    position: fixed;
+    background-color: var(--secondary-background-color);
+    padding: 10px 10px 10px 16px;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%, -150px);
+    border-radius: 5px;
+    display: none;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.save-popup-button {
+    margin-left: 5px;
+}
+
+/* buttons */
+.button {
+    color: var(--font-color);
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.5s;
+    cursor: pointer;
+}
+.green-button {
+    background-color: var(--light-green);
+    border: none;
+}
+.green-button:hover {
+    background-color: var(--dark-green);
+}
+.red-button {
+    background-color: var(--light-red);
+    border: none;
+}
+.red-button:hover {
+    background-color: var(--dark-red);
+}
+
+/* content */
 #content {
     position: absolute;
     top: 50%;

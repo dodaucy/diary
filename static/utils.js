@@ -40,6 +40,39 @@ function request(method, url, callback, data) {
 }
 
 
+function show_save_popup(show) {
+    var popup = document.getElementById("save-popup");
+    var counter = 0;
+    var position = 0;
+    var timer = setInterval(function() {
+        counter += 1;
+        if (show) {
+            popup.style.display = "flex";
+            if (counter <= 10) {
+                position -= (11 - counter) * 3;
+            } else if (counter <= 20) {
+                position += counter - 10;
+            } else {
+                clearInterval(timer);
+                return;
+            }
+            popup.style.transform = `translate(-50%, ${position + 110}px)`;
+        } else {
+            if (counter <= 10) {
+                position -= 11 - counter
+            } else if (counter <= 20) {
+                position += (counter - 10) * 3;
+            } else {
+                popup.style.display = "none";
+                clearInterval(timer);
+                return;
+            }
+            popup.style.transform = `translate(-50%, ${position}px)`;
+        }
+    }, 20);
+}
+
+
 function disable(disable_elements) {
     var elements = document.getElementsByClassName("can-be-disabled");
     for (var i = 0; i < elements.length; i++) {
