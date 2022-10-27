@@ -11,7 +11,7 @@
 */
 
 
-function request(method, url, callback) {
+function request(method, url, callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);
     xhr.onerror = function() {
@@ -20,11 +20,23 @@ function request(method, url, callback) {
     xhr.onload = function() {
         if (xhr.status == 200) {
             callback(JSON.parse(xhr.responseText));
+        } else if (xhr.status == 204) {
+            callback();
         } else {
-            alert("Error: " + xhr.status);
+            try {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.detail);
+            } catch (e) {
+                alert(`Unknown Error (Status Code ${xhr.status})`);
+            }
         }
     }
-    xhr.send();
+    if (data === undefined) {
+        xhr.send();
+    } else {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 
