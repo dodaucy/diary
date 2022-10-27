@@ -188,84 +188,6 @@ async def questions(request: Request):
     )
 
 
-@app.post("/update_questions", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
-async def update_questions(request: Request):
-    new_questions = {}
-    existing_questions = {}
-    form_data = (await request.form()).items()
-    for question in form_data:
-        # Verify data
-        key_splited = question[0].split("_")
-        if not any((
-            len(key_splited) == 2 and key_splited[0].isdigit() and key_splited[1] in ("name", "color"),  # Update existing question
-            len(key_splited) == 3 and key_splited[0] == "new" and key_splited[1] in ("name", "color")  # Create new question
-        )):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid key"
-            )
-        if len(question[1]) > 255:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Question too long"
-            )
-        # Sort data
-        if key_splited[0] == "new":
-            if key_splited[2] not in new_questions:
-                new_questions[key_splited[2]] = {}
-            new_questions[key_splited[2]][key_splited[1]] = question[1]
-        else:
-            if key_splited[0] not in existing_questions:
-                existing_questions[key_splited[0]] = {}
-            existing_questions[key_splited[0]][key_splited[1]] = question[1]
-    # Verify data
-    for question in new_questions.values():
-        if "name" not in question or "color" not in question:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid question"
-            )
-    for question in existing_questions.values():
-        if "name" not in question or "color" not in question:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid question"
-            )
-    # Update questions
-    for question_id, question in existing_questions.items():
-        await db.execute(
-            "UPDATE questions SET name = :name, color = :color WHERE id = :id",
-            {
-                "name": question["name"],
-                "color": question["color"],
-                "id": question_id
-            }
-        )
-    # Disable questions
-    if existing_questions:
-        await db.execute(
-            "UPDATE questions SET enabled = 0 WHERE id NOT IN :ids",
-            {
-                "ids": set(existing_questions.keys())
-            }
-        )
-    else:
-        await db.execute("UPDATE questions SET enabled = 0")
-    # Create questions
-    for question in new_questions.values():
-        await db.execute(
-            "INSERT INTO questions (name, color, enabled) VALUES (:name, :color, 1)",
-            {
-                "name": question["name"],
-                "color": question["color"]
-            }
-        )
-    return RedirectResponse(
-        url="/questions",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-
-
 @app.get("/settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def settings(request: Request):
     return templates.TemplateResponse(
@@ -281,22 +203,7 @@ async def settings(request: Request):
 async def set_settings(font_color: str = Form(...), background_color: str = Form(...), font_family: str = Form(...)):
     # Verify data
     for color in [font_color, background_color]:
-        if not color.startswith("#"):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid color"
-            )
-        if 4 > len(color) > 7:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid color"
-            )
-        for char in color[1:]:
-            if char not in "0123456789abcdefABCDEF":
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid color"
-                )
+        utils.verify_color(color)
     if len(font_family.strip()) > 32:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

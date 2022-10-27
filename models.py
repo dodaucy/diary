@@ -18,3 +18,20 @@ class DiaryEntry(BaseModel):
     date: str
     notes: str
     answers: Dict[int, int]
+
+
+class NewQuestion(BaseModel):
+    enabled: bool
+    name: str
+    color: str
+
+
+class UpdateQuestion(BaseModel):
+    question_id: int
+    enabled: bool
+    name: str
+    color: str
+
+
+class DeleteQuestion(BaseModel):
+    question_id: int

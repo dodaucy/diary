@@ -93,3 +93,18 @@ def get_date(days: int) -> str:
     Format: `YYYY-MM-DD`
     """
     return (datetime.date(1970, 1, 1) + datetime.timedelta(days=days)).strftime("%Y-%m-%d")
+
+
+def verify_color(color: str) -> None:
+    if color.startswith("#") and len(color) == 7:
+        for char in color[1:]:
+            if char not in "0123456789ABCDEFabcdef":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid color"
+                )
+        return
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Invalid color"
+    )

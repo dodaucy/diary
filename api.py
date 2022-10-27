@@ -1,3 +1,4 @@
+import asyncio
 import calendar
 import datetime
 
@@ -9,6 +10,8 @@ from globals import db, rate_limit_handler
 
 
 app = FastAPI(openapi_url=None)
+
+question_insert_lock = asyncio.Lock()
 
 
 @app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
@@ -114,3 +117,82 @@ async def stats(year: int):
             day_list.append(day_dict)
         final_answers.append(day_list)
     return final_answers
+
+
+@app.post("/new_question", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def new_question(question: models.NewQuestion):
+    # Verify data
+    utils.verify_color(question.color)
+    if len(question.name) > 255:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Question name must be less or equal to 255 characters"
+        )
+    # Insert question
+    async with question_insert_lock:
+        await db.execute(
+            "INSERT INTO questions (name, color, enabled) VALUES (:name, :color, :enabled)",
+            {
+                "name": question.name,
+                "color": question.color,
+                "enabled": question.enabled
+            }
+        )
+        question_id = await db.fetch_val(
+            "SELECT LAST_INSERT_ID()"
+        )
+    # Return question id
+    return {
+        "question_id": question_id
+    }
+
+
+@app.post("/update_question", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def update_question(question: models.UpdateQuestion):
+    # Verify data
+    utils.verify_color(question.color)
+    if len(question.name) > 255:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Question name must be less or equal to 255 characters"
+        )
+    if question.question_id < 0 or question.id > 4294967295:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid question id"
+        )
+    # Update question
+    await db.execute(
+        "UPDATE questions SET name = :name, color = :color, enabled = :enabled WHERE id = :question_id",
+        {
+            "question_id": question.question_id,
+            "name": question.name,
+            "color": question.color,
+            "enabled": question.enabled
+        }
+    )
+    # Return 204
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
+
+
+@app.post("/delete_question", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def delete_question(question: models.DeleteQuestion):
+    # Verify data
+    if question.question_id < 0 or question.question_id > 4294967295:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid question id"
+        )
+    # Delete question
+    await db.execute(
+        "DELETE FROM questions WHERE id = :question_id",
+        {
+            "question_id": question.question_id
+        }
+    )
+    # Return 204
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
