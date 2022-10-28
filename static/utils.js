@@ -11,32 +11,86 @@
 */
 
 
-function request(method, url, callback, data) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, `/api/${url}`, true);
-    xhr.onerror = function() {
-        alert("Network error");
-    }
-    xhr.onload = function() {
-        if (xhr.status == 200) {
-            callback(JSON.parse(xhr.responseText));
-        } else if (xhr.status == 204) {
-            callback();
-        } else {
-            try {
-                var response = JSON.parse(xhr.responseText);
-                alert(response.detail);
-            } catch (e) {
-                alert(`Unknown Error (Status Code ${xhr.status})`);
-            }
+function message_popup(message, error) {
+    /* Create popup */
+    var popup = document.createElement("div");
+    popup.className = "message-popup";
+    popup.style.opacity = 0;
+
+    /* Prepare remove function */
+    var removing = false;
+    var remove = function() {
+        if (removing) {
+            return;
         }
+        var count = 0;
+        var interval = setInterval(function() {
+            count += 0.1;
+            popup.style.opacity = 1 - count;
+            if (count >= 1) {
+                clearInterval(interval);
+                popup.remove();
+            }
+        }, 50);
     }
-    if (data === undefined) {
-        xhr.send();
+
+    /* Create title element */
+    var title_element = document.createElement("div");
+    title_element.className = "message-popup-title";
+
+    /* Set message */
+    var message_element = document.createElement("p");
+    message_element.innerText = message;
+
+    /* Create progress bar */
+    var progress_bar_background = document.createElement("div");
+    progress_bar_background.className = "message-popup-progress-bar-background";
+    var progress_bar = document.createElement("div");
+    progress_bar.className = "message-popup-progress-bar";
+
+    /* Set title and color depending on if it's an error or not */
+    if (error) {
+        title_element.innerText = "An error has occured";
+        popup.style.backgroundColor = "var(--light-red)";
+        progress_bar_background.className += " message-popup-progress-bar-background-red";
     } else {
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(data));
+        title_element.innerText = "Success";
+        popup.style.backgroundColor = "var(--light-green)";
+        progress_bar_background.className += " message-popup-progress-bar-background-green";
     }
+
+    /* Delete popup after clicking on it */
+    popup.onclick = remove;
+
+    /* Append elements to popup */
+    popup.appendChild(title_element);
+    popup.appendChild(message_element);
+    popup.appendChild(progress_bar_background);
+    popup.appendChild(progress_bar);
+
+    /* Add popup to message container */
+    document.getElementById("message-container").appendChild(popup);
+
+    /* Show slow */
+    var counter = 0;
+    var timer = setInterval(function() {
+        counter += 0.1;
+        popup.style.opacity = counter;
+        if (counter >= 1) {
+            clearInterval(timer);
+        }
+    }, 50);
+
+    /* Remove after a few seconds */
+    var cooldown = 0;
+    var cooldown_interval = setInterval(function() {
+        cooldown += 1;
+        progress_bar.style.width = `${100 - cooldown / 20 * 100}%`;
+        if (cooldown >= 20) {
+            clearInterval(cooldown_interval);
+            remove();
+        }
+    }, 250);
 }
 
 
@@ -70,6 +124,35 @@ function show_save_popup(show) {
             popup.style.transform = `translate(-50%, ${position}px)`;
         }
     }, 20);
+}
+
+
+function request(method, url, callback, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, `/api/${url}`, true);
+    xhr.onerror = function() {
+        alert("Network error");
+    }
+    xhr.onload = function() {
+        if (xhr.status == 200) {
+            callback(JSON.parse(xhr.responseText));
+        } else if (xhr.status == 204) {
+            callback();
+        } else {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                message_popup(response.detail, true);
+            } catch (e) {
+                message_popup(`Unknown Error (Status Code ${xhr.status})`, true);
+            }
+        }
+    }
+    if (data === undefined) {
+        xhr.send();
+    } else {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+    }
 }
 
 
