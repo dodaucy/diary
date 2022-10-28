@@ -97,10 +97,9 @@ body {
     background-color: var(--dark-green);
 }
 
-
 /* save popup */
 #save-popup {
-    width: 500px;
+    width: 600px;
     position: fixed;
     background-color: var(--secondary-background-color);
     padding: 10px 10px 10px 16px;
@@ -119,11 +118,14 @@ body {
 
 /* buttons */
 .button {
+    width: 110px;
     color: var(--font-color);
     border-radius: 5px;
     padding: 10px;
     transition: background-color 0.5s;
     cursor: pointer;
+    white-space: nowrap;
+    overflow-x: hidden;
 }
 .green-button {
     background-color: var(--light-green);
@@ -139,11 +141,46 @@ body {
 .red-button:hover {
     background-color: var(--dark-red);
 }
+.neutral-button {
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--font-color);
+}
+.neutral-button:hover {
+    background-color: var(--primary-background-color);
+}
 
 /* content */
 #content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+}
+#content > * {
+    margin: 10px;
+}
+.left-centred-box {
+    text-align: left;
+    width: 500px;
+    background-color: var(--secondary-background-color);
+    padding: 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+.left-centred-box > * {
+    margin: 10px;
+}
+.balanced-container {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -11,9 +11,9 @@
     </head>
     <body onload="init();">
         {% include "navbar.html" %}
+        {% include "message_container.html" %}
         <div id="content">
-            <h1>Stats</h1>
-            <div class="box" id="display-box">
+            <div class="left-centred-box" id="display-box">
                 {% for question in questions %}
                 <div>
                     <input type="checkbox" class="can-be-disabled" id="{{ question.id }}-checkbox" onchange="renderStats();" checked>
@@ -21,15 +21,15 @@
                 </div>
                 {% endfor %}
             </div>
-            <div>
-                <button type="button" class="can-be-disabled" onclick="updateMonth(true);"><</button>
+            <div class="balanced-container">
+                <button type="button" class="button neutral-button can-be-disabled" onclick="updateMonth(true);"><</button>
                 <span id="month-span">September</span>
-                <button type="button" class="can-be-disabled" onclick="updateMonth(false);">></button>
+                <button type="button" class="button neutral-button can-be-disabled" onclick="updateMonth(false);">></button>
             </div>
-            <div>
-                <button type="button" class="can-be-disabled" onclick="updateYear(true);"><</button>
+            <div class="balanced-container">
+                <button type="button" class="button neutral-button can-be-disabled" onclick="updateYear(true);"><</button>
                 <span id="year-span">2022</span>
-                <button type="button" class="can-be-disabled" onclick="updateYear(false);">></button>
+                <button type="button" class="button neutral-button can-be-disabled" onclick="updateYear(false);">></button>
             </div>
             <canvas id="stats"></canvas>
         </div>
