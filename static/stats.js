@@ -149,16 +149,21 @@ function updateMonth(left) {
     } else {
         month++;
     }
+    var stats_rendered = false;
     if (month < 1) {
         month = 12;
         updateYear(true);
+        stats_rendered = true;
     } else if (month > 12) {
         month = 1;
         updateYear(false);
+        stats_rendered = true;
     }
     document.getElementById("month-span").innerText = months[month - 1];
     // Render stats
-    renderStats();
+    if (!stats_rendered) {
+        renderStats();
+    }
 }
 
 
