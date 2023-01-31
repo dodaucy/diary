@@ -16,9 +16,12 @@
     --navbar-selected-item: #0099ff;
     --primary-background-color: #1C1C1C;
     --secondary-background-color: #0e0d0d;
-    --light-green: #2d8047;
+    --neutral: #1c5699;
+    --neutral-hover: #143963;
+    --neutral-disabled: #526d8b;
+    --light-green: #319751;
     --dark-green: #1d5830;
-    --light-red: #da3737;
+    --light-red: #d33737;
     --dark-red: #852020;
 }
 
@@ -29,6 +32,9 @@ body {
     font-family: var(--font-family);
     text-align: center;
     margin: 0;
+}
+*:disabled {
+    cursor: not-allowed !important;
 }
 
 /* navbar */
@@ -127,27 +133,28 @@ body {
     cursor: pointer;
     white-space: nowrap;
     overflow-x: hidden;
+    border: none;
+}
+.neutral-button {
+    background-color: var(--neutral);
+}
+.neutral-button:hover {
+    background-color: var(--neutral-hover);
+}
+.neutral-button:disabled {
+    background-color: var(--neutral-disabled);
 }
 .green-button {
     background-color: var(--light-green);
-    border: none;
 }
 .green-button:hover {
     background-color: var(--dark-green);
 }
 .red-button {
     background-color: var(--light-red);
-    border: none;
 }
 .red-button:hover {
     background-color: var(--dark-red);
-}
-.neutral-button {
-    background-color: var(--secondary-background-color);
-    border: 1px solid var(--font-color);
-}
-.neutral-button:hover {
-    background-color: var(--primary-background-color);
 }
 
 /* content */
