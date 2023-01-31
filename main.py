@@ -199,6 +199,16 @@ async def settings(request: Request):
     )
 
 
+@app.get("/test", dependencies=[Depends(rate_limit_handler.trigger)])
+async def test(request: Request):
+    return templates.TemplateResponse(
+        "test_page.html",
+        {
+            "request": request
+        }
+    )
+
+
 @app.get("/favicon.ico")
 async def favicon():
     return RedirectResponse(
