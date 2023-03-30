@@ -10,6 +10,7 @@
 
 
 import datetime
+import string
 
 from fastapi import Cookie, HTTPException, status
 
@@ -98,7 +99,7 @@ def get_date(days: int) -> str:
 def verify_color(color: str) -> None:
     if color.startswith("#") and len(color) == 7:
         for char in color[1:]:
-            if char not in "0123456789ABCDEFabcdef":
+            if char not in string.hexdigits:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Invalid color"
