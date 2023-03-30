@@ -182,6 +182,11 @@ body {
     white-space: nowrap;
     overflow-x: hidden;
 }
+@media only screen and (max-width: 500px) {
+    .left-centred-box {
+        width: 100%;
+    }
+}
 .left-centred-box > * {
     margin: 10px;
 }
@@ -191,4 +196,9 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+@media only screen and (max-width: 400px) {
+    .balanced-container {
+        width: 100%;
+    }
 }
