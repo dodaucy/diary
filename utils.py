@@ -20,36 +20,34 @@ from globals import db
 
 async def is_logged_in(token: str) -> bool:
     """Check if the user is logged in"""
-    if token:
-        fetched_token = await db.fetch_one(
-            """
-            SELECT
-                token
-            FROM
-                sessions
-            WHERE
-                token = :token
-                AND
-                (
-                    created_at > UNIX_TIMESTAMP() - :token_expiration
-                    OR (
-                        created_at > UNIX_TIMESTAMP() - :token_expiration - :extend_token_expiration_max_when_active
-                        AND last_request > UNIX_TIMESTAMP() - :extend_token_expiration_buffer
-                    )
+    if token == "":
+        return False
+    return await db.fetch_one(
+        """
+        SELECT
+            token
+        FROM
+            sessions
+        WHERE
+            token = :token
+            AND
+            (
+                created_at > UNIX_TIMESTAMP() - :token_expiration
+                OR (
+                    created_at > UNIX_TIMESTAMP() - :token_expiration - :extend_token_expiration_max_when_active
+                    AND last_request > UNIX_TIMESTAMP() - :extend_token_expiration_buffer
                 )
-                AND last_request > UNIX_TIMESTAMP() - :token_expiration_without_requests
-            """,
-            {
-                "token": token,
-                "token_expiration": config.auth.TOKEN_EXPIRATION,
-                "extend_token_expiration_max_when_active": config.auth.EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE,
-                "extend_token_expiration_buffer": config.auth.EXTEND_TOKEN_EXPIRATION_BUFFER,
-                "token_expiration_without_requests": config.auth.TOKEN_EXPIRATION_WITHOUT_REQUESTS
-            }
-        )
-        if fetched_token:
-            return True
-    return False
+            )
+            AND last_request > UNIX_TIMESTAMP() - :token_expiration_without_requests
+        """,
+        {
+            "token": token,
+            "token_expiration": config.auth.TOKEN_EXPIRATION,
+            "extend_token_expiration_max_when_active": config.auth.EXTEND_TOKEN_EXPIRATION_MAX_WHEN_ACTIVE,
+            "extend_token_expiration_buffer": config.auth.EXTEND_TOKEN_EXPIRATION_BUFFER,
+            "token_expiration_without_requests": config.auth.TOKEN_EXPIRATION_WITHOUT_REQUESTS
+        }
+    ) is not None
 
 
 async def login_check(token: str = Cookie("")) -> None:
