@@ -13,7 +13,7 @@
         {% include "navbar.html" %}
         {% include "message_container.html" %}
         <div id="content">
-            <div class="left-centered-box" id="display-box">
+            <div class="background-box left" id="display-box">
                 {% for question in questions %}
                 <div>
                     <input type="checkbox" class="can-be-disabled" id="{{ question.id }}-checkbox" onchange="renderStats();" checked>
