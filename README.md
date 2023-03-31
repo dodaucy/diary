@@ -30,4 +30,4 @@ A simple diary for the web.
 
 **MIT**
 
-Copyright (C) 2022 dodaucy
+Copyright (C) 2022 - 2023 dodaucy
