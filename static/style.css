@@ -180,7 +180,7 @@ body {
     padding: 10px;
     border-radius: 5px;
     white-space: nowrap;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 @media only screen and (max-width: 500px) {
     .left-centred-box {
