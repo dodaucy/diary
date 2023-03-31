@@ -173,7 +173,7 @@ body {
 #content > * {
     margin: 10px;
 }
-.left-centred-box {
+.left-centered-box {
     text-align: left;
     width: 500px;
     background-color: var(--secondary-background-color);
@@ -183,11 +183,11 @@ body {
     overflow-x: auto;
 }
 @media only screen and (max-width: 500px) {
-    .left-centred-box {
+    .left-centered-box {
         width: 100%;
     }
 }
-.left-centred-box > * {
+.left-centered-box > * {
     margin: 10px;
 }
 .balanced-container {
