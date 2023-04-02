@@ -181,6 +181,9 @@ function request(method, url, callback, data) {
         } else {
             try {
                 var response = JSON.parse(xhr.responseText);
+                if (typeof response.detail !== "string") {
+                    throw new Error();
+                }
                 message_popup(response.detail, true);
             } catch (e) {
                 message_popup(`Unknown Error (Status Code ${xhr.status})`, true);
