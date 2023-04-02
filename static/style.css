@@ -25,6 +25,7 @@
     --light-red: #d33737;
     --dark-red: #852020;
     --red-disabled: #a33a3a;
+    --darker-red: #5c0000;
 }
 
 /* body */
@@ -162,6 +163,12 @@ body {
     background-color: var(--dark-red);
 }
 .red-button:disabled {
+    background-color: var(--red-disabled);
+}
+.dark-red-button {
+    background-color: var(--darker-red);
+}
+.dark-red-button:disabled {
     background-color: var(--red-disabled);
 }
 

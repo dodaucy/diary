@@ -15,6 +15,7 @@ var original_questions;
 
 
 function reset_original_data() {
+    cancel_deletions();
     original_questions = document.getElementById("questions").cloneNode(true);
 }
 
@@ -115,6 +116,8 @@ function init() {
 
 
 function question_change_check() {
+    cancel_deletions();
+
     var questions = document.getElementById("questions");
     var changed = false;
 
@@ -141,9 +144,27 @@ function question_change_check() {
 }
 
 
-function removeQuestion(element) {
+function cancel_deletions() {
     var questions = document.getElementById("questions");
-    questions.removeChild(element);
+    for (var i = 0; i < questions.children.length; i++) {
+        var question = questions.children[i];
+        var delete_button = question.getElementsByClassName("i_delete_button")[0];
+        if (delete_button.className.includes("dark-red-button")) {
+            delete_button.className = delete_button.className.replace("dark-red-button", "red-button");
+            delete_button.innerText = "Delete";
+        }
+    }
+}
+
+
+function removeQuestion(delete_button) {
+    if (!delete_button.className.includes("dark-red-button")) {
+        delete_button.className = delete_button.className.replace("red-button", "dark-red-button");
+        delete_button.innerText = "Delete?";
+        return;
+    }
+    var questions = document.getElementById("questions");
+    questions.removeChild(delete_button.parentElement);
     question_change_check();
 }
 
@@ -173,10 +194,10 @@ function addQuestions() {
 
     var button = document.createElement("button");
     button.type = "button";
-    button.className = "button red-button can-be-disabled";
+    button.className = "i_delete_button button red-button can-be-disabled";
     button.innerText = "Delete";
     button.addEventListener("click", function() {
-        removeQuestion(question);
+        removeQuestion(button);
     });
     question.appendChild(button);
 

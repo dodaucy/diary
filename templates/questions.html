@@ -17,7 +17,7 @@
                     <div class="i_id no-display">{{ question.id }}</div>
                     <input type="text" class="i_text input-on-secondary-background flex-auto-scale can-be-disabled" value="{{ question.name }}" placeholder="Question">
                     <input type="color" class="i_color input-on-secondary-background can-be-disabled" value="{{ question.color }}">
-                    <button type="button" class="button red-button can-be-disabled" onclick="removeQuestion(this.parentElement);">Delete</button>
+                    <button type="button" class="i_delete_button button red-button can-be-disabled" onclick="removeQuestion(this);">Delete</button>
                 </div>
                 {% endfor %}
             </div>
