@@ -168,7 +168,7 @@ async def update_question(question: models.UpdateQuestion):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Question name must be less or equal to 255 characters"
         )
-    if question.question_id < 0 or question.id > 4294967295:
+    if question.question_id < 0 or question.question_id > 4294967295:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid question id"
