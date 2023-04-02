@@ -199,6 +199,15 @@ function request(method, url, callback, data) {
 }
 
 
+function sync_request(method, url, data) {
+    return new Promise(function(resolve, reject) {
+        request(method, url, function(response) {
+            resolve(response);
+        }, data);
+    });
+}
+
+
 function disable(disable_elements) {
     var elements = document.getElementsByClassName("can-be-disabled");
     for (var i = 0; i < elements.length; i++) {
