@@ -12,6 +12,12 @@
 
 
 var save_popup_shown = false;
+var save_popup_reset_click = function() {
+    console.log("Save popup reset click not registered");
+}
+var save_popup_save_click = function() {
+    console.log("Save popup save click not registered");
+}
 
 
 function message_popup(message, error) {
@@ -97,11 +103,40 @@ function message_popup(message, error) {
 }
 
 
+function save_popup_register_events(on_reset, on_save) {
+    save_popup_reset_click = function() {
+        on_reset();
+        show_save_popup(false);
+    }
+    save_popup_save_click = function() {
+        document.getElementById("save-popup-save").innerText = "Saving...";
+        disable(true);
+        on_save();
+    }
+}
+
+
+function save_finished() {
+    disable(false);
+    reset_original_data();
+    show_save_popup(false);
+}
+
+
 function show_save_popup(show) {
     if (show == save_popup_shown) {
         return;
     }
     save_popup_shown = show;
+
+    var reset = document.getElementById("save-popup-reset");
+    reset.onclick = null;
+    var save = document.getElementById("save-popup-save");
+    save.onclick = null;
+    if (show) {
+        save.innerText = "Save Changes";
+    }
+
     var popup = document.getElementById("save-popup");
     var counter = 0;
     var position = 0;
@@ -115,6 +150,8 @@ function show_save_popup(show) {
                 position += counter - 10;
             } else {
                 clearInterval(timer);
+                reset.onclick = save_popup_reset_click;
+                save.onclick = save_popup_save_click;
                 return;
             }
             popup.style.transform = `translate(-50%, ${position + 110}px)`;
