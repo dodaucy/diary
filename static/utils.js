@@ -108,18 +108,14 @@ function save_popup_register_events(on_reset, on_save) {
         on_reset();
         show_save_popup(false);
     }
-    save_popup_save_click = function() {
+    save_popup_save_click = async function() {
         document.getElementById("save-popup-save").innerText = "Saving...";
         disable(true);
-        on_save();
+        await on_save();
+        disable(false);
+        reset_original_data();
+        show_save_popup(false);
     }
-}
-
-
-function save_finished() {
-    disable(false);
-    reset_original_data();
-    show_save_popup(false);
 }
 
 
