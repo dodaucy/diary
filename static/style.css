@@ -21,8 +21,10 @@
     --neutral-disabled: #526d8b;
     --light-green: #319751;
     --dark-green: #1d5830;
+    --green-disabled: #2e6d4a;
     --light-red: #d33737;
     --dark-red: #852020;
+    --red-disabled: #a33a3a;
 }
 
 /* body */
@@ -150,11 +152,33 @@ body {
 .green-button:hover {
     background-color: var(--dark-green);
 }
+.green-button:disabled {
+    background-color: var(--green-disabled);
+}
 .red-button {
     background-color: var(--light-red);
 }
 .red-button:hover {
     background-color: var(--dark-red);
+}
+.red-button:disabled {
+    background-color: var(--red-disabled);
+}
+
+/* input */
+input {
+    background-color: var(--secondary-background-color);
+    color: var(--font-color);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+input[type=color] {
+    padding: 0;
+}
+.input-on-secondary-background {
+    background-color: var(--primary-background-color);
 }
 
 /* content */
@@ -181,6 +205,9 @@ body {
     white-space: nowrap;
     overflow-x: auto;
 }
+.background-box:not(:has(*)) { /* https://bugzilla.mozilla.org/show_bug.cgi?id=418039 / set layout.css.has-selector.enabled to true in about:config on firefox */
+    display: none;
+}
 @media only screen and (max-width: 500px) {
     .background-box {
         width: 100%;
@@ -201,6 +228,18 @@ body {
         width: 100%;
     }
 }
+.modified-flex-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.flex-auto-scale {
+    width: 0;
+    flex: 1;
+}
 .left {
     text-align: left;
+}
+.no-display {
+    display: none;
 }

@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="/static/utils.js"></script>
         <script src="/static/questions.js"></script>
         <title>Questions - Diary</title>
         {% include "head.html" %}
     </head>
-    <body>
+    <body onload="init();" oninput="question_change_check();">
         {% include "navbar.html" %}
+        {% include "message_container.html" %}
+        {% include "save_popup.html" %}
         <div id="content">
-            <h1>Questions</h1>
-            <form action="/update_questions" method="POST" class="box">
-                <div id="questions">
-                    {% for question in questions %}
-                    <div class="one-line">
-                        <input type="text" name="{{ question.id }}_name"  value="{{ question.name }}" placeholder="Question" required>
-                        <input type="color" name="{{ question.id }}_color" value="{{ question.color }}" required>
-                        <button type="button" onclick="removeQuestion(this.parentElement);">Delete</button>
-                    </div>
-                    {% endfor %}
+            <div class="background-box" id="questions">
+                {% for question in questions %}
+                <div class="modified-flex-container">
+                    <div class="i_id no-display">{{ question.id }}</div>
+                    <input type="text" class="i_text input-on-secondary-background flex-auto-scale can-be-disabled" value="{{ question.name }}" placeholder="Question">
+                    <input type="color" class="i_color input-on-secondary-background can-be-disabled" value="{{ question.color }}">
+                    <button type="button" class="button red-button can-be-disabled" onclick="removeQuestion(this.parentElement);">Delete</button>
                 </div>
-                <div class="one-line">
-                    <button type="button" onclick="addQuestions();">Add Question</button>
-                </div>
-                <div class="one-line">
-                    <input type="submit" value="Save">
-                    <button type="button" onclick="window.location.reload(true);">Cancel</button>
-                </div>
-            </form>
+                {% endfor %}
+            </div>
+            <button type="button" class="button neutral-button" onclick="addQuestions();">Add Question</button>
         </div>
     </body>
 </html>
