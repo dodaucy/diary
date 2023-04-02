@@ -214,4 +214,6 @@ function addQuestions() {
     question.appendChild(button);
 
     questions.appendChild(question);
+
+    question_change_check();
 }
