@@ -118,9 +118,9 @@ function init() {
 function question_change_check() {
     cancel_deletions();
 
+    // Check if questions have changed
     var questions = document.getElementById("questions");
     var changed = false;
-
     if (questions.children.length != original_questions.children.length) {
         changed = true;
     } else {
@@ -139,6 +139,18 @@ function question_change_check() {
             }
         }
     }
+
+    // Check if every question has a name
+    var all_fields_filled = true;
+    for (var i = 0; i < questions.children.length; i++) {
+        var question = questions.children[i];
+        if (question.getElementsByClassName("i-text")[0].value == "") {
+            all_fields_filled = false;
+            break;
+        }
+    }
+    // Disable save button if not all fields are filled
+    document.getElementById("save-popup-save").disabled = !all_fields_filled;
 
     show_save_popup(changed);
 }
