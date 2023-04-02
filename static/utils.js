@@ -11,6 +11,9 @@
 */
 
 
+var save_popup_shown = false;
+
+
 function message_popup(message, error) {
     /* Create popup */
     var popup = document.createElement("div");
@@ -95,6 +98,10 @@ function message_popup(message, error) {
 
 
 function show_save_popup(show) {
+    if (show == save_popup_shown) {
+        return;
+    }
+    save_popup_shown = show;
     var popup = document.getElementById("save-popup");
     var counter = 0;
     var position = 0;
