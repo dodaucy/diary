@@ -30,23 +30,23 @@ function init() {
             var questions = document.getElementById("questions");
             for (var i = 0; i < questions.children.length; i++) {
                 var question = questions.children[i];
-                var question_id = question.getElementsByClassName("i_id")[0].innerText;
-                var text = question.getElementsByClassName("i_text")[0].value;
-                var color = question.getElementsByClassName("i_color")[0].value;
+                var question_id = question.getElementsByClassName("i-id")[0].innerText;
+                var text = question.getElementsByClassName("i-text")[0].value;
+                var color = question.getElementsByClassName("i-color")[0].value;
 
                 // Search for original question
                 var found = false;
                 var is_equal = false;
                 for (var j = 0; j < original_questions.children.length; j++) {
                     var original_question = original_questions.children[j];
-                    var original_question_id = original_question.getElementsByClassName("i_id")[0].innerText;
+                    var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
 
                     // If found
                     if (question_id == original_question_id) {
                         found = true;
                         // Check if equal
-                        var original_text = original_question.getElementsByClassName("i_text")[0].value;
-                        var original_color = original_question.getElementsByClassName("i_color")[0].value;
+                        var original_text = original_question.getElementsByClassName("i-text")[0].value;
+                        var original_color = original_question.getElementsByClassName("i-color")[0].value;
                         if (text == original_text && color == original_color) {
                             is_equal = true;
                         }
@@ -65,7 +65,7 @@ function init() {
                             "enabled": true
                         }
                     );
-                    question.getElementsByClassName("i_id")[0].innerText = new_id.question_id;
+                    question.getElementsByClassName("i-id")[0].innerText = new_id.question_id;
                 } else if (!is_equal) {
                     // Update question
                     await sync_request(
@@ -84,13 +84,13 @@ function init() {
             // Check for deleted questions
             for (var i = 0; i < original_questions.children.length; i++) {
                 var original_question = original_questions.children[i];
-                var original_question_id = original_question.getElementsByClassName("i_id")[0].innerText;
+                var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
 
                 // Search for question
                 var found = false;
                 for (var j = 0; j < questions.children.length; j++) {
                     var question = questions.children[j];
-                    var question_id = question.getElementsByClassName("i_id")[0].innerText;
+                    var question_id = question.getElementsByClassName("i-id")[0].innerText;
 
                     // If found
                     if (question_id == original_question_id) {
@@ -128,12 +128,12 @@ function question_change_check() {
             var question = questions.children[i];
             var original_question = original_questions.children[i];
 
-            if (question.getElementsByClassName("i_text")[0].value != original_question.getElementsByClassName("i_text")[0].value) {
+            if (question.getElementsByClassName("i-text")[0].value != original_question.getElementsByClassName("i-text")[0].value) {
                 changed = true;
                 break;
             }
 
-            if (question.getElementsByClassName("i_color")[0].value != original_question.getElementsByClassName("i_color")[0].value) {
+            if (question.getElementsByClassName("i-color")[0].value != original_question.getElementsByClassName("i-color")[0].value) {
                 changed = true;
                 break;
             }
@@ -148,7 +148,7 @@ function cancel_deletions() {
     var questions = document.getElementById("questions");
     for (var i = 0; i < questions.children.length; i++) {
         var question = questions.children[i];
-        var delete_button = question.getElementsByClassName("i_delete_button")[0];
+        var delete_button = question.getElementsByClassName("i-delete-button")[0];
         if (delete_button.className.includes("dark-red-button")) {
             delete_button.className = delete_button.className.replace("dark-red-button", "red-button");
             delete_button.innerText = "Delete";
@@ -176,25 +176,25 @@ function addQuestions() {
     question.className = "modified-flex-container";
 
     var id = document.createElement("div");
-    id.className = "i_id no-display";
+    id.className = "i-id no-display";
     id.innerText = "new";
     question.appendChild(id);
 
     var text = document.createElement("input");
     text.type = "text";
-    text.className = "i_text input-on-secondary-background flex-auto-scale can-be-disabled";
+    text.className = "i-text input-on-secondary-background flex-auto-scale can-be-disabled";
     text.placeholder = "Question";
     question.appendChild(text);
 
     var color = document.createElement("input");
     color.type = "color";
-    color.className = "i_color input-on-secondary-background can-be-disabled";
+    color.className = "i-color input-on-secondary-background can-be-disabled";
     color.value = `#${Math.floor(Math.random() * 0xFFFFFF).toString(16)}`;
     question.appendChild(color);
 
     var button = document.createElement("button");
     button.type = "button";
-    button.className = "i_delete_button button red-button can-be-disabled";
+    button.className = "i-delete-button button red-button can-be-disabled";
     button.innerText = "Delete";
     button.addEventListener("click", function() {
         removeQuestion(button);
