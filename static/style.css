@@ -198,7 +198,6 @@ input[type=color] {
     max-height: calc(50% - 100px);
 }
 .questions-edit-box {
-    /* 70% - 100px */
     max-height: calc(80% - 200px);
 }
 
