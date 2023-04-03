@@ -188,6 +188,7 @@ input {
 }
 input[type=color] {
     padding: 0;
+    cursor: pointer;
 }
 .input-on-secondary-background {
     background-color: var(--primary-background-color);
