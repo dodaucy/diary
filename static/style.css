@@ -122,6 +122,11 @@ body {
     justify-content: space-between;
     z-index: 999;
 }
+@media screen and (max-width: 600px) {
+    #save-popup {
+        width: 100%;
+    }
+}
 .save-popup-button {
     margin-left: 5px;
 }
@@ -186,6 +191,15 @@ input[type=color] {
 }
 .input-on-secondary-background {
     background-color: var(--primary-background-color);
+}
+
+/* specific elements */
+.stats-box {
+    max-height: calc(50% - 100px);
+}
+.questions-edit-box {
+    /* 70% - 100px */
+    max-height: calc(80% - 200px);
 }
 
 /* content */
