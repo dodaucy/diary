@@ -1,14 +1,14 @@
 <nav id="navbar">
-    <a href="/" class="navbar-item" id="{% if selected_navbar_item == 'diary' %}selected-navbar-item{% endif %}">
+    <a href="/" class="navbar-item"{% if selected_navbar_item == 'diary' %} id="selected-navbar-item"{% endif %}>
         Diary
     </a>
-    <a href="/stats" class="navbar-item" id="{% if selected_navbar_item == 'stats' %}selected-navbar-item{% endif %}">
+    <a href="/stats" class="navbar-item"{% if selected_navbar_item == 'stats' %} id="selected-navbar-item"{% endif %}>
         Stats
     </a>
-    <a href="/questions" class="navbar-item" id="{% if selected_navbar_item == 'questions' %}selected-navbar-item{% endif %}">
+    <a href="/questions" class="navbar-item"{% if selected_navbar_item == 'questions' %} id="selected-navbar-item"{% endif %}>
         Questions
     </a>
-    <a href="/settings" class="navbar-item" id="{% if selected_navbar_item == 'settings' %}selected-navbar-item{% endif %}">
+    <a href="/settings" class="navbar-item"{% if selected_navbar_item == 'settings' %} id="selected-navbar-item"{% endif %}>
         Settings
     </a>
 </nav>
