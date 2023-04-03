@@ -25,18 +25,6 @@
     --darker-red: #5c0000;
 }
 
-/* body */
-body {
-    color: var(--font-color);
-    background-color: var(--primary-background-color);
-    font-family: var(--font-family);
-    text-align: center;
-    margin: 0;
-}
-*:disabled {
-    cursor: not-allowed !important;
-}
-
 /* navbar */
 #navbar {
     background-color: var(--secondary-background-color);
@@ -214,6 +202,16 @@ input {
 }
 
 /* content */
+body {
+    color: var(--font-color);
+    background-color: var(--primary-background-color);
+    font-family: var(--font-family);
+    text-align: center;
+    margin: 0;
+}
+*:disabled {
+    cursor: not-allowed !important;
+}
 #content {
     position: fixed;
     top: 0;
