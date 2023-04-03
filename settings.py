@@ -32,7 +32,7 @@ class Settings():
             # Load default settings
             self._data = constants.DEFAULT_SETTINGS
             await self.db.execute(
-                "INSERT INTO settings (font_color, primary_background_color, secondary_background_color, font_family) VALUES (:font_color, :primary_background_color, :secondary_background_color, :font_family)",
+                f"INSERT INTO settings ({', '.join(constants.DEFAULT_SETTINGS.keys())}) VALUES ({', '.join(':' + key for key in constants.DEFAULT_SETTINGS.keys())})",
                 self._data
             )
 
@@ -40,7 +40,7 @@ class Settings():
         """Update settings in database"""
         self._data = settings.dict()
         await self.db.execute(
-            "UPDATE settings SET font_color = :font_color, primary_background_color = :primary_background_color, secondary_background_color = :secondary_background_color, font_family = :font_family",
+            f"UPDATE settings SET {', '.join(key + ' = :' + key for key in constants.DEFAULT_SETTINGS.keys())}",
             self._data
         )
 
