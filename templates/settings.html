@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="/static/utils.js"></script>
+        <script src="/static/settings.js"></script>
         <title>Settings - Diary</title>
         {% include "head.html" %}
     </head>
-    <body>
+    <body onload="init();" oninput="settings_change_check();">
         {% include "navbar.html" %}
+        {% include "message_container.html" %}
+        {% include "save_popup.html" %}
         <div id="content">
-            <h1>Settings</h1>
-            <form action="/update_settings" method="POST" class="box">
-                <div class="one-line">
-                    <label for="font-color">Font Color</label>
-                    <input type="color" name="font_color" id="font-color" value="{{ settings('font_color') }}" required>
+            <div id="settings-box" class="background-box box">
+                <div class="settings-entry">
+                    <label for="font-color-setting" class="left">Font Color</label>
+                    <label for="font-color-setting" class="color-input" style="background-color: {{ settings.font_color }};"></label>
+                    <input type="color" id="font-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.font_color }}">
                 </div>
-                <div class="one-line">
-                    <label for="background-color">Background Color</label>
-                    <input type="color" name="background_color" id="background-color" value="{{ settings('background_color') }}" required>
+                <div class="settings-entry">
+                    <label for="primary-background-color-setting" class="left">Primary Background Color</label>
+                    <label for="primary-background-color-setting" class="color-input" style="background-color: {{ settings.primary_background_color }};"></label>
+                    <input type="color" id="primary-background-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.primary_background_color }}">
                 </div>
-                <div class="one-line">
-                    <label for="font-family">Font Family</label>
-                    <input type="text" name="font_family" id="font-family" value="{{ settings('font_family') }}" required>
+                <div class="settings-entry">
+                    <label for="secondary-background-color-setting" class="left">Secondary Background Color</label>
+                    <label for="secondary-background-color-setting" class="color-input" style="background-color: {{ settings.secondary_background_color }};"></label>
+                    <input type="color" id="secondary-background-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.secondary_background_color }}">
                 </div>
-                <div class="one-line">
-                    <input type="submit" value="Save">
+                <div class="settings-entry">
+                    <label for="font-family-setting" class="left">Font Family</label>
+                    <input type="text" id="font-family-setting" class="input-on-secondary-background" value="{{ settings.font_family }}">
                 </div>
-            </form>
+            </div>
         </div>
     </body>
 </html>

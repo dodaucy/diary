@@ -12,10 +12,7 @@
 
 
 :root {
-    --font-color: #d3d3d3;
     --navbar-selected-item: #0099ff;
-    --primary-background-color: #1C1C1C;
-    --secondary-background-color: #0e0d0d;
     --neutral: #1c5699;
     --neutral-hover: #143963;
     --neutral-disabled: #526d8b;
@@ -186,10 +183,6 @@ input {
     padding: 10px;
     box-sizing: border-box;
 }
-input[type=color] {
-    padding: 0;
-    cursor: pointer;
-}
 .input-on-secondary-background {
     background-color: var(--primary-background-color);
 }
@@ -200,6 +193,16 @@ input[type=color] {
 }
 .questions-edit-box {
     max-height: calc(80% - 200px);
+}
+.settings-entry {
+    display: flex;
+    align-items: center;
+}
+.settings-entry > * {
+    flex: 1;
+}
+#font-family-setting {
+    margin-left: 20px;
 }
 
 /* content */
@@ -263,4 +266,10 @@ input[type=color] {
 }
 .no-display {
     display: none;
+}
+.color-input {
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
