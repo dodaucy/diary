@@ -12,25 +12,17 @@
         {% include "save_popup.html" %}
         <div id="content">
             <div id="settings-box" class="background-box box">
+                {% for key, value in settings.items() %}
                 <div class="settings-entry">
-                    <label for="font-color-setting" class="left">Font Color</label>
-                    <label for="font-color-setting" class="color-input" style="background-color: {{ settings.font_color }};"></label>
-                    <input type="color" id="font-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.font_color }}">
+                    <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label> 
+                    {% if key == "font-family" %}
+                    <input type="text" id="{{ key }}-setting" class="input-on-secondary-background" value="{{ value }}">
+                    {% else %}
+                    <label for="{{ key }}-setting" class="color-input" style="background-color: {{ value }};"></label>
+                    <input type="color" id="{{ key }}-setting" class="no-display" oninput="color_update(this);" value="{{ value }}">
+                    {% endif %}
                 </div>
-                <div class="settings-entry">
-                    <label for="primary-background-color-setting" class="left">Primary Background Color</label>
-                    <label for="primary-background-color-setting" class="color-input" style="background-color: {{ settings.primary_background_color }};"></label>
-                    <input type="color" id="primary-background-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.primary_background_color }}">
-                </div>
-                <div class="settings-entry">
-                    <label for="secondary-background-color-setting" class="left">Secondary Background Color</label>
-                    <label for="secondary-background-color-setting" class="color-input" style="background-color: {{ settings.secondary_background_color }};"></label>
-                    <input type="color" id="secondary-background-color-setting" class="no-display" oninput="color_update(this);" value="{{ settings.secondary_background_color }}">
-                </div>
-                <div class="settings-entry">
-                    <label for="font-family-setting" class="left">Font Family</label>
-                    <input type="text" id="font-family-setting" class="input-on-secondary-background" value="{{ settings.font_family }}">
-                </div>
+                {% endfor %}
             </div>
         </div>
     </body>
