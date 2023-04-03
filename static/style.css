@@ -194,6 +194,14 @@ input {
 .questions-edit-box {
     max-height: calc(80% - 200px);
 }
+.question-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.question-line > .color-input {
+    width: 75px;
+}
 .settings-entry {
     display: flex;
     align-items: center;
@@ -251,11 +259,6 @@ input {
     .balanced-container {
         width: 100%;
     }
-}
-.modified-flex-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 .flex-auto-scale {
     width: 0;

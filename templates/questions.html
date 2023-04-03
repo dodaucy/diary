@@ -13,10 +13,11 @@
         <div id="content">
             <div class="background-box questions-edit-box" id="questions">
                 {% for question in questions %}
-                <div class="modified-flex-container">
+                <div class="question-line">
                     <div class="i-id no-display">{{ question.id }}</div>
                     <input type="text" class="i-text input-on-secondary-background flex-auto-scale can-be-disabled" value="{{ question.name }}" placeholder="Question">
-                    <input type="color" class="i-color input-on-secondary-background can-be-disabled" value="{{ question.color }}">
+                    <label for="{{ question.id }}-color" class="color-input" style="background-color: {{ question.color }};"></label>
+                    <input type="color" id="{{ question.id }}-color" class="i-color input-on-secondary-background can-be-disabled no-display" oninput="color_update(this);" value="{{ question.color }}">
                     <button type="button" class="i-delete-button button red-button can-be-disabled" onclick="removeQuestion(this);">Delete</button>
                 </div>
                 {% endfor %}

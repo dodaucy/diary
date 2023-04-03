@@ -185,7 +185,7 @@ function addQuestions() {
     var questions = document.getElementById("questions");
 
     var question = document.createElement("div");
-    question.className = "modified-flex-container";
+    question.className = "question-line";
 
     var id = document.createElement("div");
     id.className = "i-id no-display";
