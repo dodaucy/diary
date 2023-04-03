@@ -36,7 +36,7 @@ class Settings():
                 self._data
             )
 
-    async def update(self, *, settings: models.Settings) -> None:
+    async def update(self, settings: models.Settings) -> None:
         """Update settings in database"""
         self._data = settings.dict()
         await self.db.execute(
