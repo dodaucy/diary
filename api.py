@@ -213,19 +213,16 @@ async def delete_question(question: models.DeleteQuestion):
 @app.post("/update_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def update_settings(settings: models.Settings):
     # Verify data
-    for color in (settings.font_color, settings.background_color):
-        utils.verify_color(color)
-    if len(settings.font) > 32:
+    data = settings.dict()
+    if len(data.pop("font_family")) > 32:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Font name must be less or equal to 32 characters"
+            detail="Font family must be less or equal to 32 characters"
         )
+    for color in data.values():
+        utils.verify_color(color)
     # Update settings
-    await global_settings.update(
-        font_color=settings.font_color,
-        background_color=settings.background_color,
-        font_family=settings.font_family
-    )
+    await global_settings.update(settings)
     # Return 204
     return Response(
         status_code=status.HTTP_204_NO_CONTENT

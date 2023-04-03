@@ -9,6 +9,9 @@
 #############################################
 
 
-DEFAULT_FONT_COLOR = "#ffffff"
-DEFAULT_BACKGROUND_COLOR = "#1c1c1c"
-DEFAULT_FONT_FAMILY = "sans-serif"
+DEFAULT_SETTINGS = {
+    "font_color": "#d3d3d3",
+    "primary_background_color": "#1c1c1c",
+    "secondary_background_color": "#0e0d0d",
+    "font_family": "sans-serif"
+}

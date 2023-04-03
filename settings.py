@@ -9,12 +9,15 @@
 #############################################
 
 
+from typing import Dict
+
 from databases import Database
 
 import constants
+import models
 
 
-class Settings:
+class Settings():
     def __init__(self, database: Database):
         self.db = database
         self._data = {}
@@ -24,35 +27,30 @@ class Settings:
         fetched_settings = await self.db.fetch_one("SELECT * FROM settings")
         if fetched_settings:
             # Load settings from database
-            self._data = {
-                "font_color": fetched_settings["font_color"],
-                "background_color": fetched_settings["background_color"],
-                "font_family": fetched_settings["font_family"]
-            }
+            self._data = dict(fetched_settings)
         else:
             # Load default settings
-            self._data = {
-                "font_color": constants.DEFAULT_FONT_COLOR,
-                "background_color": constants.DEFAULT_BACKGROUND_COLOR,
-                "font_family": constants.DEFAULT_FONT_FAMILY
-            }
-            await db.execute(
-                "INSERT INTO settings (font_color, background_color, font_family) VALUES (:font_color, :background_color, :font_family)",
+            self._data = constants.DEFAULT_SETTINGS
+            await self.db.execute(
+                "INSERT INTO settings (font_color, primary_background_color, secondary_background_color, font_family) VALUES (:font_color, :primary_background_color, :secondary_background_color, :font_family)",
                 self._data
             )
 
-    async def update(self, *, font_color: str, background_color: str, font_family: str) -> None:
+    async def update(self, *, settings: models.Settings) -> None:
         """Update settings in database"""
-        self._data = {
-            "font_color": font_color,
-            "background_color": background_color,
-            "font_family": font_family
-        }
+        self._data = settings.dict()
         await self.db.execute(
-            "UPDATE settings SET font_color = :font_color, background_color = :background_color, font_family = :font_family",
+            "UPDATE settings SET font_color = :font_color, primary_background_color = :primary_background_color, secondary_background_color = :secondary_background_color, font_family = :font_family",
             self._data
         )
 
-    def get(self, key: str) -> str:
-        """Get a setting"""
+    def items(self) -> Dict[str, str]:
+        """Return settings as dict"""
+        output = {}
+        for key, value in self._data.items():
+            output[key.replace("_", "-")] = value
+        return output.items()
+
+    def __getitem__(self, key: str) -> str:
+        """Return setting value"""
         return self._data[key]

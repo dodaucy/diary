@@ -39,5 +39,6 @@ class DeleteQuestion(BaseModel):
 
 class Settings(BaseModel):
     font_color: str
-    background_color: str
+    primary_background_color: str
+    secondary_background_color: str
     font_family: str
