@@ -119,7 +119,7 @@
 /* buttons */
 .button {
     width: 110px;
-    color: var(--font-color);
+    color: var(--button-font-color);
     border-radius: 5px;
     padding: 10px;
     transition: background-color 0.5s;
