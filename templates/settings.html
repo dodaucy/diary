@@ -11,7 +11,7 @@
         {% include "message_container.html" %}
         {% include "save_popup.html" %}
         <div id="content">
-            <div id="settings-box" class="background-box box">
+            <div id="settings-box" class="background-box">
                 {% for key, value in settings.items() %}
                 <div class="settings-entry">
                     <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label> 
