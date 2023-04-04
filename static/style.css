@@ -268,8 +268,20 @@ body {
     align-items: center;
 }
 .settings-entry > * {
-    flex: 1;
+    width: 100%
 }
 #font-family-setting {
-    margin-left: 20px;
+    margin-left: 10px;
+}
+@media only screen and (max-width: 500px) {
+    .settings-entry > .left {
+        width: 250px;
+    }
+    .settings-entry > .color-input {
+        flex: 1;
+    }
+    .settings-entry > #font-family-setting {
+        flex: 1;
+        margin-left: 0;
+    }
 }
