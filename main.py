@@ -13,8 +13,7 @@ import mimetypes
 import os
 
 import bcrypt
-from fastapi import (Cookie, Depends, FastAPI, Form, HTTPException, Request,
-                     status)
+from fastapi import Cookie, Depends, FastAPI, Form, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
