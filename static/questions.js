@@ -198,10 +198,23 @@ function addQuestions() {
     text.placeholder = "Question";
     question.appendChild(text);
 
+    var generated_id = crypto.randomUUID();
+    var generated_color = `#${Math.floor(Math.random() * 0xFFFFFF).toString(16)}`;
+
+    var color_label = document.createElement("label");
+    color_label.htmlFor = generated_id;
+    color_label.className = "color-input";
+    color_label.style.backgroundColor = generated_color;
+    question.appendChild(color_label);
+
     var color = document.createElement("input");
     color.type = "color";
-    color.className = "i-color input-on-secondary-background can-be-disabled";
-    color.value = `#${Math.floor(Math.random() * 0xFFFFFF).toString(16)}`;
+    color.id = generated_id;
+    color.className = "i-color input-on-secondary-background can-be-disabled no-display";
+    color.value = generated_color;
+    color.addEventListener("input", function() {
+        color_update(color);
+    });
     question.appendChild(color);
 
     var button = document.createElement("button");
