@@ -38,6 +38,11 @@ templates.env.globals["settings"] = global_settings
 
 @app.exception_handler(StarletteHTTPException)
 async def starlette_http_exception(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == status.HTTP_401_UNAUTHORIZED:
+        return RedirectResponse(
+            url="/",
+            status_code=status.HTTP_303_SEE_OTHER
+        )
     return templates.TemplateResponse(
         "error.html",
         {
