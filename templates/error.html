@@ -5,11 +5,13 @@
         {% include "head.html" %}
     </head>
     <body>
-        <h1>
-            {{ status_code }} - {{ detail }}
-        </h1>
-        <div class="bottom-bar">
-            <button type="button" onclick="window.location.replace('/')">Diary</button>
+        <div id="content">
+            <h1>
+                {{ status_code }} - {{ detail }}
+            </h1>
+            <a href="/">
+                <button type="button" class="neutral-button">Home</button>
+            </a>
         </div>
     </body>
 </html>
