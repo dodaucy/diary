@@ -12,7 +12,6 @@
 
 
 :root {
-    --navbar-selected-item: #0099ff;
     --neutral: #1c5699;
     --neutral-hover: #143963;
     --neutral-disabled: #526d8b;
@@ -38,12 +37,12 @@
     color: var(--font-color);
 }
 .navbar-item:hover {
-    color: var(--navbar-selected-item);
+    color: var(--navbar-selected-item-color);
     transition: color 0.5s;
 }
 #selected-navbar-item {
-    color: var(--navbar-selected-item);
-    border-bottom: 2px solid var(--navbar-selected-item);
+    color: var(--navbar-selected-item-color);
+    border-bottom: 2px solid var(--navbar-selected-item-color);
 }
 
 /* message popup */
