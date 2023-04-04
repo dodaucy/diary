@@ -219,7 +219,7 @@ function addQuestions() {
 
     var button = document.createElement("button");
     button.type = "button";
-    button.className = "i-delete-button button red-button can-be-disabled";
+    button.className = "i-delete-button red-button can-be-disabled";
     button.innerText = "Delete";
     button.addEventListener("click", function() {
         removeQuestion(button);

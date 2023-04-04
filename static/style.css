@@ -116,7 +116,7 @@
 }
 
 /* buttons */
-.button {
+button {
     width: 110px;
     color: var(--button-font-color);
     border-radius: 5px;
