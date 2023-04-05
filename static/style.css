@@ -116,6 +116,7 @@
 }
 
 /* buttons */
+input[type="submit"],
 button {
     width: 110px;
     color: var(--button-font-color);

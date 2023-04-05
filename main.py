@@ -10,10 +10,8 @@
 
 
 import mimetypes
-import os
 
-import bcrypt
-from fastapi import Cookie, Depends, FastAPI, Form, Request, status
+from fastapi import Cookie, Depends, FastAPI, Request, status
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -23,7 +21,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import api
 import config
 import utils
-from globals import db, login_rate_limit_handler, rate_limit_handler
+from globals import db, rate_limit_handler
 from globals import settings as global_settings
 
 
@@ -38,7 +36,7 @@ templates.env.globals["settings"] = global_settings
 
 @app.exception_handler(StarletteHTTPException)
 async def starlette_http_exception(request: Request, exc: StarletteHTTPException):
-    if exc.status_code == status.HTTP_401_UNAUTHORIZED:
+    if exc.status_code == status.HTTP_401_UNAUTHORIZED and exc.detail == "Not logged in":
         return RedirectResponse(
             url="/",
             status_code=status.HTTP_303_SEE_OTHER
@@ -115,35 +113,6 @@ async def index(request: Request, token: str = Cookie("")):
         )
     # Return the login page
     return login_response
-
-
-@app.post("/login", dependencies=[Depends(login_rate_limit_handler.trigger)])
-async def login(password: str = Form(...)):
-    # Verify password
-    if not bcrypt.checkpw(password.strip().encode(), config.PASSWORD_HASH.encode()):
-        return RedirectResponse(
-            url="/",
-            status_code=status.HTTP_303_SEE_OTHER
-        )
-    # Create a session
-    token = os.urandom(32).hex()
-    await db.execute(
-        "INSERT INTO sessions (token, last_request, created_at) VALUES (:token, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())",
-        {
-            "token": token
-        }
-    )
-    # Redirect to the index page
-    response = RedirectResponse(
-        url="/",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-    response.set_cookie(
-        key="token",
-        value=token,
-        httponly=True
-    )
-    return response
 
 
 @app.post("/logout", dependencies=[Depends(rate_limit_handler.trigger)])

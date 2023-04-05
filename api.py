@@ -12,18 +12,50 @@
 import asyncio
 import calendar
 import datetime
+import os
 
+import bcrypt
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 
+import config
 import models
 import utils
-from globals import db, rate_limit_handler
+from globals import db, login_rate_limit_handler, rate_limit_handler
 from globals import settings as global_settings
 
 
 app = FastAPI(openapi_url=None)
 
 question_insert_lock = asyncio.Lock()
+
+
+@app.post("/login", dependencies=[Depends(login_rate_limit_handler.trigger)])
+async def login(login_model: models.Login):
+    password = login_model.password
+    # Verify password
+    if not bcrypt.checkpw(password.strip().encode(), config.PASSWORD_HASH.encode()):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid password"
+        )
+    # Create a session
+    token = os.urandom(32).hex()
+    await db.execute(
+        "INSERT INTO sessions (token, last_request, created_at) VALUES (:token, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())",
+        {
+            "token": token
+        }
+    )
+    # Return response with token
+    response = Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
+    response.set_cookie(
+        key="token",
+        value=token,
+        httponly=True
+    )
+    return response
 
 
 @app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])

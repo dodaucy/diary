@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="/static/utils.js"></script>
+        <script src="/static/login.js"></script>
         <title>Diary</title>
         {% include "head.html" %}
     </head>
     <body>
-        <h1>Diary</h1>
-        {% if show_logo %}
-        <p>
+        {% include "message_container.html" %}
+        <div id="content">
+            <h1>Diary</h1>
+            {% if show_logo %}
             <img src="/static/icons/128x128.webp" onerror="this.onerror=null; this.src='/static/icons/128x128.png';">
-        </p>
-        {% endif %}
-        <form action="/login" method="POST">
-            <input type="password" name="password" placeholder="Password" autofocus required>
-            <input type="submit" value="Login">
-        </form>
-        {% if show_github %}
-        <p>
+            {% endif %}
+            <form method="POST" onsubmit="login(); return false;">
+                <input type="password" name="password" id="password" class="can-be-disabled" placeholder="Password" autofocus required>
+                <input type="submit" class="neutral-button can-be-disabled" value="Login">
+            </form>
+            {% if show_github %}
             <a href="https://github.com/dodaucy/diary" target="_blank">GitHub</a>
-        </p>
-        {% endif %}
+            {% endif %}
+        </div>
     </body>
 </html>

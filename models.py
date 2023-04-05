@@ -14,6 +14,10 @@ from typing import Dict
 from pydantic import BaseModel
 
 
+class Login(BaseModel):
+    password: str
+
+
 class DiaryEntry(BaseModel):
     date: str
     notes: str
