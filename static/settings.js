@@ -36,7 +36,7 @@ function init() {
             }
             // Send request
             try {
-                await sync_request(
+                await async_request(
                     "POST",
                     "update_settings",
                     true,

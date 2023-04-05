@@ -211,7 +211,7 @@ function request(method, url, success_callback, error_callback, data) {
 }
 
 
-function sync_request(method, url, throw_error, data) {
+function async_request(method, url, throw_error, data) {
     return new Promise(function(resolve, reject) {
         request(
             method,

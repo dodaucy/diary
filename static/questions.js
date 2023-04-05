@@ -56,7 +56,7 @@ function init() {
 
                 if (!found) {
                     // Add new question
-                    var new_id = await sync_request(
+                    var new_id = await async_request(
                         "POST",
                         "new_question",
                         false,
@@ -69,7 +69,7 @@ function init() {
                     question.getElementsByClassName("i-id")[0].innerText = new_id.question_id;
                 } else if (!is_equal) {
                     // Update question
-                    await sync_request(
+                    await async_request(
                         "POST",
                         "update_question",
                         false,
@@ -103,7 +103,7 @@ function init() {
 
                 if (!found) {
                     // Delete question
-                    await sync_request(
+                    await async_request(
                         "POST",
                         "delete_question",
                         false,
