@@ -35,16 +35,25 @@ function init() {
                 data[setting.getElementsByTagName("label")[0].innerText.replace(/ /g, "_").toLowerCase()] = setting.getElementsByTagName("input")[0].value;
             }
             // Send request
-            await sync_request(
-                "POST",
-                "update_settings",
-                data
-            );
+            try {
+                await sync_request(
+                    "POST",
+                    "update_settings",
+                    true,
+                    data
+                );
+            } catch (error) {
+                if (error.toString() != "Request Failed") {
+                    throw error;
+                }
+                return false;
+            }
             // Load new settings
             var root = document.querySelector(":root");
             for (var key in data) {
                 root.style.setProperty(("--" + key).replace(/_/g, "-"), data[key]);
             }
+            return true;
         }
     );
 }

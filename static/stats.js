@@ -30,7 +30,7 @@ function renderStats() {
             cache[year] = stats;
             disable(false);
             renderStats();
-        });
+        }, null);
         return;
     }
 

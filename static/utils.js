@@ -110,10 +110,14 @@ function save_popup_register_events(on_reset, on_save) {
     save_popup_save_click = async function() {
         document.getElementById("save-popup-save").innerText = "Saving...";
         disable(true);
-        await on_save();
+        var success = await on_save();
         disable(false);
-        reset_original_data();
-        show_save_popup(false);
+        if (success) {
+            reset_original_data();
+            show_save_popup(false);
+        } else {
+            document.getElementById("save-popup-save").innerText = "Save Changes";
+        }
     }
 }
 
@@ -166,7 +170,7 @@ function show_save_popup(show) {
 }
 
 
-function request(method, url, callback, data) {
+function request(method, url, success_callback, error_callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);
     xhr.onerror = function() {
@@ -174,9 +178,9 @@ function request(method, url, callback, data) {
     }
     xhr.onload = function() {
         if (xhr.status == 200) {
-            callback(JSON.parse(xhr.responseText));
+            success_callback(JSON.parse(xhr.responseText));
         } else if (xhr.status == 204) {
-            callback();
+            success_callback();
         } else {
             try {
                 var response = JSON.parse(xhr.responseText);
@@ -191,6 +195,11 @@ function request(method, url, callback, data) {
             } catch (e) {
                 message_popup("Request Failed", `Status Code ${xhr.status}`, true);
             }
+            if (xhr.status >= 400 && xhr.status < 500) {
+                if (error_callback !== null) {
+                    error_callback();
+                }
+            }
         }
     }
     if (data === undefined) {
@@ -202,11 +211,21 @@ function request(method, url, callback, data) {
 }
 
 
-function sync_request(method, url, data) {
+function sync_request(method, url, throw_error, data) {
     return new Promise(function(resolve, reject) {
-        request(method, url, function(response) {
-            resolve(response);
-        }, data);
+        request(
+            method,
+            url,
+            function(response) {
+                resolve(response);
+            },
+            function() {
+                if (throw_error) {
+                    reject("Request Failed");
+                }
+            },
+            data
+        );
     });
 }
 

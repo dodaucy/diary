@@ -59,6 +59,7 @@ function init() {
                     var new_id = await sync_request(
                         "POST",
                         "new_question",
+                        false,
                         {
                             "name": text,
                             "color": color,
@@ -71,6 +72,7 @@ function init() {
                     await sync_request(
                         "POST",
                         "update_question",
+                        false,
                         {
                             "question_id": question_id,
                             "name": text,
@@ -104,12 +106,15 @@ function init() {
                     await sync_request(
                         "POST",
                         "delete_question",
+                        false,
                         {
                             "question_id": original_question_id
                         }
                     );
                 }
             }
+
+            return true;
         }
     );
 }

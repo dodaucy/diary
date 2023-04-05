@@ -25,6 +25,10 @@ function login() {
             function() {
                 window.location.reload();
             },
+            function() {
+                disable(false);
+                document.getElementById("password").focus();
+            },
             {
                 password: password
             }
