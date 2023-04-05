@@ -219,3 +219,11 @@ function disable(disable_elements) {
 function color_update(element) {
     element.parentElement.getElementsByClassName("color-input")[0].style.backgroundColor = element.value;
 }
+
+
+// Catch all errors
+window.onerror = function(message, source, lineno, colno, error) {
+    message_popup(message, true);
+    console.error(error);
+    return true;
+}
