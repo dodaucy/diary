@@ -200,6 +200,7 @@ function addQuestions() {
     var text = document.createElement("input");
     text.type = "text";
     text.className = "i-text input-on-secondary-background flex-auto-scale can-be-disabled";
+    text.maxLength = 255;
     text.placeholder = "Question";
     question.appendChild(text);
 

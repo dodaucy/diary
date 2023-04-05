@@ -15,7 +15,7 @@
                 {% for question in questions %}
                 <div class="question-line">
                     <div class="i-id no-display">{{ question.id }}</div>
-                    <input type="text" class="i-text input-on-secondary-background flex-auto-scale can-be-disabled" value="{{ question.name }}" placeholder="Question">
+                    <input type="text" class="i-text input-on-secondary-background flex-auto-scale can-be-disabled" maxlength="255" value="{{ question.name }}" placeholder="Question">
                     <label for="{{ question.id }}-color" class="color-input" style="background-color: {{ question.color }};"></label>
                     <input type="color" id="{{ question.id }}-color" class="i-color input-on-secondary-background can-be-disabled no-display" oninput="color_update(this);" value="{{ question.color }}">
                     <button type="button" class="i-delete-button red-button can-be-disabled" onclick="removeQuestion(this);">Delete</button>
