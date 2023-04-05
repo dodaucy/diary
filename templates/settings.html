@@ -11,18 +11,23 @@
         {% include "message_container.html" %}
         {% include "save_popup.html" %}
         <div id="content">
-            <div id="settings-box" class="background-box">
-                {% for key, value in settings.items() %}
-                <div class="settings-entry">
-                    <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label> 
-                    {% if key == "font-family" %}
-                    <input type="text" id="{{ key }}-setting" class="input-on-secondary-background" maxlength="32" value="{{ value }}" placeholder="Font Family">
-                    {% else %}
-                    <label for="{{ key }}-setting" class="color-input" style="background-color: {{ value }};"></label>
-                    <input type="color" id="{{ key }}-setting" class="no-display" oninput="color_update(this);" value="{{ value }}">
-                    {% endif %}
-                </div>
+            <div class="background-box">
+                <div id="settings-box">
+                    {% for key, value in settings.items() %}
+                    <div class="settings-entry">
+                        <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label> 
+                        {% if key == "font-family" %}
+                        <input type="text" id="{{ key }}-setting" class="input-on-secondary-background" maxlength="32" value="{{ value }}" placeholder="Font Family">
+                        {% else %}
+                        <label for="{{ key }}-setting" class="color-input" style="background-color: {{ value }};"></label>
+                        <input type="color" id="{{ key }}-setting" class="no-display" oninput="color_update(this);" value="{{ value }}">
+                        {% endif %}
+                    </div>
                 {% endfor %}
+                </div>
+                <div class="bottom-buttons full-line">
+                    <button class="red-button flex-auto-scale" onclick="reset_settings(this);">Reset to Default</button>
+                </div>
             </div>
         </div>
     </body>

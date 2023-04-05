@@ -259,3 +259,13 @@ async def update_settings(settings: models.Settings):
     return Response(
         status_code=status.HTTP_204_NO_CONTENT
     )
+
+
+@app.post("/reset_settings", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def reset_settings():
+    # Reset settings
+    await global_settings.set_default()
+    # Return 204
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )

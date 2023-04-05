@@ -238,6 +238,26 @@ function disable(disable_elements) {
 }
 
 
+function confirm(element) {
+    if (!element.className.includes("confirm-button")) {
+        element.className = element.className.replace("red-button", "confirm-button");
+        element.innerText += "???";
+        return false
+    }
+    return true;
+}
+
+
+function reset_confirmations() {
+    var elements = document.getElementsByClassName("confirm-button");
+    for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        element.className = element.className.replace("confirm-button", "red-button");
+        element.innerText = element.innerText.replace("???", "");
+    }
+}
+
+
 function color_update(element) {
     element.parentElement.getElementsByClassName("color-input")[0].style.backgroundColor = element.value;
     element.setAttribute("value", element.value);

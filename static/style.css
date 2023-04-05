@@ -21,7 +21,7 @@
     --light-red: #d33737;
     --dark-red: #852020;
     --red-disabled: #a33a3a;
-    --darker-red: #5c0000;
+    --confirm-color: #5c0000;
 }
 
 /* navbar */
@@ -155,10 +155,10 @@ button {
 .red-button:disabled {
     background-color: var(--red-disabled);
 }
-.dark-red-button {
-    background-color: var(--darker-red);
+.confirm-button {
+    background-color: var(--confirm-color);
 }
-.dark-red-button:disabled {
+.confirm-button:disabled {
     background-color: var(--red-disabled);
 }
 
@@ -232,6 +232,14 @@ body {
         width: 100%;
     }
 }
+.full-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.full-line > .color-input {
+    width: 75px;
+}
 .flex-auto-scale {
     width: 0;
     flex: 1;
@@ -256,17 +264,13 @@ body {
 .questions-edit-box {
     max-height: calc(80% - 200px);
 }
-.question-line {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.question-line > .color-input {
-    width: 75px;
+#settings-box {
+    margin: 0;
 }
 .settings-entry {
     display: flex;
     align-items: center;
+    margin: 10px;
 }
 .settings-entry > * {
     width: 100%
@@ -285,4 +289,7 @@ body {
         flex: 1;
         margin-left: 0;
     }
+}
+.bottom-buttons {
+    margin-top: 50px;
 }

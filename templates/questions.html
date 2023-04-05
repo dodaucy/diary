@@ -13,7 +13,7 @@
         <div id="content">
             <div class="background-box questions-edit-box" id="questions">
                 {% for question in questions %}
-                <div class="question-line">
+                <div class="full-line">
                     <div class="i-id no-display">{{ question.id }}</div>
                     <input type="text" class="i-text input-on-secondary-background flex-auto-scale can-be-disabled" maxlength="255" value="{{ question.name }}" placeholder="Question">
                     <label for="{{ question.id }}-color" class="color-input" style="background-color: {{ question.color }};"></label>

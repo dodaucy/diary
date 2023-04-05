@@ -36,6 +36,14 @@ class Settings():
                 self._data
             )
 
+    async def set_default(self) -> None:
+        """Set default settings"""
+        self._data = constants.DEFAULT_SETTINGS
+        await self.db.execute(
+            f"UPDATE settings SET {', '.join(key + ' = :' + key for key in constants.DEFAULT_SETTINGS.keys())}",
+            self._data
+        )
+
     async def update(self, settings: models.Settings) -> None:
         """Update settings in database"""
         self._data = settings.dict()

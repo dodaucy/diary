@@ -15,7 +15,7 @@ var original_questions;
 
 
 function reset_original_data() {
-    cancel_deletions();
+    reset_confirmations();
     original_questions = document.getElementById("questions").cloneNode(true);
 }
 
@@ -121,7 +121,7 @@ function init() {
 
 
 function question_change_check() {
-    cancel_deletions();
+    reset_confirmations();
 
     // Check if questions have changed
     var questions = document.getElementById("questions");
@@ -161,23 +161,8 @@ function question_change_check() {
 }
 
 
-function cancel_deletions() {
-    var questions = document.getElementById("questions");
-    for (var i = 0; i < questions.children.length; i++) {
-        var question = questions.children[i];
-        var delete_button = question.getElementsByClassName("i-delete-button")[0];
-        if (delete_button.className.includes("dark-red-button")) {
-            delete_button.className = delete_button.className.replace("dark-red-button", "red-button");
-            delete_button.innerText = "Delete";
-        }
-    }
-}
-
-
 function removeQuestion(delete_button) {
-    if (!delete_button.className.includes("dark-red-button")) {
-        delete_button.className = delete_button.className.replace("red-button", "dark-red-button");
-        delete_button.innerText = "Delete?";
+    if (!confirm(delete_button)) {
         return;
     }
     var questions = document.getElementById("questions");
@@ -190,7 +175,7 @@ function addQuestions() {
     var questions = document.getElementById("questions");
 
     var question = document.createElement("div");
-    question.className = "question-line";
+    question.className = "full-line";
 
     var id = document.createElement("div");
     id.className = "i-id no-display";

@@ -16,6 +16,7 @@ var original_settings;
 
 
 function reset_original_data() {
+    reset_confirmations();
     original_settings = document.getElementById("settings-box").cloneNode(true);
 }
 
@@ -25,6 +26,7 @@ function init() {
     save_popup_register_events(
         function() {
             document.getElementById("settings-box").innerHTML = original_settings.innerHTML;
+            reset_confirmations();
         },
         async function() {
             // Read settings
@@ -59,7 +61,26 @@ function init() {
 }
 
 
+function reset_settings(element) {
+    if (!confirm(element)) {
+        return;
+    }
+    disable(true);
+    request(
+        "POST",
+        "reset_settings",
+        function() {
+            location.reload();
+        },
+        function() {
+            disable(false);
+        }
+    );
+}
+
+
 function settings_change_check() {
+    reset_confirmations();
     var settings = document.getElementById("settings-box");
 
     // Loop through settings
