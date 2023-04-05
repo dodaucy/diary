@@ -185,7 +185,7 @@ function request(method, url, callback, data) {
                 }
                 message_popup("Request Failed", response.detail, true);
             } catch (e) {
-                message_popup("Request Failed", `Unknown Error (Status Code ${xhr.status})`, true);
+                message_popup("Request Failed", `Status Code ${xhr.status}`, true);
             }
         }
     }
