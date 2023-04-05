@@ -20,7 +20,7 @@ var save_popup_save_click = function() {
 }
 
 
-function message_popup(message, error) {
+function message_popup(title, message, error) {
     /* Create popup */
     var popup = document.createElement("div");
     popup.className = "message-popup";
@@ -46,6 +46,7 @@ function message_popup(message, error) {
     /* Create title element */
     var title_element = document.createElement("div");
     title_element.className = "message-popup-title";
+    title_element.innerText = title;
 
     /* Set message */
     var message_element = document.createElement("p");
@@ -59,11 +60,9 @@ function message_popup(message, error) {
 
     /* Set title and color depending on if it's an error or not */
     if (error) {
-        title_element.innerText = "An error has occured";
         popup.style.backgroundColor = "var(--light-red)";
         progress_bar_background.className += " message-popup-progress-bar-background-red";
     } else {
-        title_element.innerText = "Success";
         popup.style.backgroundColor = "var(--light-green)";
         progress_bar_background.className += " message-popup-progress-bar-background-green";
     }
@@ -171,7 +170,7 @@ function request(method, url, callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);
     xhr.onerror = function() {
-        message_popup("Network Error", true);
+        message_popup("Request Failed", "Network Error", true);
     }
     xhr.onload = function() {
         if (xhr.status == 200) {
@@ -184,9 +183,9 @@ function request(method, url, callback, data) {
                 if (typeof response.detail !== "string") {
                     throw new Error();
                 }
-                message_popup(response.detail, true);
+                message_popup("Request Failed", response.detail, true);
             } catch (e) {
-                message_popup(`Unknown Error (Status Code ${xhr.status})`, true);
+                message_popup("Request Failed", `Unknown Error (Status Code ${xhr.status})`, true);
             }
         }
     }
@@ -223,7 +222,7 @@ function color_update(element) {
 
 // Catch all errors
 window.onerror = function(message, source, lineno, colno, error) {
-    message_popup(message, true);
+    message_popup("JavaScript Error", message, true);
     console.error(error);
     return true;
 }
