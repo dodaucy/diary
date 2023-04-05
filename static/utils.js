@@ -240,6 +240,7 @@ function disable(disable_elements) {
 
 function color_update(element) {
     element.parentElement.getElementsByClassName("color-input")[0].style.backgroundColor = element.value;
+    element.setAttribute("value", element.value);
 }
 
 

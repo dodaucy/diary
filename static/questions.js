@@ -216,19 +216,15 @@ function addQuestions() {
     color.type = "color";
     color.id = generated_id;
     color.className = "i-color input-on-secondary-background can-be-disabled no-display";
-    color.value = generated_color;
-    color.addEventListener("input", function() {
-        color_update(color);
-    });
+    color.setAttribute("value", generated_color);
+    color.setAttribute("oninput", "color_update(this);");
     question.appendChild(color);
 
     var button = document.createElement("button");
     button.type = "button";
     button.className = "i-delete-button red-button can-be-disabled";
     button.innerText = "Delete";
-    button.addEventListener("click", function() {
-        removeQuestion(button);
-    });
+    button.setAttribute("onclick", "removeQuestion(this);");
     question.appendChild(button);
 
     questions.appendChild(question);
