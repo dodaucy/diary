@@ -249,7 +249,7 @@ function confirm(element) {
 
 
 function reset_confirmations() {
-    var elements = document.getElementsByClassName("confirm-button");
+    var elements = Array.from(document.getElementsByClassName("confirm-button"));
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.className = element.className.replace("confirm-button", "red-button");
