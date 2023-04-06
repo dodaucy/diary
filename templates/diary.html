@@ -12,7 +12,7 @@
             <h1>Diary</h1>
             <form action="/update_diary" method="POST" class="box">
                 <div class="one-line">
-                    <input type="date" name="date" id="date" onchange="loadDiary();">
+                    <input type="date" name="date" id="date" onchange="load_diary();">
                 </div>
                 <div id="questions">
                     {% for question in questions %}

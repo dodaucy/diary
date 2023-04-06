@@ -17,7 +17,7 @@ var cache = {};
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
-function renderStats() {
+function render_stats() {
     var year = parseInt(document.getElementById("year-span").innerText);
     var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
     console.log(`Render stats for ${year}-${month}`);
@@ -29,7 +29,7 @@ function renderStats() {
         request("GET", `stats?year=${year}`, function(stats) {
             cache[year] = stats;
             disable(false);
-            renderStats();
+            render_stats();
         }, null);
         return;
     }
@@ -124,11 +124,11 @@ function resize() {
     last_resize = Date.now();
     last_data = `${window.innerWidth}x${window.innerHeight}`;
     // Render stats
-    renderStats();
+    render_stats();
 }
 
 
-function updateYear(left) {
+function update_year(left) {
     // Get year
     var year = parseInt(document.getElementById("year-span").innerText);
     // Update year
@@ -139,11 +139,11 @@ function updateYear(left) {
     }
     document.getElementById("year-span").innerText = year;
     // Render stats
-    renderStats();
+    render_stats();
 }
 
 
-function updateMonth(left) {
+function update_month(left) {
     // Get month
     var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
     // Update month
@@ -155,17 +155,17 @@ function updateMonth(left) {
     var stats_rendered = false;
     if (month < 1) {
         month = 12;
-        updateYear(true);
+        update_year(true);
         stats_rendered = true;
     } else if (month > 12) {
         month = 1;
-        updateYear(false);
+        update_year(false);
         stats_rendered = true;
     }
     document.getElementById("month-span").innerText = months[month - 1];
     // Render stats
     if (!stats_rendered) {
-        renderStats();
+        render_stats();
     }
 }
 
@@ -176,7 +176,7 @@ function init() {
     document.getElementById("month-span").innerText = months[date.getMonth()];
     document.getElementById("year-span").innerText = date.getFullYear();
     // Render stats
-    renderStats();
+    render_stats();
     // Add event listener
     window.addEventListener("resize", function(event) {
         resize();

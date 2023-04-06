@@ -161,7 +161,7 @@ function question_change_check() {
 }
 
 
-function removeQuestion(delete_button) {
+function remove_question(delete_button) {
     if (!confirm(delete_button)) {
         return;
     }
@@ -171,7 +171,7 @@ function removeQuestion(delete_button) {
 }
 
 
-function addQuestions() {
+function add_questions() {
     var questions = document.getElementById("questions");
 
     var question = document.createElement("div");
@@ -212,7 +212,7 @@ function addQuestions() {
     button.type = "button";
     button.className = "i-delete-button red-button can-be-disabled";
     button.innerText = "Delete";
-    button.setAttribute("onclick", "removeQuestion(this);");
+    button.setAttribute("onclick", "remove_question(this);");
     question.appendChild(button);
 
     questions.appendChild(question);

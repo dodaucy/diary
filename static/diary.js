@@ -15,7 +15,7 @@ var last_load;
 var last_date;
 
 
-function loadDiary() {
+function load_diary() {
     var date = document.getElementById("date").value;
 
     // Spam protection
@@ -26,7 +26,7 @@ function loadDiary() {
     if (!!last_load) {
         if (Date.now() - last_load < 1000) {
             setTimeout(function(){
-                loadDiary();
+                load_diary();
             }, 500)
             return;
         }

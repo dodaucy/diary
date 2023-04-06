@@ -16,20 +16,20 @@
             <div class="background-box left stats-box" id="display-box">
                 {% for question in questions %}
                 <div>
-                    <input type="checkbox" class="can-be-disabled" id="{{ question.id }}-checkbox" onchange="renderStats();" checked>
+                    <input type="checkbox" class="can-be-disabled" id="{{ question.id }}-checkbox" onchange="render_stats();" checked>
                     <label for="{{ question.id }}-checkbox" id="{{ question.id }}-label" style="color: {{ question.color }}">{{ question.name }}</label>
                 </div>
                 {% endfor %}
             </div>
             <div class="balanced-container">
-                <button type="button" class="neutral-button can-be-disabled" onclick="updateMonth(true);"><</button>
+                <button type="button" class="neutral-button can-be-disabled" onclick="update_month(true);"><</button>
                 <span id="month-span">...</span>
-                <button type="button" class="neutral-button can-be-disabled" onclick="updateMonth(false);">></button>
+                <button type="button" class="neutral-button can-be-disabled" onclick="update_month(false);">></button>
             </div>
             <div class="balanced-container">
-                <button type="button" class="neutral-button can-be-disabled" onclick="updateYear(true);"><</button>
+                <button type="button" class="neutral-button can-be-disabled" onclick="update_year(true);"><</button>
                 <span id="year-span">...</span>
-                <button type="button" class="neutral-button can-be-disabled" onclick="updateYear(false);">></button>
+                <button type="button" class="neutral-button can-be-disabled" onclick="update_year(false);">></button>
             </div>
             <canvas id="stats"></canvas>
         </div>
