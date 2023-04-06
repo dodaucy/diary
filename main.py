@@ -115,28 +115,6 @@ async def index(request: Request, token: str = Cookie("")):
     return login_response
 
 
-@app.post("/logout", dependencies=[Depends(rate_limit_handler.trigger)])
-async def logout(token: str = Cookie("")):
-    # Delete the session
-    if token:
-        await db.execute(
-            "DELETE FROM sessions WHERE token = :token",
-            {
-                "token": token
-            }
-        )
-    # Redirect to the login page
-    response = RedirectResponse(
-        url="/",
-        status_code=status.HTTP_303_SEE_OTHER
-    )
-    response.delete_cookie(
-        key="token",
-        httponly=True
-    )
-    return response
-
-
 @app.get("/stats", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def stats(request: Request):
     return templates.TemplateResponse(

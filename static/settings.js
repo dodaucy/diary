@@ -73,6 +73,26 @@ function reset_settings(element) {
             location.reload();
         },
         function() {
+            reset_confirmations();
+            disable(false);
+        }
+    );
+}
+
+
+function logout(element) {
+    if (!confirm(element)) {
+        return;
+    }
+    disable(true);
+    request(
+        "POST",
+        "logout",
+        function() {
+            window.location.href = "/";
+        },
+        function() {
+            reset_confirmations();
             disable(false);
         }
     );

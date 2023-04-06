@@ -15,7 +15,7 @@ import datetime
 import os
 
 import bcrypt
-from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi import Cookie, Depends, FastAPI, HTTPException, Response, status
 
 import config
 import models
@@ -53,6 +53,27 @@ async def login(login_model: models.Login):
     response.set_cookie(
         key="token",
         value=token,
+        httponly=True
+    )
+    return response
+
+
+@app.post("/logout", dependencies=[Depends(rate_limit_handler.trigger)])
+async def logout(token: str = Cookie("")):
+    # Delete the session
+    if token:
+        await db.execute(
+            "DELETE FROM sessions WHERE token = :token",
+            {
+                "token": token
+            }
+        )
+    # Return response with deleted token
+    response = Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
+    response.delete_cookie(
+        key="token",
         httponly=True
     )
     return response
