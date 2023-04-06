@@ -187,6 +187,7 @@ function addQuestions() {
     text.className = "i-text input-on-secondary-background flex-auto-scale can-be-disabled";
     text.maxLength = 255;
     text.placeholder = "Question";
+    text.autocomplete = "off";
     question.appendChild(text);
 
     var generated_id = crypto.randomUUID();
@@ -204,6 +205,7 @@ function addQuestions() {
     color.className = "i-color input-on-secondary-background can-be-disabled no-display";
     color.setAttribute("value", generated_color);
     color.setAttribute("oninput", "color_update(this);");
+    color.autocomplete = "off";
     question.appendChild(color);
 
     var button = document.createElement("button");
