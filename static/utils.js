@@ -188,7 +188,7 @@ function request(method, url, success_callback, error_callback, data) {
                     throw new Error();
                 }
                 if (xhr.status == 401 && response.detail == "Not logged in") {
-                    window.location.href = "/";
+                    location.href = "/";
                     return;
                 }
                 message_popup("Request Failed", response.detail, true);

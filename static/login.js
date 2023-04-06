@@ -23,7 +23,7 @@ function login() {
             "POST",
             "login",
             function() {
-                window.location.reload();
+                location.reload();
             },
             function() {
                 disable(false);

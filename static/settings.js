@@ -89,7 +89,7 @@ function logout(element) {
         "POST",
         "logout",
         function() {
-            window.location.href = "/";
+            location.href = "/";
         },
         function() {
             reset_confirmations();
