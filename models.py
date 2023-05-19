@@ -25,14 +25,12 @@ class DiaryEntry(BaseModel):
 
 
 class NewQuestion(BaseModel):
-    enabled: bool
     name: str
     color: str
 
 
 class UpdateQuestion(BaseModel):
     question_id: int
-    enabled: bool
     name: str
     color: str
 

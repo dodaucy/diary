@@ -62,8 +62,7 @@ function init() {
                         false,
                         {
                             "name": text,
-                            "color": color,
-                            "enabled": true
+                            "color": color
                         }
                     );
                     question.getElementsByClassName("i-id")[0].innerText = new_id.question_id;
@@ -76,8 +75,7 @@ function init() {
                         {
                             "question_id": question_id,
                             "name": text,
-                            "color": color,
-                            "enabled": true
+                            "color": color
                         }
                     );
                 }

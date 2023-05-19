@@ -196,11 +196,10 @@ async def new_question(question: models.NewQuestion):
     # Insert question
     async with question_insert_lock:
         await db.execute(
-            "INSERT INTO questions (name, color, enabled) VALUES (:name, :color, :enabled)",
+            "INSERT INTO questions (name, color) VALUES (:name, :color)",
             {
                 "name": question.name,
-                "color": question.color,
-                "enabled": question.enabled
+                "color": question.color
             }
         )
         question_id = await db.fetch_val(
@@ -228,12 +227,11 @@ async def update_question(question: models.UpdateQuestion):
         )
     # Update question
     await db.execute(
-        "UPDATE questions SET name = :name, color = :color, enabled = :enabled WHERE id = :question_id",
+        "UPDATE questions SET name = :name, color = :color WHERE id = :question_id",
         {
             "question_id": question.question_id,
             "name": question.name,
-            "color": question.color,
-            "enabled": question.enabled
+            "color": question.color
         }
     )
     # Return 204
