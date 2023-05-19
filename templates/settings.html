@@ -15,7 +15,7 @@
                 <div id="settings-box">
                     {% for key, value in settings.items() %}
                     <div class="settings-entry">
-                        <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label> 
+                        <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label>
                         {% if key == "font-family" %}
                         <input type="text" id="{{ key }}-setting" class="input-on-secondary-background" maxlength="32" value="{{ value }}" placeholder="Font Family" autocomplete="off">
                         {% else %}
