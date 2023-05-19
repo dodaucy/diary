@@ -209,7 +209,7 @@ body {
     white-space: nowrap;
     overflow-x: auto;
 }
-.background-box:not(:has(*)) { /* https://bugzilla.mozilla.org/show_bug.cgi?id=418039 / set layout.css.has-selector.enabled to true in about:config on firefox */
+.background-box:not(:has(*)) { /* https://bugzilla.mozilla.org/show_bug.cgi?id=418039 / set layout.css.has-selector.enabled in about:config to true on firefox */
     display: none;
 }
 @media only screen and (max-width: 500px) {
