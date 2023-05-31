@@ -1,2 +1,8 @@
-__pycache__
+# Cache
+__pycache__/
+
+# Config
 config.env
+
+# TODO
+TODO.txt
