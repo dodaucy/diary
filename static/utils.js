@@ -264,9 +264,17 @@ function color_update(element) {
 }
 
 
-// Catch all errors
-window.onerror = function(message, source, lineno, colno, error) {
-    message_popup("JavaScript Error", message, true);
-    console.error(error);
-    return true;
+function init_utils(){
+    // Update HTML on value change
+    var text_inputs = document.querySelectorAll("input[type=text]");
+    for (var i = 0; i < text_inputs.length; i++) {
+        var text_input = text_inputs[i];
+        text_input.setAttribute("oninput", "this.setAttribute('value', this.value);");
+    }
+    // Catch all errors
+    window.onerror = function(message, source, lineno, colno, error) {
+        message_popup("JavaScript Error", message, true);
+        console.error(error);
+        return true;
+    }
 }

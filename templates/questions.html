@@ -6,7 +6,7 @@
         <title>Questions - Diary</title>
         {% include "head.html" %}
     </head>
-    <body onload="init();" oninput="question_change_check();">
+    <body onload="init_utils(); init();" oninput="question_change_check();">
         {% include "navbar.html" %}
         {% include "message_container.html" %}
         {% include "save_popup.html" %}

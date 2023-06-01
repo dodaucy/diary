@@ -186,6 +186,7 @@ function add_questions() {
     text.maxLength = 255;
     text.placeholder = "Question";
     text.autocomplete = "off";
+    text.setAttribute("oninput", "this.setAttribute('value', this.value);");
     question.appendChild(text);
 
     var generated_id = crypto.randomUUID();
