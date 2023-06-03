@@ -150,6 +150,17 @@ async def settings(request: Request):
     )
 
 
+@app.get("/admin", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
+async def admin(request: Request):
+    return templates.TemplateResponse(
+        "admin.html",
+        {
+            "request": request,
+            "selected_navbar_item": "admin"
+        }
+    )
+
+
 @app.get("/test", dependencies=[Depends(rate_limit_handler.trigger)])
 async def test(request: Request):
     return templates.TemplateResponse(
