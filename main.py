@@ -156,7 +156,10 @@ async def admin(request: Request):
         "admin.html",
         {
             "request": request,
-            "selected_navbar_item": "admin"
+            "selected_navbar_item": "admin",
+            "sessions": await db.fetch_val("SELECT COUNT(*) FROM sessions"),
+            "active_sessions_24_hours": await db.fetch_val("SELECT COUNT(*) FROM sessions WHERE last_request >= UNIX_TIMESTAMP() - 60 * 60 * 24"),
+            "active_sessions_7_days": await db.fetch_val("SELECT COUNT(*) FROM sessions WHERE last_request >= UNIX_TIMESTAMP() - 60 * 60 * 24 * 7"),
         }
     )
 

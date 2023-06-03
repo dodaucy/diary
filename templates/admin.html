@@ -24,6 +24,11 @@
                 <h2>
                     Sessions
                 </h2>
+                <p>
+                    Session count: {{ sessions }}<br>
+                    Active in the last 24 hours: {{ active_sessions_24_hours }}<br>
+                    Active in the last 7 days: {{ active_sessions_7_days }}
+                </p>
                 <div class="full-line">
                     <button type="button" class="red-button flex-auto-scale can-be-disabled" onclick="logout_all_sessions(this);">Logout All Sessions</button>
                 </div>
