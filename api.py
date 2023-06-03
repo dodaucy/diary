@@ -79,6 +79,23 @@ async def logout(token: str = Cookie("")):
     return response
 
 
+@app.post("/logout_all", dependencies=[Depends(rate_limit_handler.trigger)])
+async def logout_all():
+    # Delete all sessions
+    await db.execute(
+        "DELETE FROM sessions"
+    )
+    # Return response with deleted token
+    response = Response(
+        status_code=status.HTTP_204_NO_CONTENT
+    )
+    response.delete_cookie(
+        key="token",
+        httponly=True
+    )
+    return response
+
+
 @app.get("/diary", dependencies=[Depends(rate_limit_handler.trigger), Depends(utils.login_check)])
 async def diary(date: str):
     days = utils.get_days(date)

@@ -2,6 +2,7 @@
 <html>
     <head>
         <script src="/static/utils.js"></script>
+        <script src="/static/admin.js"></script>
         <title>Admin Panel - Diary</title>
         {% include "head.html" %}
     </head>
@@ -10,7 +11,14 @@
         {% include "message_container.html" %}
         {% include "save_popup.html" %}
         <div id="content">
-            ...
+            <div class="background-box">
+                <h2>
+                    Sessions
+                </h2>
+                <div class="full-line">
+                    <button type="button" class="red-button flex-auto-scale" onclick="logout_all_sessions(this);">Logout All Sessions</button>
+                </div>
+            </div>
         </div>
     </body>
 </html>
