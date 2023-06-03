@@ -15,6 +15,7 @@ import datetime
 import os
 
 import bcrypt
+import pymysql
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response, status
 
 import config
@@ -211,17 +212,41 @@ async def new_question(question: models.NewQuestion):
             detail="Question name must be less or equal to 255 characters"
         )
     # Insert question
-    async with question_insert_lock:
-        await db.execute(
-            "INSERT INTO questions (name, color) VALUES (:name, :color)",
-            {
-                "name": question.name,
-                "color": question.color
-            }
-        )
-        question_id = await db.fetch_val(
-            "SELECT LAST_INSERT_ID()"
-        )
+    if question.question_id:
+        if question.question_id < 0 or question.question_id > 4294967295:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid question id"
+            )
+        try:
+            await db.execute(
+                "INSERT INTO questions (id, name, color) VALUES (:id, :name, :color)",
+                {
+                    "id": question.question_id,
+                    "name": question.name,
+                    "color": question.color
+                }
+            )
+        except pymysql.err.IntegrityError as exc:
+            if exc.args[0] == 1062:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Question id already exists"
+                )
+            raise exc
+        question_id = question.question_id
+    else:
+        async with question_insert_lock:
+            await db.execute(
+                "INSERT INTO questions (name, color) VALUES (:name, :color)",
+                {
+                    "name": question.name,
+                    "color": question.color
+                }
+            )
+            question_id = await db.fetch_val(
+                "SELECT LAST_INSERT_ID()"
+            )
     # Return question id
     return {
         "question_id": question_id

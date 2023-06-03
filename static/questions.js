@@ -190,7 +190,7 @@ function add_questions() {
     question.appendChild(text);
 
     var generated_id = crypto.randomUUID();
-    var generated_color = `#${Math.floor(Math.random() * 0xFFFFFF).toString(16)}`;
+    var generated_color = generate_color();
 
     var color_label = document.createElement("label");
     color_label.htmlFor = generated_id;

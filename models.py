@@ -9,7 +9,7 @@
 #############################################
 
 
-from typing import Dict
+from typing import Dict, Optional
 
 from pydantic import BaseModel
 
@@ -25,6 +25,7 @@ class DiaryEntry(BaseModel):
 
 
 class NewQuestion(BaseModel):
+    question_id: Optional[int]
     name: str
     color: str
 

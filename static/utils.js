@@ -264,6 +264,11 @@ function color_update(element) {
 }
 
 
+function generate_color() {
+    return `#${Math.floor(Math.random() * 0xFFFFFF).toString(16)}`;
+}
+
+
 function init_utils(){
     // Update HTML on value change
     var text_inputs = document.querySelectorAll("input[type=text]");
