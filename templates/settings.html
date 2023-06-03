@@ -17,17 +17,17 @@
                     <div class="settings-entry">
                         <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label>
                         {% if key == "font-family" %}
-                        <input type="text" id="{{ key }}-setting" class="input-on-secondary-background" maxlength="32" value="{{ value }}" placeholder="Font Family" autocomplete="off">
+                        <input type="text" id="{{ key }}-setting" class="input-on-secondary-background can-be-disabled" maxlength="32" value="{{ value }}" placeholder="Font Family" autocomplete="off">
                         {% else %}
-                        <label for="{{ key }}-setting" class="color-input" style="background-color: {{ value }};"></label>
-                        <input type="color" id="{{ key }}-setting" class="no-display" oninput="color_update(this);" value="{{ value }}" autocomplete="off">
+                        <label for="{{ key }}-setting" class="color-input can-be-disabled" style="background-color: {{ value }};"></label>
+                        <input type="color" id="{{ key }}-setting" class="no-display can-be-disabled" oninput="color_update(this);" value="{{ value }}" autocomplete="off">
                         {% endif %}
                     </div>
                 {% endfor %}
                 </div>
                 <div class="bottom-buttons full-line">
-                    <button class="red-button flex-auto-scale" onclick="reset_settings(this);">Reset to Default</button>
-                    <button class="red-button flex-auto-scale" onclick="logout(this);">Logout</button>
+                    <button class="red-button flex-auto-scale can-be-disabled" onclick="reset_settings(this);">Reset to Default</button>
+                    <button class="red-button flex-auto-scale can-be-disabled" onclick="logout(this);">Logout</button>
                 </div>
             </div>
         </div>
