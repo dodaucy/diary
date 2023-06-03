@@ -7,7 +7,7 @@ function logout_all_sessions(element) {
         "POST",
         "logout_all",
         function() {
-            location.reload();
+            location.href = "/";
         },
         function() {
             reset_confirmations();
