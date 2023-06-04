@@ -20,106 +20,15 @@ function reset_original_data() {
 }
 
 
-function init() {
-    reset_original_data();
-    save_popup_register_events(
-        function() {
-            document.getElementById("questions").innerHTML = original_questions.innerHTML;
-        },
-        async function() {
-            var questions = document.getElementById("questions");
-            for (var i = 0; i < questions.children.length; i++) {
-                var question = questions.children[i];
-                var question_id = question.getElementsByClassName("i-id")[0].innerText;
-                var text = question.getElementsByClassName("i-text")[0].value;
-                var color = question.getElementsByClassName("i-color")[0].value;
-
-                // Search for original question
-                var found = false;
-                var is_equal = false;
-                for (var j = 0; j < original_questions.children.length; j++) {
-                    var original_question = original_questions.children[j];
-                    var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
-
-                    // If found
-                    if (question_id == original_question_id) {
-                        found = true;
-                        // Check if equal
-                        var original_text = original_question.getElementsByClassName("i-text")[0].value;
-                        var original_color = original_question.getElementsByClassName("i-color")[0].value;
-                        if (text == original_text && color == original_color) {
-                            is_equal = true;
-                        }
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    // Add new question
-                    var new_id = await async_request(
-                        "POST",
-                        "new_question",
-                        false,
-                        {
-                            "name": text,
-                            "color": color
-                        }
-                    );
-                    question.getElementsByClassName("i-id")[0].innerText = new_id.question_id;
-                } else if (!is_equal) {
-                    // Update question
-                    await async_request(
-                        "POST",
-                        "update_question",
-                        false,
-                        {
-                            "question_id": question_id,
-                            "name": text,
-                            "color": color
-                        }
-                    );
-                }
-            }
-
-            // Check for deleted questions
-            for (var i = 0; i < original_questions.children.length; i++) {
-                var original_question = original_questions.children[i];
-                var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
-
-                // Search for question
-                var found = false;
-                for (var j = 0; j < questions.children.length; j++) {
-                    var question = questions.children[j];
-                    var question_id = question.getElementsByClassName("i-id")[0].innerText;
-
-                    // If found
-                    if (question_id == original_question_id) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found) {
-                    // Delete question
-                    await async_request(
-                        "POST",
-                        "delete_question",
-                        false,
-                        {
-                            "question_id": original_question_id
-                        }
-                    );
-                }
-            }
-
-            return true;
-        }
-    );
+function display_questions_check() {
+    var questions = document.getElementById("questions");
+    questions.style.display = questions.children.length == 0 ? "none" : "block";
 }
 
 
 function question_change_check() {
     reset_confirmations();
+    display_questions_check();
 
     // Check if questions have changed
     var questions = document.getElementById("questions");
@@ -217,4 +126,104 @@ function add_questions() {
     questions.appendChild(question);
 
     question_change_check();
+}
+
+
+function init() {
+    reset_original_data();
+    display_questions_check();
+    save_popup_register_events(
+        function() {
+            document.getElementById("questions").innerHTML = original_questions.innerHTML;
+            display_questions_check();
+        },
+        async function() {
+            var questions = document.getElementById("questions");
+            for (var i = 0; i < questions.children.length; i++) {
+                var question = questions.children[i];
+                var question_id = question.getElementsByClassName("i-id")[0].innerText;
+                var text = question.getElementsByClassName("i-text")[0].value;
+                var color = question.getElementsByClassName("i-color")[0].value;
+
+                // Search for original question
+                var found = false;
+                var is_equal = false;
+                for (var j = 0; j < original_questions.children.length; j++) {
+                    var original_question = original_questions.children[j];
+                    var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
+
+                    // If found
+                    if (question_id == original_question_id) {
+                        found = true;
+                        // Check if equal
+                        var original_text = original_question.getElementsByClassName("i-text")[0].value;
+                        var original_color = original_question.getElementsByClassName("i-color")[0].value;
+                        if (text == original_text && color == original_color) {
+                            is_equal = true;
+                        }
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    // Add new question
+                    var new_id = await async_request(
+                        "POST",
+                        "new_question",
+                        false,
+                        {
+                            "name": text,
+                            "color": color
+                        }
+                    );
+                    question.getElementsByClassName("i-id")[0].innerText = new_id.question_id;
+                } else if (!is_equal) {
+                    // Update question
+                    await async_request(
+                        "POST",
+                        "update_question",
+                        false,
+                        {
+                            "question_id": question_id,
+                            "name": text,
+                            "color": color
+                        }
+                    );
+                }
+            }
+
+            // Check for deleted questions
+            for (var i = 0; i < original_questions.children.length; i++) {
+                var original_question = original_questions.children[i];
+                var original_question_id = original_question.getElementsByClassName("i-id")[0].innerText;
+
+                // Search for question
+                var found = false;
+                for (var j = 0; j < questions.children.length; j++) {
+                    var question = questions.children[j];
+                    var question_id = question.getElementsByClassName("i-id")[0].innerText;
+
+                    // If found
+                    if (question_id == original_question_id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    // Delete question
+                    await async_request(
+                        "POST",
+                        "delete_question",
+                        false,
+                        {
+                            "question_id": original_question_id
+                        }
+                    );
+                }
+            }
+
+            return true;
+        }
+    );
 }

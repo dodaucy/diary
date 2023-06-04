@@ -9,10 +9,11 @@
         <title>Stats - Diary</title>
         {% include "head.html" %}
     </head>
-    <body onload="init_utils(); init();">
+    <body onload="init_utils();{% if questions %} init();{% endif %}">
         {% include "navbar.html" %}
         {% include "message_container.html" %}
         <div id="content">
+            {% if questions %}
             <div class="background-box left stats-box" id="display-box">
                 {% for question in questions %}
                 <div>
@@ -32,6 +33,11 @@
                 <button type="button" class="neutral-button can-be-disabled" onclick="update_year(false);">></button>
             </div>
             <canvas id="stats"></canvas>
+            {% else %}
+            <h1>
+                No Data
+            </h1>
+            {% endif %}
         </div>
     </body>
 </html>
