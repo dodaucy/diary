@@ -234,6 +234,9 @@ function disable(disable_elements) {
     var elements = document.getElementsByClassName("can-be-disabled");
     for (var i = 0; i < elements.length; i++) {
         elements[i].disabled = disable_elements;
+        if (elements[i].className.includes("color-input")) {
+            elements[i].style.cursor = disable_elements ? "not-allowed" : "pointer";
+        }
     }
 }
 
