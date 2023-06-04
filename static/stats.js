@@ -40,11 +40,7 @@ async function render_stats() {
 
     // Calculate size
     console.log(`Window width: ${window.innerWidth}`);
-    if (window.innerWidth < 800) {
-        var width = window.innerWidth - 20;
-    } else {
-        var width = 800;
-    }
+    var width = Math.min(window.innerWidth - 20, 800);
     var place_per_day = Math.floor(width / (cache[year][month - 1].length - 1));
     console.log(`Place per day: ${place_per_day}`);
     stats_canvas.width = place_per_day * (cache[year][month - 1].length - 1) + 10;
@@ -195,6 +191,16 @@ async function init() {
     var date = new Date();
     document.getElementById("month-span").innerText = months[date.getMonth()];
     document.getElementById("year-span").innerText = date.getFullYear();
+    // Render loading canvas
+    console.log("Render loading canvas");
+    var stats_canvas = document.getElementById("stats");
+    var ctx = stats_canvas.getContext("2d");
+    stats_canvas.width = Math.min(window.innerWidth, 800);
+    stats_canvas.height = stats_canvas.width / 10 * 3;
+    ctx.font = `${stats_canvas.height / 6}px ${getComputedStyle(document.body).getPropertyValue('--font-family')}`;
+    ctx.fillStyle = font_color;
+    ctx.textAlign = "center";
+    ctx.fillText("Loading...", stats_canvas.width / 2, stats_canvas.height / 2);
     // Render stats
     try {
         await render_stats();
