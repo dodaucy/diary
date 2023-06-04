@@ -17,21 +17,20 @@ var cache = {};
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
-function render_stats() {
+async function render_stats() {
+    disable(true);
     var year = parseInt(document.getElementById("year-span").innerText);
     var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
     console.log(`Render stats for ${year}-${month}`);
 
-    // Use cached data if available or get data from server
+    // Get data from server if not cached
     if (!(year in cache)) {
         console.log(`Get data from server for ${year}...`);
-        disable(true);
-        request("GET", `stats?year=${year}`, function(stats) {
-            cache[year] = stats;
-            disable(false);
-            render_stats();
-        }, null);
-        return;
+        cache[year] = await async_request(
+            "GET",
+            `stats?year=${year}`,
+            true
+        );
     }
 
     // Get context
@@ -105,18 +104,20 @@ function render_stats() {
             ctx.stroke();
         }
     }
+
+    disable(false);
 }
 
 
-function resize() {
+async function resize() {
     // Spam protection (to not roast the CPU on resize)
     if (last_data == `${window.innerWidth}x${window.innerHeight}`) {
         return;
     }
     if (!!last_resize) {
         if (Date.now() - last_resize < 500) {
-            setTimeout(function(){
-                resize();
+            setTimeout(async function(){
+                await resize();
             }, 500)
             return;
         }
@@ -124,61 +125,86 @@ function resize() {
     last_resize = Date.now();
     last_data = `${window.innerWidth}x${window.innerHeight}`;
     // Render stats
-    render_stats();
+    try {
+        await render_stats();
+    } catch (error) {
+        if (error.toString() != "Request Failed") {
+            throw error;
+        }
+    }
 }
 
 
-function update_year(left) {
-    // Get year
+async function update_year(left, render_stats_after_update) {
     var year = parseInt(document.getElementById("year-span").innerText);
+    var year_span = document.getElementById("year-span");
     // Update year
-    if (left) {
-        year--;
-    } else {
-        year++;
-    }
-    document.getElementById("year-span").innerText = year;
+    year_span.innerText = year + (left ? -1 : 1);
     // Render stats
-    render_stats();
+    if (!render_stats_after_update) {
+        return;
+    }
+    try {
+        await render_stats();
+    } catch (error) {
+        if (error.toString() != "Request Failed") {
+            throw error;
+        }
+        // Reset year
+        console.log("Reset year");
+        year_span.innerText = year;
+        disable(false);
+    }
 }
 
 
-function update_month(left) {
-    // Get month
-    var month = months.indexOf(document.getElementById("month-span").innerText) + 1;
+async function update_month(left) {
+    var month_span = document.getElementById("month-span");
+    var month = months.indexOf(month_span.innerText) + 1;
     // Update month
-    if (left) {
-        month--;
-    } else {
-        month++;
+    var new_month = month + (left ? -1 : 1);
+    month_span.innerText = months[(new_month - 1 + 12) % 12];
+    // Update year if needed
+    if (new_month < 1) {
+        await update_year(true, false);
+    } else if (new_month > 12) {
+        await update_year(false, false);
     }
-    var stats_rendered = false;
-    if (month < 1) {
-        month = 12;
-        update_year(true);
-        stats_rendered = true;
-    } else if (month > 12) {
-        month = 1;
-        update_year(false);
-        stats_rendered = true;
-    }
-    document.getElementById("month-span").innerText = months[month - 1];
     // Render stats
-    if (!stats_rendered) {
-        render_stats();
+    try {
+        await render_stats();
+    } catch (error) {
+        if (error.toString() != "Request Failed") {
+            throw error;
+        }
+        // Reset month
+        console.log("Reset month");
+        month_span.innerText = months[month - 1];
+        if (new_month < 1) {
+            await update_year(false, false);
+        } else if (new_month > 12) {
+            await update_year(true, false);
+        }
+        disable(false);
     }
 }
 
 
-function init() {
+async function init() {
     // Set month and year
     var date = new Date();
     document.getElementById("month-span").innerText = months[date.getMonth()];
     document.getElementById("year-span").innerText = date.getFullYear();
     // Render stats
-    render_stats();
+    try {
+        await render_stats();
+    } catch (error) {
+        if (error.toString() != "Request Failed") {
+            throw error;
+        }
+    }
     // Add event listener
-    window.addEventListener("resize", function(event) {
-        resize();
+    window.addEventListener("resize", async function(event) {
+        await resize();
     }, true);
 }
