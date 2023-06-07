@@ -12,6 +12,8 @@
 
 
 var save_popup_shown = false;
+var front_end_disabled = false;
+
 var save_popup_reset_click = function() {
     console.log("Save popup reset click not registered");
 }
@@ -122,7 +124,7 @@ function save_popup_register_events(on_reset, on_save) {
     }
     // Warn user if they try to leave the page without saving
     window.onbeforeunload = function() {
-        if (save_popup_shown) {
+        if (save_popup_shown && !front_end_disabled) {
             return "You have unsaved changes. Are you sure you want to leave?";
         }
     }
@@ -177,11 +179,32 @@ function show_save_popup(show) {
 }
 
 
+function show_reload_popup(show, text) {
+    var popup = document.getElementById("reload-popup")
+    var save_popup_save = document.getElementById("save-popup-save")
+    if (show) {
+        popup.style.display = "flex";
+        document.getElementById("reload-popup-text").innerText = text;
+        front_end_disabled = true;
+        if (save_popup_save) {
+            save_popup_save.innerText = "Save Changes";
+        }
+    } else {
+        popup.style.display = "none";
+    }
+    document.getElementById("content").style.filter = show ? "blur(2px)" : "none";
+    if (save_popup_save) {
+        document.getElementById("save-popup").style.filter = show ? "blur(2px)" : "none";
+    }
+}
+
+
 function request(method, url, success_callback, error_callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);
     xhr.onerror = function() {
         message_popup("Request Failed", "Network Error", true);
+        show_reload_popup(true, "Network Error");
     }
     xhr.onload = function() {
         if (xhr.status == 200) {
@@ -198,14 +221,15 @@ function request(method, url, success_callback, error_callback, data) {
                     location.href = "/";
                     return;
                 }
-                message_popup("Request Failed", response.detail, true);
+                var msg = response.detail;
             } catch (e) {
-                message_popup("Request Failed", `Status Code ${xhr.status}`, true);
+                var msg = `Status Code ${xhr.status}`;
             }
+            message_popup("Request Failed", msg, true);
             if (xhr.status >= 400 && xhr.status < 500) {
-                if (error_callback !== null) {
-                    error_callback();
-                }
+                error_callback();
+            } else {
+                show_reload_popup(true, msg);
             }
         }
     }
