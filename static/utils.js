@@ -32,6 +32,7 @@ function message_popup(title, message, error) {
         if (removing) {
             return;
         }
+        removing = true;
         var count = 0;
         var interval = setInterval(function() {
             count += 0.1;
