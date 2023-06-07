@@ -120,6 +120,12 @@ function save_popup_register_events(on_reset, on_save) {
             document.getElementById("save-popup-save").innerText = "Save Changes";
         }
     }
+    // Warn user if they try to leave the page without saving
+    window.onbeforeunload = function() {
+        if (save_popup_shown) {
+            return "You have unsaved changes. Are you sure you want to leave?";
+        }
+    }
 }
 
 
@@ -274,16 +280,16 @@ function generate_color() {
 
 
 function init_utils(){
-    // Update HTML on value change
-    var text_inputs = document.querySelectorAll("input[type=text]");
-    for (var i = 0; i < text_inputs.length; i++) {
-        var text_input = text_inputs[i];
-        text_input.setAttribute("oninput", "this.setAttribute('value', this.value);");
-    }
     // Catch all errors
     window.onerror = function(message, source, lineno, colno, error) {
         message_popup("JavaScript Error", message, true);
         console.error(error);
         return true;
+    }
+    // Update HTML on value change
+    var text_inputs = document.querySelectorAll("input[type=text]");
+    for (var i = 0; i < text_inputs.length; i++) {
+        var text_input = text_inputs[i];
+        text_input.setAttribute("oninput", "this.setAttribute('value', this.value);");
     }
 }
