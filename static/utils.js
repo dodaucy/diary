@@ -227,7 +227,7 @@ function request(method, url, success_callback, error_callback, data) {
             }
             message_popup("Request Failed", msg, true);
             if (xhr.status >= 400 && xhr.status < 500) {
-                error_callback();
+                error_callback(msg);
             } else {
                 show_reload_popup(true, msg);
             }
@@ -250,9 +250,11 @@ function async_request(method, url, throw_error, data) {
             function(response) {
                 resolve(response);
             },
-            function() {
+            function(error_message) {
                 if (throw_error) {
                     reject("Request Failed");
+                } else {
+                    show_reload_popup(true, error_message);
                 }
             },
             data
