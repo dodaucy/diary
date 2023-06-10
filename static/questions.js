@@ -16,12 +16,12 @@ var original_questions;
 
 function reset_original_data() {
     reset_confirmations();
-    original_questions = document.getElementById("questions").cloneNode(true);
+    original_questions = document.getElementById("questions-edit-box").cloneNode(true);
 }
 
 
 function display_questions_check() {
-    var questions = document.getElementById("questions");
+    var questions = document.getElementById("questions-edit-box");
     questions.style.display = questions.children.length == 0 ? "none" : "block";
 }
 
@@ -31,7 +31,7 @@ function question_change_check() {
     display_questions_check();
 
     // Check if questions have changed
-    var questions = document.getElementById("questions");
+    var questions = document.getElementById("questions-edit-box");
     var changed = false;
     if (questions.children.length != original_questions.children.length) {
         changed = true;
@@ -72,14 +72,14 @@ function remove_question(delete_button) {
     if (!confirm(delete_button)) {
         return;
     }
-    var questions = document.getElementById("questions");
+    var questions = document.getElementById("questions-edit-box");
     questions.removeChild(delete_button.parentElement);
     question_change_check();
 }
 
 
 function add_questions() {
-    var questions = document.getElementById("questions");
+    var questions = document.getElementById("questions-edit-box");
 
     var question = document.createElement("div");
     question.className = "full-line";
@@ -134,11 +134,11 @@ function init() {
     display_questions_check();
     save_popup_register_events(
         function() {
-            document.getElementById("questions").innerHTML = original_questions.innerHTML;
+            document.getElementById("questions-edit-box").innerHTML = original_questions.innerHTML;
             display_questions_check();
         },
         async function() {
-            var questions = document.getElementById("questions");
+            var questions = document.getElementById("questions-edit-box");
             for (var i = 0; i < questions.children.length; i++) {
                 var question = questions.children[i];
                 var question_id = question.getElementsByClassName("i-id")[0].innerText;
