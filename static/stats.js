@@ -124,9 +124,11 @@ async function resize() {
     try {
         await render_stats();
     } catch (error) {
-        if (error.toString() != "Request Failed") {
+        error_string = error.toString();
+        if (!error_string.startsWith("Request Failed")) {
             throw error;
         }
+        show_reload_popup(true, error_string.substring(15));
     }
 }
 
@@ -143,7 +145,7 @@ async function update_year(left, render_stats_after_update) {
     try {
         await render_stats();
     } catch (error) {
-        if (error.toString() != "Request Failed") {
+        if (!error.toString().startsWith("Request Failed")) {
             throw error;
         }
         // Reset year
@@ -170,7 +172,7 @@ async function update_month(left) {
     try {
         await render_stats();
     } catch (error) {
-        if (error.toString() != "Request Failed") {
+        if (!error.toString().startsWith("Request Failed")) {
             throw error;
         }
         // Reset month
@@ -205,9 +207,11 @@ async function init() {
     try {
         await render_stats();
     } catch (error) {
-        if (error.toString() != "Request Failed") {
+        error_string = error.toString();
+        if (!error_string.startsWith("Request Failed")) {
             throw error;
         }
+        show_reload_popup(true, error_string.substring(15));
     }
     // Add event listener
     window.addEventListener("resize", async function(event) {

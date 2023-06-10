@@ -45,7 +45,7 @@ function init() {
                     data
                 );
             } catch (error) {
-                if (error.toString() != "Request Failed") {
+                if (!error.toString().startsWith("Request Failed")) {
                     throw error;
                 }
                 return false;

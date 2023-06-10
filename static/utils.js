@@ -252,7 +252,7 @@ function async_request(method, url, throw_error, data) {
             },
             function(error_message) {
                 if (throw_error) {
-                    reject("Request Failed");
+                    reject("Request Failed: " + error_message);
                 } else {
                     show_reload_popup(true, error_message);
                 }
