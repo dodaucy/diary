@@ -25,7 +25,7 @@ function reset_original_data() {
 
 function question_list_change_check() {
     var questions = document.getElementById("questions-list");
-    if (questions.children.length != original_questions_list.children.length || document.getElementById("notes").value != original_notes) {
+    if (document.getElementById("notes").value != original_notes) {
         changed = true;
     } else {
         var changed = false;
@@ -34,11 +34,6 @@ function question_list_change_check() {
             var original_question = original_questions_list.children[i];
 
             if (question.getElementsByTagName("select")[0].value != original_question.getElementsByTagName("select")[0].value) {
-                changed = true;
-                break;
-            }
-
-            if (question.getElementsByTagName("select")[0].id != original_question.getElementsByTagName("select")[0].id) {
                 changed = true;
                 break;
             }
@@ -91,6 +86,7 @@ function load_diary() {
                         select.value = "0";
                     }
                 }
+                reset_original_data();
                 disable(false);
             },
             function() {}
@@ -100,7 +96,6 @@ function load_diary() {
 
 
 function init() {
-    reset_original_data();
     save_popup_register_events(
         function() {
             document.getElementById("questions-list").innerHTML = original_questions_list.innerHTML;
