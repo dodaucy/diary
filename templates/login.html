@@ -10,17 +10,19 @@
         {% include "message_container.html" %}
         {% include "reload_popup.html" %}
         <div id="content">
-            <h1>Diary</h1>
-            {% if show_logo %}
-            <img src="/static/icons/128x128.webp" onerror="this.onerror=null; this.src='/static/icons/128x128.png';">
-            {% endif %}
-            <form method="POST" onsubmit="login(); return false;">
-                <input type="password" name="password" id="password" class="can-be-disabled" placeholder="Password" autofocus required>
-                <input type="submit" class="neutral-button can-be-disabled" value="Login">
-            </form>
-            {% if show_github %}
-            <a href="https://github.com/dodaucy/diary" target="_blank">GitHub</a>
-            {% endif %}
+            <div class="background-box">
+                <h1>Diary</h1>
+                {% if show_logo %}
+                <img src="/static/icons/128x128.webp" onerror="this.onerror=null; this.src='/static/icons/128x128.png';">
+                {% endif %}
+                <form method="POST" onsubmit="login(); return false;">
+                    <input type="password" name="password" id="password" class="can-be-disabled" placeholder="Password" autofocus required>
+                    <input type="submit" class="neutral-button can-be-disabled" value="Login">
+                </form>
+                {% if show_github %}
+                <a href="https://github.com/dodaucy/diary" target="_blank">GitHub</a>
+                {% endif %}
+            </div>
         </div>
     </body>
 </html>
