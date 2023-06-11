@@ -164,16 +164,6 @@ async def admin(request: Request):
     )
 
 
-@app.get("/test", dependencies=[Depends(rate_limit_handler.trigger)])
-async def test(request: Request):
-    return templates.TemplateResponse(
-        "test.html",
-        {
-            "request": request
-        }
-    )
-
-
 @app.get("/favicon.ico")
 async def favicon():
     return RedirectResponse(
