@@ -67,6 +67,7 @@ function load_diary() {
     var year = date.split("-")[0];
     if (1970 > year || year > 6000) {
         message_popup("Invalid date", "Date out of range", true);
+        document.getElementById("date").disabled = false;
         return;
     }
 
