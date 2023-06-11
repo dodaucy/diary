@@ -1,6 +1,10 @@
+aiomysql
 bcrypt
 databases
 fastapi
+fastapi-utils
 humanfriendly
+Jinja2
+pymysql
 python-dotenv
 uvicorn[standard]
