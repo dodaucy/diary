@@ -16,9 +16,9 @@
                 {% for question in questions %}
                 <div class="full-line">
                     <div class="i-id no-display">{{ question.id }}</div>
-                    <input type="text" class="i-text input-on-secondary-background flex-auto-scale can-be-disabled" maxlength="255" value="{{ question.name }}" placeholder="Question" autocomplete="off">
+                    <input type="text" class="i-text flex-auto-scale can-be-disabled" maxlength="255" value="{{ question.name }}" placeholder="Question" autocomplete="off">
                     <label for="{{ question.id }}-color" class="color-input can-be-disabled" style="background-color: {{ question.color }};"></label>
-                    <input type="color" id="{{ question.id }}-color" class="i-color input-on-secondary-background can-be-disabled no-display" oninput="color_update(this);" autocomplete="off" value="{{ question.color }}">
+                    <input type="color" id="{{ question.id }}-color" class="i-color can-be-disabled no-display" oninput="color_update(this);" autocomplete="off" value="{{ question.color }}">
                     <button type="button" class="i-delete-button red-button can-be-disabled" onclick="remove_question(this);">Delete</button>
                 </div>
                 {% endfor %}

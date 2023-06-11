@@ -13,14 +13,14 @@
         {% include "reload_popup.html" %}
         <div id="content">
             <div id="questions-list-box" class="background-box">
-                <input type="date" id="date" class="input-on-secondary-background can-be-disabled" onchange="load_diary();">
+                <input type="date" id="date" class="can-be-disabled" onchange="load_diary();">
                 <div id="questions-list" oninput="question_list_change_check();">
                     {% for question in questions %}
                     <div class="full-line">
                         <label for="select-{{ question.id }}" class="diary-label flex-auto-scale" style="color: {{ question.color }};">
                             {{ question.name }}
                         </label>
-                        <select id="select-{{ question.id }}" class="input-on-secondary-background can-be-disabled" onchange="" disabled>
+                        <select id="select-{{ question.id }}" class="can-be-disabled" onchange="" disabled>
                             <option value="0" selected="selected">Not rateable</option>
                             <option value="1">Bad</option>
                             <option value="2">Okay</option>
@@ -29,7 +29,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <textarea maxlength="65535" placeholder="Notes" id="notes" class="input-on-secondary-background can-be-disabled" oninput="question_list_change_check();" disabled></textarea>
+                <textarea maxlength="65535" placeholder="Notes" id="notes" class="can-be-disabled" oninput="question_list_change_check();" disabled></textarea>
             </div>
         </div>
     </body>

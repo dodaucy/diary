@@ -180,15 +180,12 @@ button {
 
 /* inputs */
 input, textarea, select {
-    background-color: var(--secondary-background-color);
+    background-color: var(--primary-background-color);
     color: var(--font-color);
     border: none;
     border-radius: 5px;
     padding: 10px;
     box-sizing: border-box;
-}
-.input-on-secondary-background {
-    background-color: var(--primary-background-color);
 }
 textarea {
     resize: none;

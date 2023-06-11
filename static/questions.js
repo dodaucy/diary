@@ -91,7 +91,7 @@ function add_questions() {
 
     var text = document.createElement("input");
     text.type = "text";
-    text.className = "i-text input-on-secondary-background flex-auto-scale can-be-disabled";
+    text.className = "i-text flex-auto-scale can-be-disabled";
     text.maxLength = 255;
     text.placeholder = "Question";
     text.autocomplete = "off";
@@ -110,7 +110,7 @@ function add_questions() {
     var color = document.createElement("input");
     color.type = "color";
     color.id = generated_id;
-    color.className = "i-color input-on-secondary-background can-be-disabled no-display";
+    color.className = "i-color can-be-disabled no-display";
     color.setAttribute("value", generated_color);
     color.setAttribute("oninput", "color_update(this);");
     color.autocomplete = "off";

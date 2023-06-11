@@ -18,7 +18,7 @@
                     <div class="settings-entry">
                         <label for="{{ key }}-setting" class="left">{{ key.replace("-", " ").title() }}</label>
                         {% if key == "font-family" %}
-                        <input type="text" id="{{ key }}-setting" class="input-on-secondary-background can-be-disabled" maxlength="32" value="{{ value }}" placeholder="Font Family" autocomplete="off">
+                        <input type="text" id="{{ key }}-setting" class="can-be-disabled" maxlength="32" value="{{ value }}" placeholder="Font Family" autocomplete="off">
                         {% else %}
                         <label for="{{ key }}-setting" class="color-input can-be-disabled" style="background-color: {{ value }};"></label>
                         <input type="color" id="{{ key }}-setting" class="no-display can-be-disabled" oninput="color_update(this);" value="{{ value }}" autocomplete="off">
