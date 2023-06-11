@@ -10,6 +10,7 @@
 
 
 import mimetypes
+import warnings
 
 from fastapi import Cookie, Depends, FastAPI, Request, status
 from fastapi.responses import RedirectResponse
@@ -80,6 +81,12 @@ async def startup():
     mimetypes.init()
     mimetypes.add_type("image/webp", ".webp")
     await db.connect()
+    warnings.filterwarnings("ignore", module=r"aiomysql")
+    with open("create_tables.sql") as f:
+        for query in f.read().split(";"):
+            if query.strip():
+                await db.execute(query)
+    warnings.filterwarnings("default", module=r"aiomysql")
     await global_settings.load()
     await delete_expired_tokens()
 
