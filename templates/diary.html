@@ -6,21 +6,21 @@
         <title>Diary</title>
         {% include "head.html" %}
     </head>
-    <body onload="init_utils();">
+    <body onload="init_utils(); init();">
         {% include "navbar.html" %}
+        {% include "message_container.html" %}
+        {% include "save_popup.html" %}
+        {% include "reload_popup.html" %}
         <div id="content">
-            <h1>Diary</h1>
-            <form action="/update_diary" method="POST" class="box">
-                <div class="one-line">
-                    <input type="date" name="date" id="date" onchange="load_diary();">
-                </div>
-                <div id="questions">
+            <div id="questions-list-box" class="background-box">
+                <input type="date" id="date" class="input-on-secondary-background can-be-disabled" onchange="load_diary();">
+                <div id="questions-list" oninput="question_list_change_check();">
                     {% for question in questions %}
-                    <div class="one-line">
-                        <label for="select-{{ question.id }}" style="color: {{ question.color }};">
+                    <div class="full-line">
+                        <label for="select-{{ question.id }}" class="diary-label flex-auto-scale" style="color: {{ question.color }};">
                             {{ question.name }}
                         </label>
-                        <select name="{{ question.id }}" id="select-{{ question.id }}" class="can-be-disabled" disabled>
+                        <select id="select-{{ question.id }}" class="input-on-secondary-background can-be-disabled" onchange="" disabled>
                             <option value="0" selected="selected">Not rateable</option>
                             <option value="1">Bad</option>
                             <option value="2">Okay</option>
@@ -29,12 +29,8 @@
                     </div>
                     {% endfor %}
                 </div>
-                <textarea maxlength="65535" name="notes" placeholder="Notes" id="notes" class="can-be-disabled" disabled></textarea>
-                <div class="one-line">
-                    <input type="submit" value="Save" class="can-be-disabled" disabled>
-                    <button type="button" onclick="location.reload();" class="can-be-disabled" disabled>Cancel</button>
-                </div>
-            </form>
+                <textarea maxlength="65535" placeholder="Notes" id="notes" class="input-on-secondary-background can-be-disabled" oninput="question_list_change_check();" disabled></textarea>
+            </div>
         </div>
     </body>
 </html>

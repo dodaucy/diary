@@ -13,6 +13,40 @@
 
 var last_load;
 var last_date;
+var original_questions_list;
+var original_notes;
+
+
+function reset_original_data() {
+    original_questions_list = document.getElementById("questions-list").cloneNode(true);
+    original_notes = document.getElementById("notes").value;
+}
+
+
+function question_list_change_check() {
+    var questions = document.getElementById("questions-list");
+    if (questions.children.length != original_questions_list.children.length || document.getElementById("notes").value != original_notes) {
+        changed = true;
+    } else {
+        var changed = false;
+        for (var i = 0; i < questions.children.length; i++) {
+            var question = questions.children[i];
+            var original_question = original_questions_list.children[i];
+
+            if (question.getElementsByTagName("select")[0].value != original_question.getElementsByTagName("select")[0].value) {
+                changed = true;
+                break;
+            }
+
+            if (question.getElementsByTagName("select")[0].id != original_question.getElementsByTagName("select")[0].id) {
+                changed = true;
+                break;
+            }
+        }
+    }
+    document.getElementById("date").disabled = changed;
+    show_save_popup(changed);
+}
 
 
 function load_diary() {
@@ -37,23 +71,64 @@ function load_diary() {
     // Verify date
     var year = date.split("-")[0];
     if (1970 > year || year > 6000) {
+        message_popup("Invalid date", "Date out of range", true);
         return;
     }
 
     // Load diary
     if (date) {
-        request("GET", "diary?date=" + date, function(diary) {
-            document.getElementById("notes").value = diary.notes;
-            var children = document.getElementById("questions").children;
+        request(
+            "GET",
+            `diary?date=${date}`,
+            function(diary) {
+                document.getElementById("notes").value = diary.notes;
+                var children = document.getElementById("questions-list").children;
+                for (var i = 0; i < children.length; i++) {
+                    var select = children[i].getElementsByTagName("select")[0];
+                    if (select.name in diary.answers) {
+                        select.value = diary.answers[select.name];
+                    } else {
+                        select.value = "0";
+                    }
+                }
+                disable(false);
+            },
+            function() {}
+        );
+    }
+}
+
+
+function init() {
+    reset_original_data();
+    save_popup_register_events(
+        function() {
+            document.getElementById("questions-list").innerHTML = original_questions_list.innerHTML;
+            document.getElementById("notes").value = original_notes;
+            document.getElementById("date").disabled = false;
+        },
+        async function() {
+            var date = document.getElementById("date").value;
+            var notes = document.getElementById("notes").value;
+            var answers = {};
+            var children = document.getElementById("questions-list").children;
             for (var i = 0; i < children.length; i++) {
                 var select = children[i].getElementsByTagName("select")[0];
-                if (select.name in diary.answers) {
-                    select.value = diary.answers[select.name];
-                } else {
-                    select.value = "0";
-                }
+                answers[parseInt(select.id.split("-")[1])] = select.value;
             }
-            disable(false);
-        });
-    }
+            await async_request(
+                "POST",
+                "update_diary_entry",
+                false,
+                {
+                    "date": date,
+                    "notes": notes,
+                    "answers": answers
+                }
+            );
+            return true;
+        }
+    )
+    document.getElementById("date").value = (new Date()).toISOString().split("T")[0];
+    load_diary();
 }

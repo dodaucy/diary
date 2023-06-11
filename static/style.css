@@ -179,7 +179,7 @@ button {
 }
 
 /* inputs */
-input {
+input, textarea, select {
     background-color: var(--secondary-background-color);
     color: var(--font-color);
     border: none;
@@ -189,6 +189,11 @@ input {
 }
 .input-on-secondary-background {
     background-color: var(--primary-background-color);
+}
+textarea {
+    resize: none;
+    width: 95%;
+    height: 100px;
 }
 
 /* general */
@@ -272,10 +277,13 @@ body {
 }
 
 /* specific elements */
+.diary-label {
+    overflow-y: auto;
+}
 .stats-box {
     max-height: calc(50% - 100px);
 }
-.questions-edit-box {
+#questions-edit-box {
     max-height: calc(80% - 200px);
 }
 #settings-box {
@@ -306,4 +314,11 @@ body {
 }
 .bottom-buttons {
     margin-top: 50px;
+}
+#questions-list-box {
+    max-height: calc(100% - 200px);
+    overflow-y: auto;
+}
+#questions-list > * {
+    margin: 10px;
 }
