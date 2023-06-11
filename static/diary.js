@@ -81,8 +81,8 @@ function load_diary() {
                 var children = document.getElementById("questions-list").children;
                 for (var i = 0; i < children.length; i++) {
                     var select = children[i].getElementsByTagName("select")[0];
-                    if (select.name in diary.answers) {
-                        select.value = diary.answers[select.name];
+                    if (select.id.split("-")[1] in diary.answers) {
+                        select.value = diary.answers[select.id.split("-")[1]];
                     } else {
                         select.value = "0";
                     }
