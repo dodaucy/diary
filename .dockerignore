@@ -1,0 +1,14 @@
+# Cache
+__pycache__/
+
+# Config
+config.env
+
+# TODO
+TODO.txt
+
+# Docs
+README.md
+
+# Examples
+example_config.env
