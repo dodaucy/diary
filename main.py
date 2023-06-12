@@ -91,6 +91,11 @@ async def startup():
     await delete_expired_tokens()
 
 
+@app.on_event("shutdown")
+async def shutdown():
+    await db.disconnect()
+
+
 @app.get("/", dependencies=[Depends(rate_limit_handler.trigger)])
 async def index(request: Request, token: str = Cookie("")):
     # Create login page response
