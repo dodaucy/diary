@@ -2,7 +2,7 @@
 __pycache__/
 
 # Config
-config.env
+.env
 
 # TODO
 TODO.txt
