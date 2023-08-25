@@ -20,7 +20,9 @@ load_dotenv("config.env")
 
 
 # Create ENV required variables
+assert "DATABASE" in os.environ, "DATABASE environment variable is required"
 DATABASE: str = os.environ["DATABASE"]
+assert "PASSWORD_HASH" in os.environ, "PASSWORD_HASH environment variable is required"
 PASSWORD_HASH: str = os.environ["PASSWORD_HASH"]
 
 
