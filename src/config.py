@@ -21,6 +21,9 @@ load_dotenv(".env")
 
 # Create ENV required variables
 assert "DATABASE" in os.environ, "DATABASE environment variable is required"
+# Only allow mariadb and mysql
+database_lower = os.environ["DATABASE"].lower()
+assert database_lower.startswith("mariadb") or database_lower.startswith("mysql"), "Only mariadb and mysql are supported"
 DATABASE: str = os.environ["DATABASE"]
 assert "PASSWORD_HASH" in os.environ, "PASSWORD_HASH environment variable is required"
 PASSWORD_HASH: str = os.environ["PASSWORD_HASH"]
