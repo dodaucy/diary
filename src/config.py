@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 from humanfriendly import parse_timespan
 
 
-# Load environment variables from config.env file
-load_dotenv("config.env")
+# Load environment variables from .env file
+load_dotenv(".env")
 
 
 # Create ENV required variables
