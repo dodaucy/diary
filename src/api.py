@@ -18,11 +18,11 @@ import bcrypt
 import pymysql
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response, status
 
-import config
-import models
-import utils
-from globals import db, login_rate_limit_handler, rate_limit_handler
-from globals import settings as global_settings
+from . import config
+from . import models
+from . import utils
+from .globals import db, login_rate_limit_handler, rate_limit_handler
+from .globals import settings as global_settings
 
 
 app = FastAPI(openapi_url=None)

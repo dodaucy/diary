@@ -13,8 +13,8 @@ from typing import Dict
 
 from databases import Database
 
-import constants
-import models
+from . import constants
+from . import models
 
 
 class Settings():

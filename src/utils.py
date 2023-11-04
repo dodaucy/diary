@@ -14,8 +14,8 @@ import string
 
 from fastapi import Cookie, HTTPException, status
 
-import config
-from globals import db
+from . import config
+from .globals import db
 
 
 async def is_logged_in(token: str) -> bool:

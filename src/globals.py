@@ -11,9 +11,9 @@
 
 from databases import Database
 
-import config
-from rate_limit import RateLimitHandler
-from settings import Settings
+from . import config
+from .rate_limit import RateLimitHandler
+from .settings import Settings
 
 
 db = Database(config.DATABASE)

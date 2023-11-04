@@ -19,11 +19,11 @@ from fastapi.templating import Jinja2Templates
 from fastapi_utils.tasks import repeat_every
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-import api
-import config
-import utils
-from globals import db, rate_limit_handler
-from globals import settings as global_settings
+from . import api
+from . import config
+from . import utils
+from .globals import db, rate_limit_handler
+from .globals import settings as global_settings
 
 
 app = FastAPI(openapi_url=None)
