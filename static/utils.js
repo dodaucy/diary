@@ -305,6 +305,18 @@ function generate_color() {
 }
 
 
+function update_select_input(select_input) {
+    for (var i = 0; i < select_input.children.length; i++) {
+        var option = select_input.children[i];
+        if (option.value == select_input.value) {
+            option.setAttribute("selected", "selected");
+        } else {
+            option.removeAttribute("selected");
+        }
+    }
+}
+
+
 function init_utils(){
     // Catch all errors
     window.onerror = function(message, source, lineno, colno, error) {
@@ -317,5 +329,10 @@ function init_utils(){
     for (var i = 0; i < text_inputs.length; i++) {
         var text_input = text_inputs[i];
         text_input.setAttribute("oninput", "this.setAttribute('value', this.value);");
+    }
+    var select_inputs = document.querySelectorAll("select");
+    for (var i = 0; i < select_inputs.length; i++) {
+        var select_input = select_inputs[i];
+        select_input.setAttribute("onchange", "update_select_input(this);");
     }
 }

@@ -81,14 +81,16 @@ function load_diary() {
                 var children = document.getElementById("questions-list").children;
                 for (var i = 0; i < children.length; i++) {
                     var select = children[i].getElementsByTagName("select")[0];
-                    if (select.id.split("-")[1] in diary.answers) {
-                        select.value = diary.answers[select.id.split("-")[1]];
+                    var id = select.id.split("-")[1];
+                    if (id in diary.answers) {
+                        select.value = diary.answers[id];
                     } else {
                         select.value = "0";
                     }
+                    update_select_input(select);
                 }
-                reset_original_data();
                 disable(false);
+                reset_original_data();
             },
             function() {}
         );
