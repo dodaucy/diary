@@ -53,7 +53,7 @@ function init() {
             // Load new settings
             var root = document.querySelector(":root");
             for (var key in data) {
-                root.style.setProperty(("--" + key).replace(/_/g, "-"), data[key]);
+                root.style.setProperty((`--${key}`).replace(/_/g, "-"), data[key]);
             }
             return true;
         }
