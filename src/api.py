@@ -1,14 +1,3 @@
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-
-
 import asyncio
 import calendar
 import datetime

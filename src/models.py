@@ -1,14 +1,3 @@
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-
-
 from typing import Dict, Optional
 
 from pydantic import BaseModel

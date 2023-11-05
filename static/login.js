@@ -1,16 +1,3 @@
-/*
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-*/
-
-
 function login() {
     try {
         var password = document.getElementById("password").value.trim();

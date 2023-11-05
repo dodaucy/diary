@@ -1,16 +1,3 @@
-/*
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-*/
-
-
 var last_resize;
 var last_data;
 var cache = {};

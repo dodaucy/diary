@@ -1,16 +1,3 @@
-/*
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-*/
-
-
 function restore_question() {
     disable(true);
     var question_id = parseInt(document.getElementById("restore-question-id").value.trim());

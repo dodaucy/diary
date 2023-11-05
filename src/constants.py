@@ -1,14 +1,3 @@
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-
-
 DEFAULT_SETTINGS = {
     "font_color": "#d3d3d3",
     "button_font_color": "#d3d3d3",

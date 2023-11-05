@@ -1,16 +1,3 @@
-/*
-#############################################
-#                                           #
-#                   diary                   #
-#                                           #
-#                    MIT                    #
-#     Copyright (C) 2022 - 2023 dodaucy     #
-#     https://github.com/dodaucy/diary      #
-#                                           #
-#############################################
-*/
-
-
 var save_popup_shown = false;
 var front_end_disabled = false;
 
