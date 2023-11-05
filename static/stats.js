@@ -63,17 +63,17 @@ async function render_stats() {
         ctx.lineTo(stats_canvas.width, y);
         ctx.stroke();
         // Draw text
-        ctx.font = `${line_spacing / 6}px ${getComputedStyle(document.body).getPropertyValue('--font-family')}`;
+        ctx.font = `${line_spacing / 6}px ${getComputedStyle(document.body).getPropertyValue("--font-family")}`;
         ctx.fillText(["Bad", "Okay", "Good"][2 - i], 0, y - line_spacing / 6);
     }
 
     // Draw stats
-    var checkboxes = document.getElementById('display-box').children;
+    var checkboxes = document.getElementById("display-box").children;
     for (var i = 0; i < checkboxes.length; i++) {
         // Get elements
-        var input = checkboxes[i].getElementsByTagName('input')[0];
-        var label = checkboxes[i].getElementsByTagName('label')[0];
-        var id = input.id.split('-')[0];
+        var input = checkboxes[i].getElementsByTagName("input")[0];
+        var label = checkboxes[i].getElementsByTagName("label")[0];
+        var id = input.id.split("-")[0];
         // Check if checkbox is checked
         if (input.checked) {
             // Set color
@@ -199,7 +199,7 @@ async function init() {
     var ctx = stats_canvas.getContext("2d");
     stats_canvas.width = Math.min(window.innerWidth, 800);
     stats_canvas.height = stats_canvas.width / 10 * 3;
-    ctx.font = `${stats_canvas.height / 6}px ${getComputedStyle(document.body).getPropertyValue('--font-family')}`;
+    ctx.font = `${stats_canvas.height / 6}px ${getComputedStyle(document.body).getPropertyValue("--font-family")}`;
     ctx.fillStyle = font_color;
     ctx.textAlign = "center";
     ctx.fillText("Loading...", stats_canvas.width / 2, stats_canvas.height / 2);

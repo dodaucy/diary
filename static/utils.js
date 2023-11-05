@@ -236,7 +236,7 @@ function request(method, url, success_callback, error_callback, data) {
     if (data === undefined) {
         xhr.send();
     } else {
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify(data));
     }
 }
