@@ -6,6 +6,11 @@
     "display": "standalone",
     "icons": [
         {
+            "src": "/static/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
             "src": "/static/icons/32x32.webp",
             "sizes": "32x32",
             "type": "image/webp"
