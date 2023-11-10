@@ -170,3 +170,10 @@ async def favicon():
     return RedirectResponse(
         url="/static/icons/32x32.png"
     )
+
+
+@app.get("/manifest.json")
+async def manifest():
+    return RedirectResponse(
+        url="/static/manifest.json"
+    )
