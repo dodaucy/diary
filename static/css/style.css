@@ -163,6 +163,14 @@
         width: 100%;
     }
 }
+@media screen and (max-width: 500px) {
+    #save-popup-buttons {
+        width: 100%;
+    }
+    #save-popup-text {
+        display: none;
+    }
+}
 .save-popup-button {
     margin-left: 5px;
 }
