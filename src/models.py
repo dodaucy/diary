@@ -34,5 +34,5 @@ class Settings(BaseModel):
     button_font_color: str
     primary_background_color: str
     secondary_background_color: str
-    navbar_selected_item_color: str
+    nav_selected_item_color: str
     font_family: str

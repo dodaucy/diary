@@ -26,6 +26,6 @@ CREATE TABLE IF NOT EXISTS `settings` (
 	`button_font_color` VARCHAR(7) NOT NULL,
 	`primary_background_color` VARCHAR(7) NOT NULL,
 	`secondary_background_color` VARCHAR(7) NOT NULL,
-	`navbar_selected_item_color` VARCHAR(7) NOT NULL,
+	`nav_selected_item_color` VARCHAR(7) NOT NULL,
 	`font_family` VARCHAR(32) NOT NULL
 );

@@ -186,6 +186,12 @@ function show_reload_popup(show, text) {
 }
 
 
+function show_hamburger_menu(show) {
+    document.getElementById("hamburger-menu-background").style.display = show ? "block" : "none";
+    document.getElementById("hamburger-menu").style.display = show ? "flex" : "none";
+}
+
+
 function request(method, url, success_callback, error_callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);

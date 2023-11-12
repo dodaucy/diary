@@ -1,17 +1,45 @@
 <nav id="navbar">
-    <a href="/" class="navbar-item"{% if selected_navbar_item == 'diary' %} id="selected-navbar-item"{% endif %}>
+    <a href="/" class="navbar-item"{% if selected_nav_item == 'diary' %} id="selected-navbar-item"{% endif %}>
         Diary
     </a>
-    <a href="/stats" class="navbar-item"{% if selected_navbar_item == 'stats' %} id="selected-navbar-item"{% endif %}>
+    <a href="/stats" class="navbar-item"{% if selected_nav_item == 'stats' %} id="selected-navbar-item"{% endif %}>
         Stats
     </a>
-    <a href="/questions" class="navbar-item"{% if selected_navbar_item == 'questions' %} id="selected-navbar-item"{% endif %}>
+    <a href="/questions" class="navbar-item"{% if selected_nav_item == 'questions' %} id="selected-navbar-item"{% endif %}>
         Questions
     </a>
-    <a href="/settings" class="navbar-item"{% if selected_navbar_item == 'settings' %} id="selected-navbar-item"{% endif %}>
+    <a href="/settings" class="navbar-item"{% if selected_nav_item == 'settings' %} id="selected-navbar-item"{% endif %}>
         Settings
     </a>
-    <a href="/admin" class="navbar-item"{% if selected_navbar_item == 'admin' %} id="selected-navbar-item"{% endif %}>
+    <a href="/admin" class="navbar-item"{% if selected_nav_item == 'admin' %} id="selected-navbar-item"{% endif %}>
         Admin Panel
     </a>
 </nav>
+<div id="hamburger-menu-nav">
+    <div id="hamburger-menu-icon" onclick="show_hamburger_menu(true);">
+        <div class="hamburger-menu-icon-bar"></div>
+        <div class="hamburger-menu-icon-bar"></div>
+        <div class="hamburger-menu-icon-bar"></div>
+    </div>
+    <div id="hamburger-menu-nav-text">
+        {{ selected_nav_item.title() }}
+    </div>
+</div>
+<div id="hamburger-menu-background" onclick="show_hamburger_menu(false);"></div>
+<div id="hamburger-menu">
+    <a href="/" class="hamburger-menu-item"{% if selected_nav_item == 'diary' %} id="selected-hamburger-menu-item"{% endif %}>
+        Diary
+    </a>
+    <a href="/stats" class="hamburger-menu-item"{% if selected_nav_item == 'stats' %} id="selected-hamburger-menu-item"{% endif %}>
+        Stats
+    </a>
+    <a href="/questions" class="hamburger-menu-item"{% if selected_nav_item == 'questions' %} id="selected-hamburger-menu-item"{% endif %}>
+        Questions
+    </a>
+    <a href="/settings" class="hamburger-menu-item"{% if selected_nav_item == 'settings' %} id="selected-hamburger-menu-item"{% endif %}>
+        Settings
+    </a>
+    <a href="/admin" class="hamburger-menu-item"{% if selected_nav_item == 'admin' %} id="selected-hamburger-menu-item"{% endif %}>
+        Admin Panel
+    </a>
+</div>

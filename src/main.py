@@ -104,7 +104,7 @@ async def index(request: Request, token: str = Cookie("")):
                 {
                     "request": request,
                     "questions": await db.fetch_all("SELECT id, name, color FROM questions"),
-                    "selected_navbar_item": "diary"
+                    "selected_nav_item": "diary"
                 }
             )
         # Delete session cookie
@@ -123,7 +123,7 @@ async def stats(request: Request):
         {
             "request": request,
             "questions": await db.fetch_all("SELECT id, name, color FROM questions"),
-            "selected_navbar_item": "stats"
+            "selected_nav_item": "stats"
         }
     )
 
@@ -135,7 +135,7 @@ async def questions(request: Request):
         {
             "request": request,
             "questions": await db.fetch_all("SELECT id, name, color FROM questions"),
-            "selected_navbar_item": "questions"
+            "selected_nav_item": "questions"
         }
     )
 
@@ -146,7 +146,7 @@ async def settings(request: Request):
         "settings.html",
         {
             "request": request,
-            "selected_navbar_item": "settings"
+            "selected_nav_item": "settings"
         }
     )
 
@@ -157,7 +157,7 @@ async def admin(request: Request):
         "admin.html",
         {
             "request": request,
-            "selected_navbar_item": "admin",
+            "selected_nav_item": "admin",
             "sessions": await db.fetch_val("SELECT COUNT(*) FROM sessions"),
             "active_sessions_24_hours": await db.fetch_val("SELECT COUNT(*) FROM sessions WHERE last_request >= UNIX_TIMESTAMP() - 60 * 60 * 24"),
             "active_sessions_7_days": await db.fetch_val("SELECT COUNT(*) FROM sessions WHERE last_request >= UNIX_TIMESTAMP() - 60 * 60 * 24 * 7"),

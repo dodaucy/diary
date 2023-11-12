@@ -4,7 +4,7 @@ A simple diary for the web.
 
 ## ⚠️ Work in progress ⚠️
 
-This project is still in development. You can use it, but the frontend sucks (especially on mobile). Furthermore, the backend will get a few changes in the future. If you are interested in the current state, you can look at the [development branch](https://github.com/dodaucy/diary/tree/develop).
+This project is still in development. You can use it, but the frontend sucks. Furthermore, the backend will get a few changes in the future. If you are interested in the current state, you can look at the [development branch](https://github.com/dodaucy/diary/tree/develop).
 
 ## Setup
 
