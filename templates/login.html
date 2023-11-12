@@ -13,7 +13,7 @@
             <div class="background-box">
                 <h1>Diary</h1>
                 {% if show_logo %}
-                <img src="/static/icons/128x128.webp" onerror="this.onerror=null; this.src='/static/icons/128x128.png';">
+                <img src="/static/icons/icon.svg" onerror="this.onerror=null; this.src='/static/icons/128x128.png';" width="128" height="128">
                 {% endif %}
                 <form method="POST" onsubmit="login(); return false;">
                     <input type="password" name="password" id="password" class="can-be-disabled" placeholder="Password" autofocus required>
