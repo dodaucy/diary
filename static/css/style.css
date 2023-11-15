@@ -40,7 +40,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: var(--secondary-background-color);
+    background-color: var(--primary-background-color);
     padding: 10px;
 }
 #hamburger-menu-icon {
