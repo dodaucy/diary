@@ -9,7 +9,7 @@ This project is still in development. You can use it, but the frontend sucks. Fu
 ## Setup
 
 > [!IMPORTANT]
-> It is recommended to put the project behind a reverse proxy, such as [NGINX](https://www.nginx.com/). You should also set the `Host`, `X-Forwarded-For` and `X-Forwarded-Proto` headers. Otherwise, the rate limit will not work properly.
+> It is recommended to put the project behind a reverse proxy, such as [NGINX](https://nginx.org/en/). You should also set the `Host`, `X-Forwarded-For` and `X-Forwarded-Proto` headers. Otherwise, the rate limit will not work properly.
 
 Here is an example NGINX configuration:
 
