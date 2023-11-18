@@ -191,14 +191,13 @@ function show_reload_popup(show, text) {
 
 
 function show_hamburger_menu(show) {
-    // Prevent from double clicking
-    if (document.getElementById("hamburger-menu").style.display == "flex" && show) {
+    var popup = document.getElementById("hamburger-menu");
+    if (popup.style.display == "flex" && show || popup.style.display == "none" && !show || front_end_disabled) {
         return;
     }
     // Show or hide background
     document.getElementById("hamburger-menu-background").style.display = show ? "block" : "none";
     // Show or hide hamburger menu with animation
-    var popup = document.getElementById("hamburger-menu");
     var position = 0;
     var timer = setInterval(function() {
         popup.style.display = "flex";
