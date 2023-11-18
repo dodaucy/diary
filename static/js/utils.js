@@ -187,8 +187,34 @@ function show_reload_popup(show, text) {
 
 
 function show_hamburger_menu(show) {
+    // Prevent from double clicking
+    if (document.getElementById("hamburger-menu").style.display == "flex" && show) {
+        return;
+    }
+    // Show or hide background
     document.getElementById("hamburger-menu-background").style.display = show ? "block" : "none";
-    document.getElementById("hamburger-menu").style.display = show ? "flex" : "none";
+    // Show or hide hamburger menu with animation
+    var popup = document.getElementById("hamburger-menu");
+    var position = 0;
+    var timer = setInterval(function() {
+        popup.style.display = "flex";
+        if (position < 80) {
+            position += 10;
+        } else {
+            position += 3;
+        }
+        if (show) {
+            popup.style.transform = `translate(${Math.min(0, -100 + position)}%, 0)`;
+        } else {
+            popup.style.transform = `translate(${Math.max(-100, -position)}%, 0)`;
+        }
+        if (position >= 100) {
+            if (!show) {
+                popup.style.display = "none";
+            }
+            clearInterval(timer);
+        }
+    }, 20);
 }
 
 
