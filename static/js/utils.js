@@ -183,6 +183,8 @@ function show_reload_popup(show, text) {
     if (save_popup_save) {
         document.getElementById("save-popup").style.filter = show ? "blur(2px)" : "none";
     }
+    document.getElementById("hamburger-menu").style.filter = show ? "blur(2px)" : "none";
+    document.getElementById("hamburger-menu-nav").style.filter = show ? "blur(2px)" : "none";
 }
 
 
