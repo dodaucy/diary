@@ -8,6 +8,7 @@ var save_popup_save_click = function() {
     console.log("Save popup save click not registered");
 }
 
+var hamburger_timer = null;
 var x_down = null;
 
 
@@ -198,8 +199,11 @@ function show_hamburger_menu(show) {
     // Show or hide background
     document.getElementById("hamburger-menu-background").style.display = show ? "block" : "none";
     // Show or hide hamburger menu with animation
+    if (hamburger_timer != null) {
+        clearInterval(hamburger_timer);
+    }
     var position = 0;
-    var timer = setInterval(function() {
+    hamburger_timer = setInterval(function() {
         popup.style.display = "flex";
         if (position < 80) {
             position += 10;
@@ -215,7 +219,8 @@ function show_hamburger_menu(show) {
             if (!show) {
                 popup.style.display = "none";
             }
-            clearInterval(timer);
+            clearInterval(hamburger_timer);
+            hamburger_timer = null;
         }
     }, 20);
 }
