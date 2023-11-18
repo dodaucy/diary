@@ -8,6 +8,8 @@ var save_popup_save_click = function() {
     console.log("Save popup save click not registered");
 }
 
+var x_down = null;
+
 
 function message_popup(title, message, error) {
     /* Create popup */
@@ -220,6 +222,28 @@ function show_hamburger_menu(show) {
 }
 
 
+function handle_touch_start(event) {
+    if (window.innerWidth <= 600 && document.getElementById("hamburger-menu") != null) {
+        x_down = event.touches[0].clientX;
+    }
+}
+
+
+function handle_touch_move(event) {
+    if (!x_down) {
+        return;
+    }
+    var x_up = event.touches[0].clientX;
+    var x_diff = x_down - x_up;
+    if (x_diff > 0) {
+        show_hamburger_menu(false);
+    } else {
+        show_hamburger_menu(true);
+    }
+    x_down = null;
+}
+
+
 function request(method, url, success_callback, error_callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, `/api/${url}`, true);
@@ -356,4 +380,7 @@ function init_utils(){
         var select_input = select_inputs[i];
         select_input.setAttribute("onchange", "update_select_input(this);");
     }
+    // Add touch events
+    document.addEventListener("touchstart", handle_touch_start, false);
+    document.addEventListener("touchmove", handle_touch_move, false);
 }
